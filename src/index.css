@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300&family=Righteous&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    font-family: 'Chakra Petch', sans-serif;
+}
+
+body{
+    @apply bg-background-dark;
+}
+
+
+@layer components {
+    .sidebar-icon {
+        @apply mx-auto relative flex items-center justify-center h-12 w-12 my-2 text-white text-2xl hover:bg-text-dark-theme-darker rounded-xl cursor-pointer transition-all relative;
+    }
+
+    .sidebar-hr {
+        @apply bg-gray-200 dark:bg-gray-800 
+        border border-gray-200 dark:border-gray-800 rounded-full
+        h-[1px]
+        mx-2;
+      }
+ 
+    .sidebar-item-tooltip{
+        @apply absolute bg-background-dark text-white text-sm rounded-lg p-2 shadow-lg;
+        @apply left-[65px] top-[10px] px-6 max-w-[200px] z-10;
+        @apply opacity-0 transition-all;
+        @apply pointer-events-none;
+    }
+      
+}

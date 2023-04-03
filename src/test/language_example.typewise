@@ -1,0 +1,67 @@
+
+// Este es un comentario de una línea
+
+/*
+Este es un comentario
+Multilínea
+Para este lenguaje
+*/
+
+// Declaración de variables
+int a=0;
+INt A=0;
+
+If(i==1){
+int a=15;
+Print(“soy el numero ”+a);
+}
+
+
+// Inicialización de variables
+string cadena = “hola”;
+char var_1 = ‘a’;
+boolean verdadero;
+
+
+// Asignación de variables
+numero = 4;
+verdadero = true;
+cadena = “valor = “ + valor;
+
+
+int edad = (int) 18.6; //toma el valor entero de 18
+char letra = (char) 70; //tomar el valor ‘F’ ya que el 70 en ascii es F
+double numero = (double) 16; //toma el valor 16.0
+
+edad++; //tiene el valor de 19
+edad--; //tiene el valor 18
+int anio=2020;
+anio = 1 + anio++; //obtiene el valor de 2022
+anio = anio--; //obtiene el valor de 2021
+
+
+//Ejemplo de declaración tipo 1
+int[ ] vector1 = new int[4]; //se crea un vector de 4 posiciones, con 0 en cada posición
+
+//Ejemplo de declaración tipo 2
+string[ ] vector2 = {"hola", "Mundo"}; //vector de 2 posiciones, con "Hola" y "Mundo"
+
+
+string[ ] vector2 = {"hola", "Mundo"}; //creamos un vector de 2 posiciones de tipo string
+string valorPosicion = vector2[0]; //posición 0, valorPosicion = “hola”
+
+string[ ] vector2 = {"hola", "Mundo"}; //vector de 2 posiciones, con "Hola" y "Mundo"
+int[ ] vectorNumero = {2020,2021,2022};
+vector2[0] = “OLC1 ”;
+vector2[1] = “1er Semestre ”+vectorNumero[1];
+
+list<int> lista1 = new list<int>; //se crea una lista vacía de tipo entero
+list<char> lista1 = new list<char>; //se crea una lista vacía de tipo char
+
+
+list<int> lista2 =new list<int>; //creamos un lista de tipo int SE ENCUENTRA VACÍA
+lista2.add(5);
+lista2.add(4);
+lista2.add(100);
+
+int valor = lista2[[1]];

@@ -1,0 +1,77 @@
+<TIPO> identificador;
+<TIPO> identificador = <EXPRESION>;
+identificador = <EXPRESION>;
+‘(’ <TIPO> ‘)’ <EXPRESION>
+<EXPRESION>’+’’+’’;’
+<EXPRESION> ‘-‘‘-’’;’
+<TIPO> ‘[’ ‘]’ <ID> = new <TIPO>’[’ <EXPRESION> ’]’ ‘;’
+<TIPO> ‘[’ ‘]’ <ID> = ‘{’ <LISTAVALORES> ‘}’ ‘;’
+<ID> ’[’ EXPRESION ’]’
+<ID> ‘[’ EXPRESION ‘]’ = EXPRESION‘;’
+‘list’‘<’ <TIPO> ’>’ <ID> = new ‘list’‘<’ <TIPO> ’>’ ‘;’
+<ID> ’.’ ‘add’ ‘(‘<EXPRESION>’)’ ‘;’
+<ID> ’[’’[‘ EXPRESION ‘]’’]’
+<ID> ‘[’’[’ EXPRESION ‘]’’]’ = EXPRESION‘;’
+
+‘if’ ‘(’ [<EXPRESION>] ‘)’ ‘{‘
+[<INSTRUCCIONES>]
+‘}’
+| ‘if’ ‘(’ [<EXPRESION>] ‘)’ ‘{‘
+[<INSTRUCCIONES>]
+‘}’ ‘else’ ‘{‘
+[<INSTRUCCIONES>]
+‘}’
+| ‘if’ ‘(’ [<EXPRESION>] ‘)’ ‘{‘
+[<INSTRUCCIONES>]
+‘}’ ‘else’ [<IF>]
+
+‘switch’ ‘(’ [<EXPRESION>] ‘)’ ‘{‘
+[<CASES_LIST>] [<DEFAULT>]
+‘}’
+| ‘switch’ ‘(’<EXPRESION> ‘)’ ‘{‘
+[<CASES_LIST>]
+‘}’
+| ‘switch’ ‘(’<EXPRESION> ‘)’ ‘{‘
+[<DEFAULT>]
+‘}’
+
+‘case’ [<EXPRESION>] ‘:’
+[<INSTRUCCIONES>]
+
+‘default’ ‘:’
+[<INSTRUCCIONES>]
+
+
+‘while’ ‘(’[<EXPRESION>] ‘)’ ‘{‘
+[<INSTRUCCIONES>]
+‘}’
+
+‘for ‘(’ ([<DECLARACION>|<ASIGNACION>])’;’ [<CONDICION>]’;’ [<[ACTUALIZACION>] ‘)’ ‘{‘
+[<INSTRUCCIONES>]
+‘}’
+
+‘do’ ‘{‘
+[<INSTRUCCIONES>]
+‘}’ ‘while’ ‘(’[<EXPRESION>] ‘)’ ‘;’
+
+break;
+continue;
+return;
+
+<TIPO> <ID> ‘(‘ [<PARAMETROS>] ‘)’ ‘{‘
+[<INSTRUCCIONES>]
+‘}’
+PARAMETROS -> [<PARAMETROS] ‘,’ [<TIPO>] [<ID>]
+| [<TIPO>] [<ID>]
+
+
+‘void’ <ID> ‘(‘ [<PARAMETROS>] ‘)’ ‘{‘
+[<INSTRUCCIONES>]
+‘}’
+PARAMETROS -> [<PARAMETROS] ‘,’ [<TIPO>] [<ID>]
+| [<TIPO>] [<ID>]
+
+LLAMADA -> [<ID>] ‘(‘ [<PARAMETROS_LLAMADA>] ‘)’
+| [<ID>] ‘(‘ ‘)’
+PARAMETROS_LLAMADA -> [<PARAMETROS_LLAMADA>] ‘,’ [<EXPRESION>]
+| [<EXPRESION>]
