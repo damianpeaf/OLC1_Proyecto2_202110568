@@ -3,14 +3,17 @@ import { Context } from "../context";
 
 export type NodeArgs = {
     id: number;
+    context: Context;
 }
 
 export abstract class Node {
 
     public id: number;
+    public context: Context;
 
-    constructor({ id }: NodeArgs) {
+    constructor({ id, context }: NodeArgs) {
         this.id = id;
+        this.context = context;
     }
 
     public abstract graphviz(): string;
@@ -27,14 +30,6 @@ export abstract class Node {
 
     public getGraphvizNode() {
         return "N" + this.id;
-    }
-
-    set context(context: Context) {
-        this.context = context;
-    }
-
-    get context() {
-        return this.context;
     }
 
     public getId() {

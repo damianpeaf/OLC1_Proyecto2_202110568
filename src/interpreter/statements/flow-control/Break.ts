@@ -1,7 +1,7 @@
 import { Statement, StatementArgs } from '../Statement';
 
 
-type BreakArgs = StatementArgs;
+export type BreakArgs = StatementArgs;
 
 export class Break extends Statement {
 

@@ -1,6 +1,6 @@
 import { Structure, StructureArgs } from '../Structure';
 
-type elseArgs = StructureArgs & {
+export type elseArgs = StructureArgs & {
 }
 
 export class Else extends Structure {

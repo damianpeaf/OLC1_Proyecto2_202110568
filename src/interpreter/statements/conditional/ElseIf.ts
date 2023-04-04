@@ -1,11 +1,11 @@
 import { ConditionalStructure, ConditionalStructureArgs } from './ConditionalStructure';
 
-type elseIfArgs = ConditionalStructureArgs & {
+export type ElseIfArgs = ConditionalStructureArgs & {
 }
 
 export class ElseIf extends ConditionalStructure {
 
-    constructor({ ...args }: elseIfArgs) {
+    constructor({ ...args }: ElseIfArgs) {
         super(args);
     }
 

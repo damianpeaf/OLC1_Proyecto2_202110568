@@ -11,7 +11,7 @@ export type LogicalExpressionType =
     ;
 
 
-type LogicalExpressionArgs = BinaryExpressionArgs<LogicalExpressionType> & {
+export type LogicalExpressionArgs = BinaryExpressionArgs<LogicalExpressionType> & {
 }
 
 export class LogicalExpression extends BinaryExpression<LogicalExpressionType> {

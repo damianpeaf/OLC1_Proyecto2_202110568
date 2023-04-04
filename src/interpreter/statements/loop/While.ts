@@ -1,6 +1,6 @@
 import { LoopStructure, LoopStructureArgs } from "./LoopStructure";
 
-type whileArgs = LoopStructureArgs & {
+export type whileArgs = LoopStructureArgs & {
 
 }
 

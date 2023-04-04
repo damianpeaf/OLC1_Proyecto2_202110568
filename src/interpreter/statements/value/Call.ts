@@ -4,18 +4,18 @@ import { SubroutineCall } from '../subroutines/SubroutineCall';
 import { Value } from './';
 
 
-export type ReferenceType = "DIRECT" | "INCREMENT" | "DECREMENT"
+export type CallType = "DIRECT" | "INCREMENT" | "DECREMENT"
 
-export type ReferenceArgs = StatementArgs & {
+export type CallArgs = StatementArgs & {
     call: SubroutineCall
 }
 
-export class Reference extends Value {
+export class Call extends Value {
 
 
     private _call: SubroutineCall;
 
-    constructor({ call, ...args }: ReferenceArgs) {
+    constructor({ call, ...args }: CallArgs) {
         super(args);
 
         this._call = call;

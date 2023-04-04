@@ -3,7 +3,7 @@ import { Expression } from "../expression";
 import { Case, Default } from "./";
 
 
-type SwitchArgs = StatementArgs & {
+export type SwitchArgs = StatementArgs & {
     value: Expression;
     cases: Case[];
     defaultCase: Default;

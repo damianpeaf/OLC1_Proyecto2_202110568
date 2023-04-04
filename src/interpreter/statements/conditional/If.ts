@@ -1,7 +1,7 @@
 import { Structure } from '../Structure';
 import { ConditionalStructure, ConditionalStructureArgs, ElseIf, Else } from './';
 
-type ifArgs = ConditionalStructureArgs & {
+export type ifArgs = ConditionalStructureArgs & {
     chain: Structure[];
 }
 

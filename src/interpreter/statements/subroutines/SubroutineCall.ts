@@ -3,7 +3,7 @@ import { Statement, StatementArgs } from '../Statement';
 import { Expression } from '../expression';
 
 
-type SubroutineCallArgs = StatementArgs & {
+export type SubroutineCallArgs = StatementArgs & {
     name: string;
     args: Expression[];
 };

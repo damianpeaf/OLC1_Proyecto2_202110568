@@ -11,7 +11,7 @@ export type ArithmeticExpressionType =
     ;
 
 
-type ArithmeticExpressionArgs = BinaryExpressionArgs<ArithmeticExpressionType> & {
+export type ArithmeticExpressionArgs = BinaryExpressionArgs<ArithmeticExpressionType> & {
 }
 
 export class ArithmeticExpression extends BinaryExpression<ArithmeticExpressionType> {

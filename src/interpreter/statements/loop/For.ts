@@ -1,7 +1,7 @@
 import { LoopStructure, LoopStructureArgs } from "./LoopStructure";
 import { VariableDeclaration, VariableAssigment } from '../variable';
 
-type forArgs = LoopStructureArgs & {
+export type ForArgs = LoopStructureArgs & {
     init: VariableDeclaration | VariableAssigment;
     increment: VariableAssigment;
 }
@@ -11,7 +11,7 @@ export class For extends LoopStructure {
     private init: VariableDeclaration | VariableAssigment
     private increment: VariableAssigment
 
-    constructor({ init, increment, ...args }: forArgs) {
+    constructor({ init, increment, ...args }: ForArgs) {
         super(args);
 
         this.init = init;

@@ -1,6 +1,6 @@
 import { ConditionalStructure, ConditionalStructureArgs } from "./";
 
-type CaseArgs = ConditionalStructureArgs
+export type CaseArgs = ConditionalStructureArgs
 
 export class Case extends ConditionalStructure {
 

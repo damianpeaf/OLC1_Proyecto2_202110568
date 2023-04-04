@@ -1,6 +1,6 @@
 import { Structure, StructureArgs } from "../Structure";
 
-type DefaultArgs = StructureArgs & {
+export type DefaultArgs = StructureArgs & {
 }
 
 export class Default extends Structure {

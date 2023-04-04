@@ -1,7 +1,7 @@
 import { Statement, StatementArgs } from '../Statement';
 
 
-type ContinueArgs = StatementArgs;
+export type ContinueArgs = StatementArgs;
 
 export class Continue extends Statement {
 

@@ -3,7 +3,7 @@ import { VariableType } from "../../elements";
 import { Expression } from "../expression";
 
 
-type VariableDeclarationArgs = StatementArgs & {
+export type VariableDeclarationArgs = StatementArgs & {
     type: VariableType;
     name: string;
     value?: Expression | null;

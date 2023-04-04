@@ -1,12 +1,12 @@
 import { LoopStructure, LoopStructureArgs } from "./LoopStructure";
 
-type doWhileArgs = LoopStructureArgs & {
+export type DoWhileArgs = LoopStructureArgs & {
 
 }
 
 export class DoWhile extends LoopStructure {
 
-    constructor({ ...args }: doWhileArgs) {
+    constructor({ ...args }: DoWhileArgs) {
         super(args);
     }
 

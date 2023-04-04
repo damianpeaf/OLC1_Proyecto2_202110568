@@ -2,7 +2,7 @@ import { Statement, StatementArgs } from '../Statement';
 import { Expression } from '../expression';
 
 
-type ReturnArgs = StatementArgs & {
+export type ReturnArgs = StatementArgs & {
     value?: Expression | null;
 };
 

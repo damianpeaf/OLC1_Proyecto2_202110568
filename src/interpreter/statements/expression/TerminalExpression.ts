@@ -15,7 +15,7 @@ export type ReferenceType =
     "FALSE" |
     "SUBROUTINE_CALL";
 
-type TerminalExpressionArgs = ExpressionArgs & {
+export type TerminalExpressionArgs = ExpressionArgs & {
     value: Value
 }
 

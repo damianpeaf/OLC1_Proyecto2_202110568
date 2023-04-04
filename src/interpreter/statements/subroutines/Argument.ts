@@ -2,7 +2,7 @@ import { VariableType } from '../../elements';
 import { Statement, StatementArgs } from '../Statement';
 
 
-type ArgumentArgs = StatementArgs & {
+export type ArgumentArgs = StatementArgs & {
     name: string;
     type: VariableType;
 };

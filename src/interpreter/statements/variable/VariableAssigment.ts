@@ -3,7 +3,7 @@ import { Expression } from "../expression";
 
 type VariableAssigmentT = 'direct' | 'increment' | 'decrement'
 
-type VariableAssigmentArgs = StatementArgs & {
+export type VariableAssigmentArgs = StatementArgs & {
     type: VariableAssigmentT;
     name: string;
     value: Expression;

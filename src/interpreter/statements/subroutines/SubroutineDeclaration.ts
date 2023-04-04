@@ -3,7 +3,7 @@ import { Structure, StructureArgs } from "../Structure";
 import { Argument } from './Argument';
 
 
-type SubroutineDeclarationArgs = StructureArgs & {
+export type SubroutineDeclarationArgs = StructureArgs & {
     name: string;
     args: Argument[];
     type: SubroutineType;

@@ -1,6 +1,6 @@
 import { Expression, ExpressionArgs } from "./Expression";
 
-type UnaryExpressionArgs = ExpressionArgs & {
+export type UnaryExpressionArgs = ExpressionArgs & {
     operand: Expression;
 }
 
