@@ -6,7 +6,7 @@ type VariableAssigmentT = 'direct' | 'increment' | 'decrement'
 export type VariableAssigmentArgs = StatementArgs & {
     type: VariableAssigmentT;
     name: string;
-    value: Expression;
+    value?: Expression | null;
 }
 // TODO: Array and Vector
 
@@ -14,9 +14,9 @@ export class VariableAssigment extends Statement {
 
     private type: VariableAssigmentT;
     private name: string;
-    private value: any;
+    private value: Expression | null;
 
-    constructor({ name, value, type, ...stmtArgs }: VariableAssigmentArgs) {
+    constructor({ name, value = null, type, ...stmtArgs }: VariableAssigmentArgs) {
         super(stmtArgs);
 
         this.name = name;
@@ -40,4 +40,10 @@ export class VariableAssigment extends Statement {
         throw new Error("Method not implemented.");
     }
 
+}
+
+export class VariableAssigmentType {
+    public static readonly DIRECT = 'direct';
+    public static readonly INCREMENT = 'increment';
+    public static readonly DECREMENT = 'decrement';
 }

@@ -2,6 +2,24 @@
     Proyecto 2 OLC1 - 202110568
 */
 
+// --- Header ---
+
+%{
+    // const { AST, NodeBuilder } = require('../ast');
+    import { AST, NodeBuilder } from '../ast';
+    import { Type, Symbols, SubroutineType } from '../elements';
+    import { VariableAssigmentType } from '../statements/variable';
+    import { ArithmeticExpressionType,RelationalExpresionType,LogicalExpressionType } from '../statements/expression';
+    import { ReferenceType } from '../statements/value';
+
+    const ast = new AST();
+    const builder = new NodeBuilder(ast);
+
+    const root = builder.root();
+    ast.root = root;
+
+%}
+
 // --- Lexical specification ---
 
 %lex
@@ -21,7 +39,7 @@
 \s+                         {/* skip */} // Whitespace
 
 // * ID
-([a-zA-ZÑñ]|("_"[a-zA-ZÑñ]))([a-zA-ZÑñ]|[0-9]|"_")* { yytext = yytext.toLowerCase();  return ID; }
+([a-zA-ZÑñ]|("_"[a-zA-ZÑñ]))([a-zA-ZÑñ]|[0-9]|"_")* { yytext = yytext.toLowerCase();  return "ID"; }
 
 // * Literals
 
@@ -145,41 +163,94 @@
 %%
 
 // TODO: MAIN
-program : statements EOF
-        | EOF
+program : statements 
+            {
+                root.stmts = $1;
+                $$ = root;
+            }
         ;
 
-statements : normal_statement flow_control_statement
-           | normal_statement
+statements : normal_statements flow_control_statement
+                {
+                    $1.push($2);
+                    $$ = $1;
+                }
+           | normal_statements
+                {
+                    $$ = $1;
+                }
            | flow_control_statement
+                {
+                    $$ = [$1];
+                }
+            | /* empty */
+                {
+                    $$ = [];
+                }
+            | EOF 
+                {
+                    $$ = [];
+                }
            ;
 
 flow_control_statement : BREAK SEMICOLON
+                            {
+                                $$ = builder.break({
+                                    line: @1.first_line,
+                                    column: @1.first_column
+                                });
+                            }
                        | CONTINUE SEMICOLON
+                            {
+                                $$ = builder.continue({
+                                    line: @1.first_line,
+                                    column: @1.first_column
+                                });
+                            }
                        | RETURN SEMICOLON
+                            {
+                                $$ = builder.return({
+                                    line: @1.first_line,
+                                    column: @1.first_column
+                                });
+                            }
                        | RETURN expression SEMICOLON
+                            {
+                                $$ = builder.return({
+                                    line: @1.first_line,
+                                    column: @1.first_column,
+                                    value: $2
+                                });
+                            }
                        ;
 
-normal_statement : normal_statement statement
+normal_statements : normal_statements statement
+                        {
+                            $1.push($2);
+                            $$ = $1;
+                        }
                  | statement
+                        {
+                            $$ = [$1];
+                        }
                  ;
 
-statement : variable_declaration
-          | variable_assignment
-          | if
-          | switch
-          | while
-          | for
-          | do_while
-          | subroutine_call
-          | subroutine_declaration
+statement : variable_declaration    { $$ = $1; }
+          | variable_assignment     { $$ = $1; }
+          | if                      { $$ = $1; }
+          | switch                  { $$ = $1; }
+          | while                   { $$ = $1; }
+          | for                     { $$ = $1; }
+          | do_while                { $$ = $1; }
+          | subroutine_call         { $$ = $1; }
+          | subroutine_declaration  { $$ = $1; }
           ;
 
-type : INT
-     | DOUBLE
-     | STRING
-     | BOOLEAN
-     | CHAR
+type : INT      { $$ = Type.INT; }
+     | DOUBLE   { $$ = Type.DOUBLE; }
+     | STRING   { $$ = Type.STRING; }
+     | BOOLEAN  { $$ = Type.BOOLEAN; }
+     | CHAR     { $$ = Type.CHAR; }
      ;
 
 
@@ -187,7 +258,24 @@ type : INT
 // - Vectors -> reservation and element list
 // - Arrays -> new 
 variable_declaration : type ID SEMICOLON
+                        {
+                            $$ = builder.variableDcl({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                type: $1,
+                                name: $2
+                            });
+                        }
                      | type ID EQUAL expression SEMICOLON
+                        {
+                            $$ = builder.variableDcl({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                type: $1,
+                                name: $2,
+                                value: $4
+                            });
+                        }
                      ;
 
 // TODO: Casts
@@ -195,128 +283,645 @@ variable_declaration : type ID SEMICOLON
 // - Vectors -> reservation and element list
 // - Arrays -> new
 variable_assignment : ID EQUAL expression SEMICOLON
+                        {
+                            $$ = builder.variableAss({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                name: $1,
+                                value: $3,
+                                type: VariableAssigmentType.DIRECT
+                            });
+                        }
                     | ID PLUS_PLUS SEMICOLON
+                        {
+                            $$ = builder.variableAss({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                name: $1,
+                                type: VariableAssigmentType.INCREMENT
+                            });
+                        }
                     | ID MINUS_MINUS SEMICOLON
+                        {
+                            $$ = builder.variableAss({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                name: $1,
+                                type: VariableAssigmentType.DECREMENT
+                            });
+                        }
                     ;
 
 if : IF LPAREN expression RPAREN LBRACE statements RBRACE
+        {
+            $$ = builder.if({
+                line: @1.first_line,
+                column: @1.first_column,
+                condition: $3,
+                statements: $6,
+                chain: []
+            });
+        }
    | IF LPAREN expression RPAREN LBRACE statements RBRACE if_chain
+        {
+            $$ = builder.if({
+                line: @1.first_line,
+                column: @1.first_column,
+                condition: $3,
+                statements: $6,
+                chain: $7
+            });
+        }
    ;
 
-if_chain : ELSE LBRACE statements RBRACE
-         | ELSE if
+if_chain : elseif_chain else
+            {
+                $$ = $1;
+                $$.push($2);
+            }
+         | ELSE LBRACE statements RBRACE
+            {
+                $$ = [$1];
+            }
          ;
 
+else : ELSE LBRACE statements RBRACE
+        {
+            return builder.else({
+                line: @1.first_line,
+                column: @1.first_column,
+                statements: $3
+            });
+        }
+     ;
+
+elseif_chain : elseif_chain elseif
+                {
+                    $1.push($2);
+                    $$ = $1;
+                }
+             | elseif
+                {
+                    $$ = [$1];
+                }
+             ;
+
+elseif : ELSE IF LPAREN expression RPAREN LBRACE statements RBRACE
+            {
+                $$ = builder.elseIf({
+                    line: @1.first_line,
+                    column: @1.first_column,
+                    condition: $4,
+                    statements: $7
+                });
+            }
+        ;
+
 switch : SWITCH LPAREN expression RPAREN LBRACE switch_cases RBRACE
+            {
+                $$ = builder.switch({
+                    line: @1.first_line,
+                    column: @1.first_column,
+                    value: $3,
+                    cases: $6
+                });
+            }
        ;
 
 switch_cases : case_list
+                {
+                    $$ = $1;
+                }
              | case_list default
+                {
+                    $1.push($2);
+                    $$ = $1;
+                }
              | default
+                {
+                    $$ = [$1];
+                }
              ;
 
 case_list : case_list case
+            {
+                $1.push($2);
+                $$ = $1;
+            }
           | case
+            {
+                $$ = [$1];
+            }
           ;
 
 case : CASE expression COLON statements
+        {
+            $$ = builder.case({
+                line: @1.first_line,
+                column: @1.first_column,
+                condition: $2,
+                statements: $4
+            });
+        }
      ;
 
 default : DEFAULT COLON statements
+            {
+                $$ = builder.default({
+                    line: @1.first_line,
+                    column: @1.first_column,
+                    statements: $3
+                });
+            }
         ;
 
 while : WHILE LPAREN expression RPAREN LBRACE statements RBRACE
+        {
+            $$ = builder.while({
+                line: @1.first_line,
+                column: @1.first_column,
+                condition: $3,
+                statements: $6
+            });
+        }
       ;
 
 for : FOR LPAREN for_init SEMICOLON for_condition SEMICOLON for_update RPAREN LBRACE statements RBRACE
+        {
+            $$ = builder.for({
+                line: @1.first_line,
+                column: @1.first_column,
+                init: $3,
+                condition: $5,
+                update: $7,
+                statements: $10
+            });
+        }
     ;
 
-for_init : variable_declaration
-         | variable_assignment
+for_init : variable_declaration { $$ = $1; }
+         | variable_assignment { $$ = $1; }
         //  | subroutine_call // ??????
          ;
 
-for_condition : expression
+for_condition : expression { $$ = $1; }
               ;
 
-for_update : variable_assignment
+for_update : variable_assignment { $$ = $1; }
            // | subroutine_call // ??????
            ;
 
 do_while : DO LBRACE statements RBRACE WHILE LPAREN expression RPAREN SEMICOLON
+            {
+                $$ = builder.doWhile({
+                    line: @1.first_line,
+                    column: @1.first_column,
+                    condition: $7,
+                    statements: $3
+                });
+            }
          ;
 
-subroutine_call : ID LPAREN subroutine_call_params RPAREN SEMICOLON
-                | ID LPAREN RPAREN SEMICOLON
+subroutine_call : subroutine_call_aux SEMICOLON { $$ = $1; }
                 ;
 
+subroutine_call_aux : ID LPAREN subroutine_call_params RPAREN
+                        {
+                            $$ = builder.subroutineCall({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                name: $1,
+                                args: $3
+                            });
+                        }
+                    | ID LPAREN RPAREN
+                        {
+                            $$ = builder.subroutineCall({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                name: $1,
+                                args: []
+                            });
+                        }
+                    ;
+
 subroutine_call_params : subroutine_call_params COMMA expression
+                            {
+                                $1.push($3);
+                                $$ = $1;
+                            }
                        | expression
+                            {
+                                $$ = [$1];
+                            }
                        ;
 
 object_subroutine_call : ID DOT subroutine_call
+                        // TODO: Not implemented AST node
                        ;
 
 
-subroutine_declaration : method_declaration
-                       | function_declaration
+subroutine_declaration : method_declaration     { $$ = $1; }
+                       | function_declaration   { $$ = $1; }
                        ;
 
 method_declaration : VOID ID LPAREN RPAREN LBRACE statements RBRACE
+                        {
+                            $$ = builder.subroutineDcl({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                name: $2,
+                                args: [],
+                                statements: $6,
+                                type: SubroutineType.METHOD,
+                                returnType: Symbols.VOID
+                            });
+                        }
                    | VOID ID LPAREN subroutine_declaration_params RPAREN LBRACE statements RBRACE
+                        {
+                            $$ = builder.subroutineDcl({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                name: $2,
+                                args: $4,
+                                statements: $7,
+                                type: SubroutineType.METHOD,
+                                returnType: Symbols.VOID
+                            });
+                        }
                    ;
 
 function_declaration : type ID LPAREN RPAREN LBRACE statements RBRACE
+                        {
+                            $$ = builder.subroutineDcl({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                name: $2,
+                                args: [],
+                                statements: $6,
+                                type: SubroutineType.FUNCTION,
+                                returnType: $1
+                            });
+                        }
                      | type ID LPAREN subroutine_declaration_params RPAREN LBRACE statements RBRACE
+                        {
+                            $$ = builder.subroutineDcl({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                name: $2,
+                                args: $4,
+                                statements: $7,
+                                type: SubroutineType.FUNCTION,
+                                returnType: $1
+                            });
+                        }
                      ;
 
 
 subroutine_declaration_params : subroutine_declaration_params COMMA subroutine_declaration_param
+                                {
+                                    $1.push($3);
+                                    $$ = $1;
+                                }
                               | subroutine_declaration_param
+                                {
+                                    $$ = [$1];
+                                }
                               ;
 
 subroutine_declaration_param : type ID
+                                {
+                                    $$ = builder.argument({
+                                        line: @1.first_line,
+                                        column: @1.first_column,
+                                        type: $1,
+                                        name: $2
+                                    });
+                                }
                              ;
 
 expression  : expression PLUS expression                           // a + b
+                {
+                    $$ = builder.arithmeticExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: ArithmeticExpressionType.PLUS,
+                        left: $1,
+                        right: $3
+                    });
+                }
             | expression MINUS expression                          // a - b
+                {
+                    $$ = builder.arithmeticExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: ArithmeticExpressionType.MINUS,
+                        left: $1,
+                        right: $3
+                    });
+                }
             | expression TIMES expression                          // a * b
+                {
+                    $$ = builder.arithmeticExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: ArithmeticExpressionType.TIMES,
+                        left: $1,
+                        right: $3
+                    });
+                }
             | expression DIVIDE expression                         // a / b
+                {
+                    $$ = builder.arithmeticExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: ArithmeticExpressionType.DIVIDE,
+                        left: $1,
+                        right: $3
+                    });
+                }
             | expression MOD expression                            // a % b 
+                {
+                    $$ = builder.arithmeticExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: ArithmeticExpressionType.MOD,
+                        left: $1,
+                        right: $3
+                    });
+                }
             | expression POWER expression                          // a ^ b
+                {
+                    $$ = builder.arithmeticExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: ArithmeticExpressionType.POWER,
+                        left: $1,
+                        right: $3
+                    });
+                }
 
             | MINUS expression %prec unary                         // -a
+                {
+                    $$ = builder.unaryMinusExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operand: $2
+                    });
+                }
             | LPAREN expression RPAREN                             // (a)
+                {
+                    $$ = $2;
+                }
 
             | expression EQUALS expression                         // a == b
+                {
+                    $$ = builder.relationalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: RelationalExpresionType.EQUALS,
+                        left: $1,
+                        right: $3
+                    });
+                }
             | expression NOT_EQUAL expression                      // a != b
+                {
+                    $$ = builder.relationalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: RelationalExpresionType.NOT_EQUAL,
+                        left: $1,
+                        right: $3
+                    });
+                }
             | expression LESS_THAN expression                      // a < b
+                {
+                    $$ = builder.relationalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: RelationalExpresionType.LESS_THAN,
+                        left: $1,
+                        right: $3
+                    });
+                }
             | expression LESS_THAN_OR_EQUAL expression             // a <= b
+                {
+                    $$ = builder.relationalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: RelationalExpresionType.LESS_THAN_OR_EQUAL,
+                        left: $1,
+                        right: $3
+                    });
+                }
             | expression GREATER_THAN expression                   // a > b
+                {
+                    $$ = builder.relationalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: RelationalExpresionType.GREATER_THAN,
+                        left: $1,
+                        right: $3
+                    });
+                }
             | expression GREATER_THAN_OR_EQUAL expression          // a >= b
+                {
+                    $$ = builder.relationalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: RelationalExpresionType.GREATER_THAN_OR_EQUAL,
+                        left: $1,
+                        right: $3
+                    });
+                }
 
             | expression AND expression                            // a && b
+                {
+                    $$ = builder.logicalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: LogicalExpressionType.AND,
+                        left: $1,
+                        right: $3
+                    });
+                }
             | expression OR expression                             // a || b
+                {
+                    $$ = builder.logicalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        operator: LogicalExpressionType.OR,
+                        left: $1,
+                        right: $3
+                    });
+                }
+
             | NOT expression %prec unary                           // !a
+                {
+                    $$ = builder.unaryNotExp({
+                        line: @1.first_line,
+                       column: @1.first_column,
+                        operand: $2
+                    });
+                }
 
             | expression INTERROGATION expression COLON expression // a ? b : c
+                {
+                    $$ = builder.ternaryExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        condition: $1,
+                        trueExpression: $3,
+                        falseExpression: $5
+                    });
+                }
             
             // LITERALS
             | INT_LITERAL                                          // 1
+                {
+                    $$ = builder.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: builder.literal({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            type: Type.INT,
+                            value: $1
+                        })
+                    });
+                }
             | DOUBLE_LITERAL                                       // 1.0
+                {
+                    $$ = builder.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: builder.literal({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            type: Type.DOUBLE,
+                            value: $1
+                        })
+                    });
+                }
             | STRING_LITERAL                                       // "Hello World"
+                {
+                    $$ = builder.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: builder.literal({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            type: Type.STRING,
+                            value: $1
+                        })
+                    });
+                }
             | BOOLEAN_LITERAL                                      // true
+                {
+                    $$ = builder.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: builder.literal({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            type: Type.BOOLEAN,
+                            value: $1
+                        })
+                    });
+                }
             | CHAR_LITERAL                                         // 'a'
+                {
+                    $$ = builder.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: builder.literal({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            type: Type.CHAR,
+                            value: $1
+                        })
+                    });
+                }
             | TRUE                                                 // true
+                {
+                    $$ = builder.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: builder.literal({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            type: Type.BOOLEAN,
+                            value: $1
+                        })
+                    });
+                }
             | FALSE                                                // false
+                {
+                    $$ = builder.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: builder.literal({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            type: Type.BOOLEAN,
+                            value: $1
+                        })
+                    });
+                }
 
             // REFERENCES 
             | ID                                                   // a
+                {
+                    $$ = builder.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: builder.reference({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            name: $1,
+                            type: ReferenceType.DIRECT
+                        })
+                    });
+                }
             | ID PLUS_PLUS                                         // a++
+                {
+                    $$ = builder.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: builder.reference({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            name: $1,
+                            type: ReferenceType.INCREMENT
+                        })
+                    });
+                }
             | ID MINUS_MINUS                                       // a--
+                {
+                    $$ = builder.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: builder.reference({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            name: $1,
+                            type: ReferenceType.DECREMENT
+                        })
+                    });
+                }
 
             // SUBROUTINE CALLS
-            | ID LPAREN subroutine_call_params RPAREN SEMICOLON    // a(b, c, d)
-            | ID LPAREN RPAREN SEMICOLON                           // a()
+            | subroutine_call_aux 
+                {
+                    $$ = builder.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: builder.call({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            call: $1
+                        })
+                    });
+                }
             ;
 // TODO: Add support for arrays and vectors [ACCESS]

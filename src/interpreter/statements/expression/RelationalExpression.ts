@@ -1,7 +1,7 @@
 import { ExpressionReturnType, BinaryExpression, BinaryExpressionArgs } from "./";
 
 
-type RelationalExpresionType =
+type RelationalExpresionT =
     "EQUALS" |
     "NOT_EQUAL" |
     "LESS_THAN" |
@@ -9,10 +9,10 @@ type RelationalExpresionType =
     "GREATER_THAN" |
     "GREATER_THAN_OR_EQUAL";
 
-type RelationalExpressionArgs = BinaryExpressionArgs<RelationalExpresionType> & {
+export type RelationalExpressionArgs = BinaryExpressionArgs<RelationalExpresionT> & {
 }
 
-export class RelationalExpression extends BinaryExpression<RelationalExpresionType> {
+export class RelationalExpression extends BinaryExpression<RelationalExpresionT> {
 
     constructor({ ...args }: RelationalExpressionArgs) {
         super(args);
@@ -37,4 +37,13 @@ export class RelationalExpression extends BinaryExpression<RelationalExpresionTy
         throw new Error("Method not implemented.");
     }
 
+}
+
+export class RelationalExpresionType {
+    public static readonly EQUALS = "EQUALS";
+    public static readonly NOT_EQUAL = "NOT_EQUAL";
+    public static readonly LESS_THAN = "LESS_THAN";
+    public static readonly LESS_THAN_OR_EQUAL = "LESS_THAN_OR_EQUAL";
+    public static readonly GREATER_THAN = "GREATER_THAN";
+    public static readonly GREATER_THAN_OR_EQUAL = "GREATER_THAN_OR_EQUAL";
 }

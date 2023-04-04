@@ -2,16 +2,15 @@ import { Statement } from "../statements";
 import { Node, NodeArgs } from "./";
 
 export type RootArgs = NodeArgs & {
-    stmts: Statement[]
 };
 
 export class Root extends Node {
 
     public stmts: Statement[];
 
-    public constructor({ stmts, ...args }: RootArgs) {
+    public constructor({ ...args }: RootArgs) {
         super(args);
-        this.stmts = stmts;
+        this.stmts = [];
     }
 
     public graphviz(): string {

@@ -2,24 +2,22 @@ import { Statement, StatementArgs } from "../Statement";
 import { Expression } from "../expression";
 import { Case, Default } from "./";
 
+type CasesType = Case | Default;
 
 export type SwitchArgs = StatementArgs & {
     value: Expression;
-    cases: Case[];
-    defaultCase: Default;
+    cases: CasesType[];
 }
 
 export class Switch extends Statement {
 
     private value: Expression;
-    private cases: Case[];
-    private defaultCase: Default;
+    private cases: CasesType[];
 
-    constructor({ value, cases, defaultCase, ...args }: SwitchArgs) {
+    constructor({ value, cases, ...args }: SwitchArgs) {
         super(args);
         this.value = value;
         this.cases = cases;
-        this.defaultCase = defaultCase;
     }
 
     public graphviz(): string {

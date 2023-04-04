@@ -1,4 +1,4 @@
-import { SubroutineType, SymbolType, VariableType } from "../../elements";
+import { SubroutineT, SymbolType, VariableType } from "../../elements";
 import { Structure, StructureArgs } from "../Structure";
 import { Argument } from './Argument';
 
@@ -6,7 +6,7 @@ import { Argument } from './Argument';
 export type SubroutineDeclarationArgs = StructureArgs & {
     name: string;
     args: Argument[];
-    type: SubroutineType;
+    type: SubroutineT;
     returnType: VariableType | SymbolType;
 }
 
@@ -15,7 +15,7 @@ export class SubroutineDeclaration extends Structure {
 
     private name: string;
     private args: Argument[];
-    private type: SubroutineType;
+    private type: SubroutineT;
     private returnType: VariableType | SymbolType;
 
     constructor({ name, args, type, returnType, ...stmtArgs }: SubroutineDeclarationArgs) {

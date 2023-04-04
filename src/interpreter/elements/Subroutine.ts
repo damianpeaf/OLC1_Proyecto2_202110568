@@ -4,11 +4,11 @@ import { NullType, VoidType } from "./Symbol";
 import { VariableType } from "./Variable";
 
 
-export type SubroutineType = "method" | "function"
+export type SubroutineT = "method" | "function"
 
 export type SubroutineArgs = {
     name: string,
-    type: SubroutineType,
+    type: SubroutineT,
     parameters: Argument[],
     returnType: VariableType | VoidType | NullType,
     body: Statement[]
@@ -17,7 +17,7 @@ export type SubroutineArgs = {
 export class Subroutine {
 
     public name: string;
-    public type: SubroutineType;
+    public type: SubroutineT;
     public parameters: Argument[];
     public returnType: VariableType | VoidType | NullType;
     public body: Statement[]
@@ -30,4 +30,9 @@ export class Subroutine {
         this.body = body;
     }
 
+}
+
+export class SubroutineType {
+    static METHOD: SubroutineT = "method"
+    static FUNCTION: SubroutineT = "function"
 }

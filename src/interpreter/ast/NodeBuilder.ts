@@ -5,8 +5,10 @@ import { Argument, ArgumentArgs, SubroutineDeclaration, SubroutineDeclarationArg
 import { SubroutineCall, SubroutineCallArgs } from "../statements/subroutines/SubroutineCall";
 import { DoWhile, DoWhileArgs, For, ForArgs, While, whileArgs } from "../statements/loop";
 import { Break, BreakArgs, Continue, ContinueArgs, Return, ReturnArgs } from "../statements/flow-control";
-import { UnaryMinus, UnaryExpressionArgs, UnaryNegation, TerminalExpression, TerminalExpressionArgs, ArithmeticExpression, ArithmeticExpressionArgs, LogicalExpression, LogicalExpressionArgs } from "../statements/expression";
+import { UnaryMinus, UnaryExpressionArgs, UnaryNegation, TerminalExpression, TerminalExpressionArgs, ArithmeticExpression, ArithmeticExpressionArgs, LogicalExpression, LogicalExpressionArgs, TernaryExpressionArgs, TernaryExpression, RelationalExpression, RelationalExpressionArgs } from "../statements/expression";
 import { Call, CallArgs, Literal, LiteralArgs, Reference, ReferenceArgs } from "../statements/value";
+import { RootArgs } from "./Root";
+import { Root } from "./Root";
 
 type BuilderArgs<Type> = Omit<Type, 'id' | 'context'>;
 
@@ -27,6 +29,10 @@ export class NodeBuilder {
             id: this.nodeCount++,
             context: this.astRef.context,
         };
+    }
+
+    root() {
+        return new Root(this.addMissingArgs({}));
     }
 
     variableDcl(args: BuilderArgs<VariableDeclarationArgs>) {
@@ -105,8 +111,8 @@ export class NodeBuilder {
         return new LogicalExpression(this.addMissingArgs(args));
     }
 
-    relationalExp(args: BuilderArgs<LogicalExpressionArgs>) {
-        return new LogicalExpression(this.addMissingArgs(args));
+    relationalExp(args: BuilderArgs<RelationalExpressionArgs>) {
+        return new RelationalExpression(this.addMissingArgs(args));
     }
 
     unaryMinusExp(args: BuilderArgs<UnaryExpressionArgs>) {
@@ -115,6 +121,10 @@ export class NodeBuilder {
 
     unaryNotExp(args: BuilderArgs<UnaryExpressionArgs>) {
         return new UnaryNegation(this.addMissingArgs(args));
+    }
+
+    ternaryExp(args: BuilderArgs<TernaryExpressionArgs>) {
+        return new TernaryExpression(this.addMissingArgs(args));
     }
 
     terminalExp(args: BuilderArgs<TerminalExpressionArgs>) {

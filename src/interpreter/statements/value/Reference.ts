@@ -3,17 +3,17 @@ import { StatementArgs } from '../Statement';
 import { Value } from './';
 
 
-export type ReferenceType = "DIRECT" | "INCREMENT" | "DECREMENT"
+export type ReferenceT = "DIRECT" | "INCREMENT" | "DECREMENT"
 
 export type ReferenceArgs = StatementArgs & {
     name: string;
-    type: ReferenceType
+    type: ReferenceT
 }
 
 export class Reference extends Value {
 
     private _name: string;
-    private _type: ReferenceType;
+    private _type: ReferenceT;
 
     constructor({ name, type, ...args }: ReferenceArgs) {
         super(args);
@@ -43,4 +43,10 @@ export class Reference extends Value {
     public evaluate() {
         throw new Error('Method not implemented.');
     }
+}
+
+export class ReferenceType {
+    public static readonly DIRECT: ReferenceT = "DIRECT";
+    public static readonly INCREMENT: ReferenceT = "INCREMENT";
+    public static readonly DECREMENT: ReferenceT = "DECREMENT";
 }

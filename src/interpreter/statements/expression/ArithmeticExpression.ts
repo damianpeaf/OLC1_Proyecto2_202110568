@@ -1,20 +1,19 @@
 import { BinaryExpression, BinaryExpressionArgs, ExpressionReturnType } from './';
 
-export type ArithmeticExpressionType =
+export type ArithmeticExpressionT =
     "PLUS" |
     "MINUS" |
     "TIMES" |
     "DIVIDE" |
     "MOD" |
-    "POWER" |
-    "UNARY_MINUS"
+    "POWER"
     ;
 
 
-export type ArithmeticExpressionArgs = BinaryExpressionArgs<ArithmeticExpressionType> & {
+export type ArithmeticExpressionArgs = BinaryExpressionArgs<ArithmeticExpressionT> & {
 }
 
-export class ArithmeticExpression extends BinaryExpression<ArithmeticExpressionType> {
+export class ArithmeticExpression extends BinaryExpression<ArithmeticExpressionT> {
 
     constructor({ ...args }: ArithmeticExpressionArgs) {
         super(args);
@@ -40,4 +39,13 @@ export class ArithmeticExpression extends BinaryExpression<ArithmeticExpressionT
     get value(): any {
         throw new Error("Method not implemented.");
     }
+}
+
+export class ArithmeticExpressionType {
+    public static readonly PLUS: ArithmeticExpressionT = "PLUS";
+    public static readonly MINUS: ArithmeticExpressionT = "MINUS";
+    public static readonly TIMES: ArithmeticExpressionT = "TIMES";
+    public static readonly DIVIDE: ArithmeticExpressionT = "DIVIDE";
+    public static readonly MOD: ArithmeticExpressionT = "MOD";
+    public static readonly POWER: ArithmeticExpressionT = "POWER";
 }

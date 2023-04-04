@@ -3,19 +3,19 @@ import { VariableDeclaration, VariableAssigment } from '../variable';
 
 export type ForArgs = LoopStructureArgs & {
     init: VariableDeclaration | VariableAssigment;
-    increment: VariableAssigment;
+    update: VariableAssigment;
 }
 
 export class For extends LoopStructure {
 
     private init: VariableDeclaration | VariableAssigment
-    private increment: VariableAssigment
+    private update: VariableAssigment
 
-    constructor({ init, increment, ...args }: ForArgs) {
+    constructor({ init, update, ...args }: ForArgs) {
         super(args);
 
         this.init = init;
-        this.increment = increment;
+        this.update = update;
     }
 
     public graphviz(): string {

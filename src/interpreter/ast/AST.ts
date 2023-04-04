@@ -13,4 +13,6 @@ export class AST {
         this.root = root;
     }
 
+    // TODO : Evaluate the AST
+
 }

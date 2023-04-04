@@ -1,20 +1,15 @@
 import { BinaryExpression, BinaryExpressionArgs, ExpressionReturnType } from '.';
 
-export type LogicalExpressionType =
-    "PLUS" |
-    "MINUS" |
-    "TIMES" |
-    "DIVIDE" |
-    "MOD" |
-    "POWER" |
-    "UNARY_MINUS"
+export type LogicalExpressionT =
+    "AND" |
+    "OR"
     ;
 
 
-export type LogicalExpressionArgs = BinaryExpressionArgs<LogicalExpressionType> & {
+export type LogicalExpressionArgs = BinaryExpressionArgs<LogicalExpressionT> & {
 }
 
-export class LogicalExpression extends BinaryExpression<LogicalExpressionType> {
+export class LogicalExpression extends BinaryExpression<LogicalExpressionT> {
 
     constructor({ ...args }: LogicalExpressionArgs) {
         super(args);
@@ -40,4 +35,9 @@ export class LogicalExpression extends BinaryExpression<LogicalExpressionType> {
     get value(): any {
         throw new Error("Method not implemented.");
     }
+}
+
+export class LogicalExpressionType {
+    public static AND: LogicalExpressionT = "AND";
+    public static OR: LogicalExpressionT = "OR";
 }
