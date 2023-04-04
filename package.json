@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "jison": "jison src/jison/analyzer.jison -o src/interpreter/analyzer.js"
+    "jison": "jison src/jison/analyzer.jison -o src/interpreter/analyzer/analyzer.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",

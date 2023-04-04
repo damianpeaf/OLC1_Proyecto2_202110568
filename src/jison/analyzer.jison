@@ -106,6 +106,7 @@
 "void"                            { return "VOID"; }
 "true"                            { return "TRUE"; }
 "false"                           { return "FALSE"; }
+// TODO: MAIN
 
 // * Flow control
 
@@ -143,6 +144,7 @@
 
 %%
 
+// TODO: MAIN
 program : statements EOF
         | EOF
         ;
@@ -188,6 +190,7 @@ variable_declaration : type ID SEMICOLON
                      | type ID EQUAL expression SEMICOLON
                      ;
 
+// TODO: Casts
 // TODO: Add support for arrays and vectors [ASSIGNMENT]
 // - Vectors -> reservation and element list
 // - Arrays -> new
@@ -275,34 +278,45 @@ subroutine_declaration_params : subroutine_declaration_params COMMA subroutine_d
 subroutine_declaration_param : type ID
                              ;
 
-expression  : expression PLUS expression                   // a + b
-            | expression MINUS expression                  // a - b
-            | expression TIMES expression                  // a * b
-            | expression DIVIDE expression                 // a / b
-            | expression MOD expression                    // a % b 
-            | expression POWER expression                  // a ^ b
-            | MINUS expression %prec unary                 // -a
-            | LPAREN expression RPAREN                     // (a)
-            | expression EQUALS expression                 // a == b
-            | expression NOT_EQUAL expression              // a != b
-            | expression LESS_THAN expression              // a < b
-            | expression LESS_THAN_OR_EQUAL expression     // a <= b
-            | expression GREATER_THAN expression           // a > b
-            | expression GREATER_THAN_OR_EQUAL expression  // a >= b
-            | expression AND expression                    // a && b
-            | expression OR expression                     // a || b
-            | NOT expression %prec unary                   // !a
+expression  : expression PLUS expression                           // a + b
+            | expression MINUS expression                          // a - b
+            | expression TIMES expression                          // a * b
+            | expression DIVIDE expression                         // a / b
+            | expression MOD expression                            // a % b 
+            | expression POWER expression                          // a ^ b
+
+            | MINUS expression %prec unary                         // -a
+            | LPAREN expression RPAREN                             // (a)
+
+            | expression EQUALS expression                         // a == b
+            | expression NOT_EQUAL expression                      // a != b
+            | expression LESS_THAN expression                      // a < b
+            | expression LESS_THAN_OR_EQUAL expression             // a <= b
+            | expression GREATER_THAN expression                   // a > b
+            | expression GREATER_THAN_OR_EQUAL expression          // a >= b
+
+            | expression AND expression                            // a && b
+            | expression OR expression                             // a || b
+            | NOT expression %prec unary                           // !a
+
             | expression INTERROGATION expression COLON expression // a ? b : c
             
-            | ID                                           // a
-            | ID PLUS_PLUS                                 // a++
-            | ID MINUS_MINUS                               // a--
-            | INT_LITERAL                                  // 1
-            | DOUBLE_LITERAL                               // 1.0
-            | STRING_LITERAL                               // "Hello World"
-            | BOOLEAN_LITERAL                              // true
-            | CHAR_LITERAL                                 // 'a'
-            | TRUE                                         // true
-            | FALSE                                        // false
+            // LITERALS
+            | INT_LITERAL                                          // 1
+            | DOUBLE_LITERAL                                       // 1.0
+            | STRING_LITERAL                                       // "Hello World"
+            | BOOLEAN_LITERAL                                      // true
+            | CHAR_LITERAL                                         // 'a'
+            | TRUE                                                 // true
+            | FALSE                                                // false
+
+            // REFERENCES 
+            | ID                                                   // a
+            | ID PLUS_PLUS                                         // a++
+            | ID MINUS_MINUS                                       // a--
+
+            // SUBROUTINE CALLS
+            | ID LPAREN subroutine_call_params RPAREN SEMICOLON    // a(b, c, d)
+            | ID LPAREN RPAREN SEMICOLON                           // a()
             ;
 // TODO: Add support for arrays and vectors [ACCESS]
