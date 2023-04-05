@@ -1,5 +1,5 @@
-import { FC, ReactNode, useReducer } from 'react';
-import { TypeWiseContext, typeWiseReducer } from './';
+import { FC, ReactNode, useReducer, useEffect } from 'react';
+import { TypeWiseActionType, TypeWiseContext, typeWiseReducer } from './';
 
 export interface DocumentFile {
     id: number;
@@ -10,26 +10,7 @@ export interface DocumentFile {
 export const initialDocument: DocumentFile = {
     id: 0,
     name: 'Untitled',
-    content: `
-    
-// Este es un comentario de una línea
-
-/*
-Este es un comentario
-Multilínea
-Para este lenguaje
-*/
-
-// Declaración de variables
-int a=0;
-INt A=0;
-
-If(i==1){
-int a=15;
-Print("soy el numero "+a);
-}
-
-    `
+    content: ''
 }
 
 export interface TypeWiseState {
@@ -45,24 +26,36 @@ export interface TypeWiseState {
 interface TypeWiseProviderProps {
     children: ReactNode
 }
-const TypeWise_INITIAL_STATE: TypeWiseState = {
-    isConsoleOpen: false,
-    documents: [initialDocument],
-    currentDocument: initialDocument,
-    isRenameModalOpen: false,
-    terminalContent: '',
-    isAstModalOpen: false,
-    graphviz: null
-}
+const TypeWise_INITIAL_STATE: TypeWiseState =
+    localStorage.getItem('state')
+        ? JSON.parse(localStorage.getItem('state')!)
+        : {
+            isConsoleOpen: false,
+            documents: [initialDocument],
+            currentDocument: initialDocument,
+            isRenameModalOpen: false,
+            terminalContent: '',
+            isAstModalOpen: false,
+            graphviz: null
+        }
 
 export const TypeWiseProvider: FC<TypeWiseProviderProps> = ({ children }) => {
 
     const [state, dispatch] = useReducer(typeWiseReducer, TypeWise_INITIAL_STATE)
 
+    const saveState = () => {
+        localStorage.setItem('state', JSON.stringify(state))
+    }
+
+    useEffect(() => {
+        saveState()
+    }, [state])
+
     return (
         < TypeWiseContext.Provider value={{
             ...state,
-            dispatch
+            dispatch,
+            saveState
         }}>
             {children}
         </ TypeWiseContext.Provider>

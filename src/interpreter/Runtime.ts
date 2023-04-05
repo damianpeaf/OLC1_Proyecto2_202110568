@@ -19,7 +19,7 @@ export class Runtime {
             this.ast.root = root;
 
             // TODO: run ast
-            console.log(this.ast.graphviz)
+            // console.log(this.ast.graphviz)
 
             return true
         } catch (error) {
