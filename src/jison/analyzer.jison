@@ -5,18 +5,11 @@
 // --- Header ---
 
 %{
-    // const { AST, NodeBuilder } = require('../ast');
-    import { AST, NodeBuilder } from '../ast';
+    import { Builder } from '../ast';
     import { Type, Symbols, SubroutineType } from '../elements';
     import { VariableAssigmentType } from '../statements/variable';
     import { ArithmeticExpressionType,RelationalExpresionType,LogicalExpressionType } from '../statements/expression';
     import { ReferenceType } from '../statements/value';
-
-    const ast = new AST();
-    const builder = new NodeBuilder(ast);
-
-    const root = builder.root();
-    ast.root = root;
 
 %}
 
@@ -165,8 +158,9 @@
 // TODO: MAIN
 program : statements 
             {
-                root.stmts = $1;
-                $$ = root;
+                $$ = Builder.node.root({
+                    stmts: $1
+                });
             }
         ;
 
@@ -195,28 +189,28 @@ statements : normal_statements flow_control_statement
 
 flow_control_statement : BREAK SEMICOLON
                             {
-                                $$ = builder.break({
+                                $$ = Builder.node.break({
                                     line: @1.first_line,
                                     column: @1.first_column
                                 });
                             }
                        | CONTINUE SEMICOLON
                             {
-                                $$ = builder.continue({
+                                $$ = Builder.node.continue({
                                     line: @1.first_line,
                                     column: @1.first_column
                                 });
                             }
                        | RETURN SEMICOLON
                             {
-                                $$ = builder.return({
+                                $$ = Builder.node.return({
                                     line: @1.first_line,
                                     column: @1.first_column
                                 });
                             }
                        | RETURN expression SEMICOLON
                             {
-                                $$ = builder.return({
+                                $$ = Builder.node.return({
                                     line: @1.first_line,
                                     column: @1.first_column,
                                     value: $2
@@ -259,7 +253,7 @@ type : INT      { $$ = Type.INT; }
 // - Arrays -> new 
 variable_declaration : type ID SEMICOLON
                         {
-                            $$ = builder.variableDcl({
+                            $$ = Builder.node.variableDcl({
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 type: $1,
@@ -268,7 +262,7 @@ variable_declaration : type ID SEMICOLON
                         }
                      | type ID EQUAL expression SEMICOLON
                         {
-                            $$ = builder.variableDcl({
+                            $$ = Builder.node.variableDcl({
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 type: $1,
@@ -284,7 +278,7 @@ variable_declaration : type ID SEMICOLON
 // - Arrays -> new
 variable_assignment : ID EQUAL expression SEMICOLON
                         {
-                            $$ = builder.variableAss({
+                            $$ = Builder.node.variableAss({
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 name: $1,
@@ -294,7 +288,7 @@ variable_assignment : ID EQUAL expression SEMICOLON
                         }
                     | ID PLUS_PLUS SEMICOLON
                         {
-                            $$ = builder.variableAss({
+                            $$ = Builder.node.variableAss({
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 name: $1,
@@ -303,7 +297,7 @@ variable_assignment : ID EQUAL expression SEMICOLON
                         }
                     | ID MINUS_MINUS SEMICOLON
                         {
-                            $$ = builder.variableAss({
+                            $$ = Builder.node.variableAss({
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 name: $1,
@@ -314,7 +308,7 @@ variable_assignment : ID EQUAL expression SEMICOLON
 
 if : IF LPAREN expression RPAREN LBRACE statements RBRACE
         {
-            $$ = builder.if({
+            $$ = Builder.node.if({
                 line: @1.first_line,
                 column: @1.first_column,
                 condition: $3,
@@ -324,7 +318,7 @@ if : IF LPAREN expression RPAREN LBRACE statements RBRACE
         }
    | IF LPAREN expression RPAREN LBRACE statements RBRACE if_chain
         {
-            $$ = builder.if({
+            $$ = Builder.node.if({
                 line: @1.first_line,
                 column: @1.first_column,
                 condition: $3,
@@ -347,7 +341,7 @@ if_chain : elseif_chain else
 
 else : ELSE LBRACE statements RBRACE
         {
-            return builder.else({
+            return Builder.node.else({
                 line: @1.first_line,
                 column: @1.first_column,
                 statements: $3
@@ -368,7 +362,7 @@ elseif_chain : elseif_chain elseif
 
 elseif : ELSE IF LPAREN expression RPAREN LBRACE statements RBRACE
             {
-                $$ = builder.elseIf({
+                $$ = Builder.node.elseIf({
                     line: @1.first_line,
                     column: @1.first_column,
                     condition: $4,
@@ -379,7 +373,7 @@ elseif : ELSE IF LPAREN expression RPAREN LBRACE statements RBRACE
 
 switch : SWITCH LPAREN expression RPAREN LBRACE switch_cases RBRACE
             {
-                $$ = builder.switch({
+                $$ = Builder.node.switch({
                     line: @1.first_line,
                     column: @1.first_column,
                     value: $3,
@@ -416,7 +410,7 @@ case_list : case_list case
 
 case : CASE expression COLON statements
         {
-            $$ = builder.case({
+            $$ = Builder.node.case({
                 line: @1.first_line,
                 column: @1.first_column,
                 condition: $2,
@@ -427,7 +421,7 @@ case : CASE expression COLON statements
 
 default : DEFAULT COLON statements
             {
-                $$ = builder.default({
+                $$ = Builder.node.default({
                     line: @1.first_line,
                     column: @1.first_column,
                     statements: $3
@@ -437,7 +431,7 @@ default : DEFAULT COLON statements
 
 while : WHILE LPAREN expression RPAREN LBRACE statements RBRACE
         {
-            $$ = builder.while({
+            $$ = Builder.node.while({
                 line: @1.first_line,
                 column: @1.first_column,
                 condition: $3,
@@ -448,7 +442,7 @@ while : WHILE LPAREN expression RPAREN LBRACE statements RBRACE
 
 for : FOR LPAREN for_init SEMICOLON for_condition SEMICOLON for_update RPAREN LBRACE statements RBRACE
         {
-            $$ = builder.for({
+            $$ = Builder.node.for({
                 line: @1.first_line,
                 column: @1.first_column,
                 init: $3,
@@ -473,7 +467,7 @@ for_update : variable_assignment { $$ = $1; }
 
 do_while : DO LBRACE statements RBRACE WHILE LPAREN expression RPAREN SEMICOLON
             {
-                $$ = builder.doWhile({
+                $$ = Builder.node.doWhile({
                     line: @1.first_line,
                     column: @1.first_column,
                     condition: $7,
@@ -487,7 +481,7 @@ subroutine_call : subroutine_call_aux SEMICOLON { $$ = $1; }
 
 subroutine_call_aux : ID LPAREN subroutine_call_params RPAREN
                         {
-                            $$ = builder.subroutineCall({
+                            $$ = Builder.node.subroutineCall({
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 name: $1,
@@ -496,7 +490,7 @@ subroutine_call_aux : ID LPAREN subroutine_call_params RPAREN
                         }
                     | ID LPAREN RPAREN
                         {
-                            $$ = builder.subroutineCall({
+                            $$ = Builder.node.subroutineCall({
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 name: $1,
@@ -527,7 +521,7 @@ subroutine_declaration : method_declaration     { $$ = $1; }
 
 method_declaration : VOID ID LPAREN RPAREN LBRACE statements RBRACE
                         {
-                            $$ = builder.subroutineDcl({
+                            $$ = Builder.node.subroutineDcl({
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 name: $2,
@@ -539,7 +533,7 @@ method_declaration : VOID ID LPAREN RPAREN LBRACE statements RBRACE
                         }
                    | VOID ID LPAREN subroutine_declaration_params RPAREN LBRACE statements RBRACE
                         {
-                            $$ = builder.subroutineDcl({
+                            $$ = Builder.node.subroutineDcl({
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 name: $2,
@@ -553,7 +547,7 @@ method_declaration : VOID ID LPAREN RPAREN LBRACE statements RBRACE
 
 function_declaration : type ID LPAREN RPAREN LBRACE statements RBRACE
                         {
-                            $$ = builder.subroutineDcl({
+                            $$ = Builder.node.subroutineDcl({
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 name: $2,
@@ -565,7 +559,7 @@ function_declaration : type ID LPAREN RPAREN LBRACE statements RBRACE
                         }
                      | type ID LPAREN subroutine_declaration_params RPAREN LBRACE statements RBRACE
                         {
-                            $$ = builder.subroutineDcl({
+                            $$ = Builder.node.subroutineDcl({
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 name: $2,
@@ -591,7 +585,7 @@ subroutine_declaration_params : subroutine_declaration_params COMMA subroutine_d
 
 subroutine_declaration_param : type ID
                                 {
-                                    $$ = builder.argument({
+                                    $$ = Builder.node.argument({
                                         line: @1.first_line,
                                         column: @1.first_column,
                                         type: $1,
@@ -602,7 +596,7 @@ subroutine_declaration_param : type ID
 
 expression  : expression PLUS expression                           // a + b
                 {
-                    $$ = builder.arithmeticExp({
+                    $$ = Builder.node.arithmeticExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: ArithmeticExpressionType.PLUS,
@@ -612,7 +606,7 @@ expression  : expression PLUS expression                           // a + b
                 }
             | expression MINUS expression                          // a - b
                 {
-                    $$ = builder.arithmeticExp({
+                    $$ = Builder.node.arithmeticExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: ArithmeticExpressionType.MINUS,
@@ -622,7 +616,7 @@ expression  : expression PLUS expression                           // a + b
                 }
             | expression TIMES expression                          // a * b
                 {
-                    $$ = builder.arithmeticExp({
+                    $$ = Builder.node.arithmeticExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: ArithmeticExpressionType.TIMES,
@@ -632,7 +626,7 @@ expression  : expression PLUS expression                           // a + b
                 }
             | expression DIVIDE expression                         // a / b
                 {
-                    $$ = builder.arithmeticExp({
+                    $$ = Builder.node.arithmeticExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: ArithmeticExpressionType.DIVIDE,
@@ -642,7 +636,7 @@ expression  : expression PLUS expression                           // a + b
                 }
             | expression MOD expression                            // a % b 
                 {
-                    $$ = builder.arithmeticExp({
+                    $$ = Builder.node.arithmeticExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: ArithmeticExpressionType.MOD,
@@ -652,7 +646,7 @@ expression  : expression PLUS expression                           // a + b
                 }
             | expression POWER expression                          // a ^ b
                 {
-                    $$ = builder.arithmeticExp({
+                    $$ = Builder.node.arithmeticExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: ArithmeticExpressionType.POWER,
@@ -663,7 +657,7 @@ expression  : expression PLUS expression                           // a + b
 
             | MINUS expression %prec unary                         // -a
                 {
-                    $$ = builder.unaryMinusExp({
+                    $$ = Builder.node.unaryMinusExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operand: $2
@@ -676,7 +670,7 @@ expression  : expression PLUS expression                           // a + b
 
             | expression EQUALS expression                         // a == b
                 {
-                    $$ = builder.relationalExp({
+                    $$ = Builder.node.relationalExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: RelationalExpresionType.EQUALS,
@@ -686,7 +680,7 @@ expression  : expression PLUS expression                           // a + b
                 }
             | expression NOT_EQUAL expression                      // a != b
                 {
-                    $$ = builder.relationalExp({
+                    $$ = Builder.node.relationalExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: RelationalExpresionType.NOT_EQUAL,
@@ -696,7 +690,7 @@ expression  : expression PLUS expression                           // a + b
                 }
             | expression LESS_THAN expression                      // a < b
                 {
-                    $$ = builder.relationalExp({
+                    $$ = Builder.node.relationalExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: RelationalExpresionType.LESS_THAN,
@@ -706,7 +700,7 @@ expression  : expression PLUS expression                           // a + b
                 }
             | expression LESS_THAN_OR_EQUAL expression             // a <= b
                 {
-                    $$ = builder.relationalExp({
+                    $$ = Builder.node.relationalExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: RelationalExpresionType.LESS_THAN_OR_EQUAL,
@@ -716,7 +710,7 @@ expression  : expression PLUS expression                           // a + b
                 }
             | expression GREATER_THAN expression                   // a > b
                 {
-                    $$ = builder.relationalExp({
+                    $$ = Builder.node.relationalExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: RelationalExpresionType.GREATER_THAN,
@@ -726,7 +720,7 @@ expression  : expression PLUS expression                           // a + b
                 }
             | expression GREATER_THAN_OR_EQUAL expression          // a >= b
                 {
-                    $$ = builder.relationalExp({
+                    $$ = Builder.node.relationalExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: RelationalExpresionType.GREATER_THAN_OR_EQUAL,
@@ -737,7 +731,7 @@ expression  : expression PLUS expression                           // a + b
 
             | expression AND expression                            // a && b
                 {
-                    $$ = builder.logicalExp({
+                    $$ = Builder.node.logicalExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: LogicalExpressionType.AND,
@@ -747,7 +741,7 @@ expression  : expression PLUS expression                           // a + b
                 }
             | expression OR expression                             // a || b
                 {
-                    $$ = builder.logicalExp({
+                    $$ = Builder.node.logicalExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         operator: LogicalExpressionType.OR,
@@ -758,7 +752,7 @@ expression  : expression PLUS expression                           // a + b
 
             | NOT expression %prec unary                           // !a
                 {
-                    $$ = builder.unaryNotExp({
+                    $$ = Builder.node.unaryNotExp({
                         line: @1.first_line,
                        column: @1.first_column,
                         operand: $2
@@ -767,7 +761,7 @@ expression  : expression PLUS expression                           // a + b
 
             | expression INTERROGATION expression COLON expression // a ? b : c
                 {
-                    $$ = builder.ternaryExp({
+                    $$ = Builder.node.ternaryExp({
                         line: @1.first_line,
                         column: @1.first_column,
                         condition: $1,
@@ -779,10 +773,10 @@ expression  : expression PLUS expression                           // a + b
             // LITERALS
             | INT_LITERAL                                          // 1
                 {
-                    $$ = builder.terminalExp({
+                    $$ = Builder.node.terminalExp({
                         line: @1.first_line,
                         column: @1.first_column,
-                        value: builder.literal({
+                        value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
                             type: Type.INT,
@@ -792,10 +786,10 @@ expression  : expression PLUS expression                           // a + b
                 }
             | DOUBLE_LITERAL                                       // 1.0
                 {
-                    $$ = builder.terminalExp({
+                    $$ = Builder.node.terminalExp({
                         line: @1.first_line,
                         column: @1.first_column,
-                        value: builder.literal({
+                        value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
                             type: Type.DOUBLE,
@@ -805,10 +799,10 @@ expression  : expression PLUS expression                           // a + b
                 }
             | STRING_LITERAL                                       // "Hello World"
                 {
-                    $$ = builder.terminalExp({
+                    $$ = Builder.node.terminalExp({
                         line: @1.first_line,
                         column: @1.first_column,
-                        value: builder.literal({
+                        value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
                             type: Type.STRING,
@@ -818,10 +812,10 @@ expression  : expression PLUS expression                           // a + b
                 }
             | BOOLEAN_LITERAL                                      // true
                 {
-                    $$ = builder.terminalExp({
+                    $$ = Builder.node.terminalExp({
                         line: @1.first_line,
                         column: @1.first_column,
-                        value: builder.literal({
+                        value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
                             type: Type.BOOLEAN,
@@ -831,10 +825,10 @@ expression  : expression PLUS expression                           // a + b
                 }
             | CHAR_LITERAL                                         // 'a'
                 {
-                    $$ = builder.terminalExp({
+                    $$ = Builder.node.terminalExp({
                         line: @1.first_line,
                         column: @1.first_column,
-                        value: builder.literal({
+                        value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
                             type: Type.CHAR,
@@ -844,10 +838,10 @@ expression  : expression PLUS expression                           // a + b
                 }
             | TRUE                                                 // true
                 {
-                    $$ = builder.terminalExp({
+                    $$ = Builder.node.terminalExp({
                         line: @1.first_line,
                         column: @1.first_column,
-                        value: builder.literal({
+                        value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
                             type: Type.BOOLEAN,
@@ -857,10 +851,10 @@ expression  : expression PLUS expression                           // a + b
                 }
             | FALSE                                                // false
                 {
-                    $$ = builder.terminalExp({
+                    $$ = Builder.node.terminalExp({
                         line: @1.first_line,
                         column: @1.first_column,
-                        value: builder.literal({
+                        value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
                             type: Type.BOOLEAN,
@@ -872,10 +866,10 @@ expression  : expression PLUS expression                           // a + b
             // REFERENCES 
             | ID                                                   // a
                 {
-                    $$ = builder.terminalExp({
+                    $$ = Builder.node.terminalExp({
                         line: @1.first_line,
                         column: @1.first_column,
-                        value: builder.reference({
+                        value: Builder.node.reference({
                             line: @1.first_line,
                             column: @1.first_column,
                             name: $1,
@@ -885,10 +879,10 @@ expression  : expression PLUS expression                           // a + b
                 }
             | ID PLUS_PLUS                                         // a++
                 {
-                    $$ = builder.terminalExp({
+                    $$ = Builder.node.terminalExp({
                         line: @1.first_line,
                         column: @1.first_column,
-                        value: builder.reference({
+                        value: Builder.node.reference({
                             line: @1.first_line,
                             column: @1.first_column,
                             name: $1,
@@ -898,10 +892,10 @@ expression  : expression PLUS expression                           // a + b
                 }
             | ID MINUS_MINUS                                       // a--
                 {
-                    $$ = builder.terminalExp({
+                    $$ = Builder.node.terminalExp({
                         line: @1.first_line,
                         column: @1.first_column,
-                        value: builder.reference({
+                        value: Builder.node.reference({
                             line: @1.first_line,
                             column: @1.first_column,
                             name: $1,
@@ -913,10 +907,10 @@ expression  : expression PLUS expression                           // a + b
             // SUBROUTINE CALLS
             | subroutine_call_aux 
                 {
-                    $$ = builder.terminalExp({
+                    $$ = Builder.node.terminalExp({
                         line: @1.first_line,
                         column: @1.first_column,
-                        value: builder.call({
+                        value: Builder.node.call({
                             line: @1.first_line,
                             column: @1.first_column,
                             call: $1
@@ -924,4 +918,3 @@ expression  : expression PLUS expression                           // a + b
                     });
                 }
             ;
-// TODO: Add support for arrays and vectors [ACCESS]

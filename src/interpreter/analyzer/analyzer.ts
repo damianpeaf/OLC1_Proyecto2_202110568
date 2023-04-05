@@ -3,18 +3,11 @@
  * Returns a Parser implementing JisonParserApi and a Lexer implementing JisonLexerApi.
  */
 
-    // const { AST, NodeBuilder } = require('../ast');
-    import { AST, NodeBuilder } from '../ast';
+    import { Builder } from '../ast';
     import { Type, Symbols, SubroutineType } from '../elements';
     import { VariableAssigmentType } from '../statements/variable';
     import { ArithmeticExpressionType,RelationalExpresionType,LogicalExpressionType } from '../statements/expression';
     import { ReferenceType } from '../statements/value';
-
-    const ast = new AST();
-    const builder = new NodeBuilder(ast);
-
-    const root = builder.root();
-    ast.root = root;
 
 
 import { JisonParser, JisonParserApi, StateType, SymbolsType, TerminalsType, ProductionsType, o } from '@ts-jison/parser';const $V0=[2,5],$V1=[1,5],$V2=[1,7],$V3=[1,8],$V4=[1,9],$V5=[1,29],$V6=[1,30],$V7=[1,31],$V8=[1,32],$V9=[1,33],$Va=[1,20],$Vb=[1,21],$Vc=[1,22],$Vd=[1,23],$Ve=[1,24],$Vf=[1,25],$Vg=[1,34],$Vh=[1,37,48,50],$Vi=[1,8,10,11,24,25,26,27,28,29,33,37,43,48,50,51,52,56,64],$Vj=[1,51],$Vk=[1,42],$Vl=[1,41],$Vm=[1,43],$Vn=[1,44],$Vo=[1,45],$Vp=[1,46],$Vq=[1,47],$Vr=[1,48],$Vs=[1,49],$Vt=[1,50],$Vu=[1,54],$Vv=[1,55],$Vw=[1,56],$Vx=[1,57],$Vy=[1,66],$Vz=[1,67],$VA=[1,68],$VB=[1,69],$VC=[1,70],$VD=[1,71],$VE=[1,72],$VF=[1,73],$VG=[1,74],$VH=[1,75],$VI=[1,76],$VJ=[1,77],$VK=[1,78],$VL=[1,79],$VM=[1,80],$VN=[9,35,49,59,67,68,69,70,71,72,73,74,75,76,77,78,79,80,82],$VO=[1,86],$VP=[1,87],$VQ=[1,102],$VR=[1,8,9,10,11,24,25,26,27,28,29,33,37,43,48,50,51,52,56,64],$VS=[1,8,9,10,11,24,25,26,27,28,29,33,35,37,43,48,50,51,52,56,64],$VT=[35,59],$VU=[9,35,49,59,67,68,73,74,75,76,77,78,79,80,82],$VV=[9,35,49,59,67,68,69,70,71,73,74,75,76,77,78,79,80,82],$VW=[9,35,49,59,73,74,75,76,77,78,79,80,82],$VX=[9,35,49,59,79,80,82],$VY=[1,141],$VZ=[1,162],$V_=[1,161],$V$=[37,48,50],$V01=[1,196];
@@ -38,8 +31,9 @@ export class AnalyzerParser extends JisonParser implements JisonParserApi {
         switch (yystate) {
 case 1:
 
-                root.stmts = $$[$0];
-                this.$ = root;
+                this.$ = Builder.node.root({
+                    stmts: $$[$0]
+                });
             
 break;
 case 2: case 37: case 42:
@@ -65,7 +59,7 @@ case 5: case 6:
 break;
 case 7:
 
-                                this.$ = builder.break({
+                                this.$ = Builder.node.break({
                                     line: _$[$0-1].first_line,
                                     column: _$[$0-1].first_column
                                 });
@@ -73,7 +67,7 @@ case 7:
 break;
 case 8:
 
-                                this.$ = builder.continue({
+                                this.$ = Builder.node.continue({
                                     line: _$[$0-1].first_line,
                                     column: _$[$0-1].first_column
                                 });
@@ -81,7 +75,7 @@ case 8:
 break;
 case 9:
 
-                                this.$ = builder.return({
+                                this.$ = Builder.node.return({
                                     line: _$[$0-1].first_line,
                                     column: _$[$0-1].first_column
                                 });
@@ -89,7 +83,7 @@ case 9:
 break;
 case 10:
 
-                                this.$ = builder.return({
+                                this.$ = Builder.node.return({
                                     line: _$[$0-2].first_line,
                                     column: _$[$0-2].first_column,
                                     value: $$[$0-1]
@@ -127,7 +121,7 @@ case 26:
 break;
 case 27:
 
-                            this.$ = builder.variableDcl({
+                            this.$ = Builder.node.variableDcl({
                                 line: _$[$0-2].first_line,
                                 column: _$[$0-2].first_column,
                                 type: $$[$0-2],
@@ -137,7 +131,7 @@ case 27:
 break;
 case 28:
 
-                            this.$ = builder.variableDcl({
+                            this.$ = Builder.node.variableDcl({
                                 line: _$[$0-4].first_line,
                                 column: _$[$0-4].first_column,
                                 type: $$[$0-4],
@@ -148,7 +142,7 @@ case 28:
 break;
 case 29:
 
-                            this.$ = builder.variableAss({
+                            this.$ = Builder.node.variableAss({
                                 line: _$[$0-3].first_line,
                                 column: _$[$0-3].first_column,
                                 name: $$[$0-3],
@@ -159,7 +153,7 @@ case 29:
 break;
 case 30:
 
-                            this.$ = builder.variableAss({
+                            this.$ = Builder.node.variableAss({
                                 line: _$[$0-2].first_line,
                                 column: _$[$0-2].first_column,
                                 name: $$[$0-2],
@@ -169,7 +163,7 @@ case 30:
 break;
 case 31:
 
-                            this.$ = builder.variableAss({
+                            this.$ = Builder.node.variableAss({
                                 line: _$[$0-2].first_line,
                                 column: _$[$0-2].first_column,
                                 name: $$[$0-2],
@@ -179,7 +173,7 @@ case 31:
 break;
 case 32:
 
-            this.$ = builder.if({
+            this.$ = Builder.node.if({
                 line: _$[$0-6].first_line,
                 column: _$[$0-6].first_column,
                 condition: $$[$0-4],
@@ -190,7 +184,7 @@ case 32:
 break;
 case 33:
 
-            this.$ = builder.if({
+            this.$ = Builder.node.if({
                 line: _$[$0-7].first_line,
                 column: _$[$0-7].first_column,
                 condition: $$[$0-5],
@@ -212,7 +206,7 @@ case 35:
 break;
 case 36:
 
-            return builder.else({
+            return Builder.node.else({
                 line: _$[$0-3].first_line,
                 column: _$[$0-3].first_column,
                 statements: $$[$0-1]
@@ -221,7 +215,7 @@ case 36:
 break;
 case 39:
 
-                this.$ = builder.elseIf({
+                this.$ = Builder.node.elseIf({
                     line: _$[$0-7].first_line,
                     column: _$[$0-7].first_column,
                     condition: $$[$0-4],
@@ -231,7 +225,7 @@ case 39:
 break;
 case 40:
 
-                this.$ = builder.switch({
+                this.$ = Builder.node.switch({
                     line: _$[$0-6].first_line,
                     column: _$[$0-6].first_column,
                     value: $$[$0-4],
@@ -252,7 +246,7 @@ case 45:
 break;
 case 46:
 
-            this.$ = builder.case({
+            this.$ = Builder.node.case({
                 line: _$[$0-3].first_line,
                 column: _$[$0-3].first_column,
                 condition: $$[$0-2],
@@ -262,7 +256,7 @@ case 46:
 break;
 case 47:
 
-                this.$ = builder.default({
+                this.$ = Builder.node.default({
                     line: _$[$0-2].first_line,
                     column: _$[$0-2].first_column,
                     statements: $$[$0]
@@ -271,7 +265,7 @@ case 47:
 break;
 case 48:
 
-            this.$ = builder.while({
+            this.$ = Builder.node.while({
                 line: _$[$0-6].first_line,
                 column: _$[$0-6].first_column,
                 condition: $$[$0-4],
@@ -281,7 +275,7 @@ case 48:
 break;
 case 49:
 
-            this.$ = builder.for({
+            this.$ = Builder.node.for({
                 line: _$[$0-10].first_line,
                 column: _$[$0-10].first_column,
                 init: $$[$0-8],
@@ -293,7 +287,7 @@ case 49:
 break;
 case 54:
 
-                this.$ = builder.doWhile({
+                this.$ = Builder.node.doWhile({
                     line: _$[$0-8].first_line,
                     column: _$[$0-8].first_column,
                     condition: $$[$0-2],
@@ -306,7 +300,7 @@ case 55:
 break;
 case 56:
 
-                            this.$ = builder.subroutineCall({
+                            this.$ = Builder.node.subroutineCall({
                                 line: _$[$0-3].first_line,
                                 column: _$[$0-3].first_column,
                                 name: $$[$0-3],
@@ -316,7 +310,7 @@ case 56:
 break;
 case 57:
 
-                            this.$ = builder.subroutineCall({
+                            this.$ = Builder.node.subroutineCall({
                                 line: _$[$0-2].first_line,
                                 column: _$[$0-2].first_column,
                                 name: $$[$0-2],
@@ -337,7 +331,7 @@ case 59:
 break;
 case 63:
 
-                            this.$ = builder.subroutineDcl({
+                            this.$ = Builder.node.subroutineDcl({
                                 line: _$[$0-6].first_line,
                                 column: _$[$0-6].first_column,
                                 name: $$[$0-5],
@@ -350,7 +344,7 @@ case 63:
 break;
 case 64:
 
-                            this.$ = builder.subroutineDcl({
+                            this.$ = Builder.node.subroutineDcl({
                                 line: _$[$0-7].first_line,
                                 column: _$[$0-7].first_column,
                                 name: $$[$0-6],
@@ -363,7 +357,7 @@ case 64:
 break;
 case 65:
 
-                            this.$ = builder.subroutineDcl({
+                            this.$ = Builder.node.subroutineDcl({
                                 line: _$[$0-6].first_line,
                                 column: _$[$0-6].first_column,
                                 name: $$[$0-5],
@@ -376,7 +370,7 @@ case 65:
 break;
 case 66:
 
-                            this.$ = builder.subroutineDcl({
+                            this.$ = Builder.node.subroutineDcl({
                                 line: _$[$0-7].first_line,
                                 column: _$[$0-7].first_column,
                                 name: $$[$0-6],
@@ -400,7 +394,7 @@ case 68:
 break;
 case 69:
 
-                                    this.$ = builder.argument({
+                                    this.$ = Builder.node.argument({
                                         line: _$[$0-1].first_line,
                                         column: _$[$0-1].first_column,
                                         type: $$[$0-1],
@@ -410,7 +404,7 @@ case 69:
 break;
 case 70:
 
-                    this.$ = builder.arithmeticExp({
+                    this.$ = Builder.node.arithmeticExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: ArithmeticExpressionType.PLUS,
@@ -421,7 +415,7 @@ case 70:
 break;
 case 71:
 
-                    this.$ = builder.arithmeticExp({
+                    this.$ = Builder.node.arithmeticExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: ArithmeticExpressionType.MINUS,
@@ -432,7 +426,7 @@ case 71:
 break;
 case 72:
 
-                    this.$ = builder.arithmeticExp({
+                    this.$ = Builder.node.arithmeticExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: ArithmeticExpressionType.TIMES,
@@ -443,7 +437,7 @@ case 72:
 break;
 case 73:
 
-                    this.$ = builder.arithmeticExp({
+                    this.$ = Builder.node.arithmeticExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: ArithmeticExpressionType.DIVIDE,
@@ -454,7 +448,7 @@ case 73:
 break;
 case 74:
 
-                    this.$ = builder.arithmeticExp({
+                    this.$ = Builder.node.arithmeticExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: ArithmeticExpressionType.MOD,
@@ -465,7 +459,7 @@ case 74:
 break;
 case 75:
 
-                    this.$ = builder.arithmeticExp({
+                    this.$ = Builder.node.arithmeticExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: ArithmeticExpressionType.POWER,
@@ -476,7 +470,7 @@ case 75:
 break;
 case 76:
 
-                    this.$ = builder.unaryMinusExp({
+                    this.$ = Builder.node.unaryMinusExp({
                         line: _$[$0-1].first_line,
                         column: _$[$0-1].first_column,
                         operand: $$[$0]
@@ -490,7 +484,7 @@ case 77:
 break;
 case 78:
 
-                    this.$ = builder.relationalExp({
+                    this.$ = Builder.node.relationalExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: RelationalExpresionType.EQUALS,
@@ -501,7 +495,7 @@ case 78:
 break;
 case 79:
 
-                    this.$ = builder.relationalExp({
+                    this.$ = Builder.node.relationalExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: RelationalExpresionType.NOT_EQUAL,
@@ -512,7 +506,7 @@ case 79:
 break;
 case 80:
 
-                    this.$ = builder.relationalExp({
+                    this.$ = Builder.node.relationalExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: RelationalExpresionType.LESS_THAN,
@@ -523,7 +517,7 @@ case 80:
 break;
 case 81:
 
-                    this.$ = builder.relationalExp({
+                    this.$ = Builder.node.relationalExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: RelationalExpresionType.LESS_THAN_OR_EQUAL,
@@ -534,7 +528,7 @@ case 81:
 break;
 case 82:
 
-                    this.$ = builder.relationalExp({
+                    this.$ = Builder.node.relationalExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: RelationalExpresionType.GREATER_THAN,
@@ -545,7 +539,7 @@ case 82:
 break;
 case 83:
 
-                    this.$ = builder.relationalExp({
+                    this.$ = Builder.node.relationalExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: RelationalExpresionType.GREATER_THAN_OR_EQUAL,
@@ -556,7 +550,7 @@ case 83:
 break;
 case 84:
 
-                    this.$ = builder.logicalExp({
+                    this.$ = Builder.node.logicalExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: LogicalExpressionType.AND,
@@ -567,7 +561,7 @@ case 84:
 break;
 case 85:
 
-                    this.$ = builder.logicalExp({
+                    this.$ = Builder.node.logicalExp({
                         line: _$[$0-2].first_line,
                         column: _$[$0-2].first_column,
                         operator: LogicalExpressionType.OR,
@@ -578,7 +572,7 @@ case 85:
 break;
 case 86:
 
-                    this.$ = builder.unaryNotExp({
+                    this.$ = Builder.node.unaryNotExp({
                         line: _$[$0-1].first_line,
                        column: _$[$0-1].first_column,
                         operand: $$[$0]
@@ -587,7 +581,7 @@ case 86:
 break;
 case 87:
 
-                    this.$ = builder.ternaryExp({
+                    this.$ = Builder.node.ternaryExp({
                         line: _$[$0-4].first_line,
                         column: _$[$0-4].first_column,
                         condition: $$[$0-4],
@@ -598,10 +592,10 @@ case 87:
 break;
 case 88:
 
-                    this.$ = builder.terminalExp({
+                    this.$ = Builder.node.terminalExp({
                         line: _$[$0].first_line,
                         column: _$[$0].first_column,
-                        value: builder.literal({
+                        value: Builder.node.literal({
                             line: _$[$0].first_line,
                             column: _$[$0].first_column,
                             type: Type.INT,
@@ -612,10 +606,10 @@ case 88:
 break;
 case 89:
 
-                    this.$ = builder.terminalExp({
+                    this.$ = Builder.node.terminalExp({
                         line: _$[$0].first_line,
                         column: _$[$0].first_column,
-                        value: builder.literal({
+                        value: Builder.node.literal({
                             line: _$[$0].first_line,
                             column: _$[$0].first_column,
                             type: Type.DOUBLE,
@@ -626,10 +620,10 @@ case 89:
 break;
 case 90:
 
-                    this.$ = builder.terminalExp({
+                    this.$ = Builder.node.terminalExp({
                         line: _$[$0].first_line,
                         column: _$[$0].first_column,
-                        value: builder.literal({
+                        value: Builder.node.literal({
                             line: _$[$0].first_line,
                             column: _$[$0].first_column,
                             type: Type.STRING,
@@ -640,10 +634,10 @@ case 90:
 break;
 case 91: case 93: case 94:
 
-                    this.$ = builder.terminalExp({
+                    this.$ = Builder.node.terminalExp({
                         line: _$[$0].first_line,
                         column: _$[$0].first_column,
-                        value: builder.literal({
+                        value: Builder.node.literal({
                             line: _$[$0].first_line,
                             column: _$[$0].first_column,
                             type: Type.BOOLEAN,
@@ -654,10 +648,10 @@ case 91: case 93: case 94:
 break;
 case 92:
 
-                    this.$ = builder.terminalExp({
+                    this.$ = Builder.node.terminalExp({
                         line: _$[$0].first_line,
                         column: _$[$0].first_column,
-                        value: builder.literal({
+                        value: Builder.node.literal({
                             line: _$[$0].first_line,
                             column: _$[$0].first_column,
                             type: Type.CHAR,
@@ -668,10 +662,10 @@ case 92:
 break;
 case 95:
 
-                    this.$ = builder.terminalExp({
+                    this.$ = Builder.node.terminalExp({
                         line: _$[$0].first_line,
                         column: _$[$0].first_column,
-                        value: builder.reference({
+                        value: Builder.node.reference({
                             line: _$[$0].first_line,
                             column: _$[$0].first_column,
                             name: $$[$0],
@@ -682,10 +676,10 @@ case 95:
 break;
 case 96:
 
-                    this.$ = builder.terminalExp({
+                    this.$ = Builder.node.terminalExp({
                         line: _$[$0-1].first_line,
                         column: _$[$0-1].first_column,
-                        value: builder.reference({
+                        value: Builder.node.reference({
                             line: _$[$0-1].first_line,
                             column: _$[$0-1].first_column,
                             name: $$[$0-1],
@@ -696,10 +690,10 @@ case 96:
 break;
 case 97:
 
-                    this.$ = builder.terminalExp({
+                    this.$ = Builder.node.terminalExp({
                         line: _$[$0-1].first_line,
                         column: _$[$0-1].first_column,
-                        value: builder.reference({
+                        value: Builder.node.reference({
                             line: _$[$0-1].first_line,
                             column: _$[$0-1].first_column,
                             name: $$[$0-1],
@@ -710,10 +704,10 @@ case 97:
 break;
 case 98:
 
-                    this.$ = builder.terminalExp({
+                    this.$ = Builder.node.terminalExp({
                         line: _$[$0].first_line,
                         column: _$[$0].first_column,
-                        value: builder.call({
+                        value: Builder.node.call({
                             line: _$[$0].first_line,
                             column: _$[$0].first_column,
                             call: $$[$0]

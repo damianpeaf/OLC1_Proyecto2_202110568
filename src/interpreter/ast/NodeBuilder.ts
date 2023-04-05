@@ -7,8 +7,8 @@ import { DoWhile, DoWhileArgs, For, ForArgs, While, whileArgs } from "../stateme
 import { Break, BreakArgs, Continue, ContinueArgs, Return, ReturnArgs } from "../statements/flow-control";
 import { UnaryMinus, UnaryExpressionArgs, UnaryNegation, TerminalExpression, TerminalExpressionArgs, ArithmeticExpression, ArithmeticExpressionArgs, LogicalExpression, LogicalExpressionArgs, TernaryExpressionArgs, TernaryExpression, RelationalExpression, RelationalExpressionArgs } from "../statements/expression";
 import { Call, CallArgs, Literal, LiteralArgs, Reference, ReferenceArgs } from "../statements/value";
-import { RootArgs } from "./Root";
-import { Root } from "./Root";
+import { Root, RootArgs } from "./Root";
+import { AnalyzerParser } from "../analyzer/analyzer";
 
 type BuilderArgs<Type> = Omit<Type, 'id' | 'context'>;
 
@@ -31,8 +31,8 @@ export class NodeBuilder {
         };
     }
 
-    root() {
-        return new Root(this.addMissingArgs({}));
+    root(args: BuilderArgs<RootArgs>) {
+        return new Root(this.addMissingArgs(args));
     }
 
     variableDcl(args: BuilderArgs<VariableDeclarationArgs>) {
@@ -143,3 +143,4 @@ export class NodeBuilder {
         return new Call(this.addMissingArgs(args));
     }
 }
+const parser = new AnalyzerParser();

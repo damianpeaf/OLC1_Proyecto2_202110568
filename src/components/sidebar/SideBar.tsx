@@ -1,8 +1,13 @@
 import { VscRunAll, VscHome, VscRepo } from "react-icons/vsc";
+import { BsFillTerminalFill } from "react-icons/bs";
 
 import { FileOptions, SideBarItemProps } from "./";
+import { useTypeWise } from "../../hooks";
 
 export const SideBar = () => {
+
+    const { openTerminal } = useTypeWise();
+
     return (
         <aside
             className="
@@ -26,6 +31,8 @@ export const SideBar = () => {
             <FileOptions />
             <SideBarDivider />
             <SideBarItem icon={<VscRepo />} label="Reportes" />
+            <SideBarDivider />
+            <SideBarItem icon={<BsFillTerminalFill />} label="Consola" onClick={openTerminal} />
             <SideBarDivider />
         </aside>
     )

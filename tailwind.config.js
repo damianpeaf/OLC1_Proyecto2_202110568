@@ -27,6 +27,9 @@ export default {
           'auxiliar': '#000836',
           'light': '#BEB6D2',
           DEFAULT: '#8C7DB0',
+        },
+        'terminal': {
+          DEFAULT: '#1C1726',
         }
       },
     }

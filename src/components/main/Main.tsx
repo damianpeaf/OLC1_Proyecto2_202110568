@@ -1,4 +1,6 @@
-import { Editor } from '../editor/Editor';
+import { Editor } from '../editor';
+import { Tabs } from '../tabs';
+import { Console } from '../console';
 
 export const Main = () => {
     return (
@@ -6,24 +8,27 @@ export const Main = () => {
             className="
             fixed
             left-16
-            grid
-            grid-cols-2
             w-[calc(100vw-64px)]
             h-full
-            pt-4
         "
         >
-            <section>
-                <h1 className="text-white font-black text-2xl text-center mb-4">
-                    ENTRADA
-                </h1>
-                <Editor />
-            </section>
-            <section>
-                <h1 className="text-white font-black text-2xl text-center mb-4">
-                    SALIDA
-                </h1>
-                <Editor />
+            {/* TODO: Add router here */}
+            <section
+                className='
+                    h-full
+                    w-full
+                    flex
+                    flex-col
+                    gap-y-1
+                '
+            >
+                <Tabs />
+                <article
+                    className='h-full'
+                >
+                    <Editor />
+                    <Console />
+                </article>
             </section>
         </main>
     )

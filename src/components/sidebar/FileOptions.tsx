@@ -1,12 +1,18 @@
 import { Menu } from '@headlessui/react'
 import { AiFillFileText, AiFillPlusCircle, AiFillSave, AiFillFolderOpen, AiOutlineAppstoreAdd } from "react-icons/ai";
+import { BiRename } from "react-icons/bi";
 
 import { SideBarItem } from './';
 
 const fileOptions = [
     {
+        name: 'Renombrar',
+        icon: <BiRename />,
+        onclick: () => console.log('Rename')
+    },
+    {
         name: 'Nuevo Archivo',
-        icon: <AiFillPlusCircle />,
+        icon: <AiOutlineAppstoreAdd />,
         onclick: () => console.log('New File')
     }, {
         name: 'Abrir archivo',
@@ -17,11 +23,7 @@ const fileOptions = [
         icon: <AiFillSave />,
         onclick: () => console.log('Save File')
     },
-    {
-        name: 'Nueva Pestaña',
-        icon: <AiOutlineAppstoreAdd />,
-        onclick: () => console.log('New tab')
-    }
+
 ]
 
 export const FileOptions = () => {
