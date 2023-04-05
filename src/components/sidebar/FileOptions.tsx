@@ -3,30 +3,70 @@ import { AiFillFileText, AiFillPlusCircle, AiFillSave, AiFillFolderOpen, AiOutli
 import { BiRename } from "react-icons/bi";
 
 import { SideBarItem } from './';
-
-const fileOptions = [
-    {
-        name: 'Renombrar',
-        icon: <BiRename />,
-        onclick: () => console.log('Rename')
-    },
-    {
-        name: 'Nuevo Archivo',
-        icon: <AiOutlineAppstoreAdd />,
-        onclick: () => console.log('New File')
-    }, {
-        name: 'Abrir archivo',
-        icon: <AiFillFolderOpen />,
-        onclick: () => console.log('Open File')
-    }, {
-        name: 'Guardar Archivo',
-        icon: <AiFillSave />,
-        onclick: () => console.log('Save File')
-    },
-
-]
+import { useTypeWise } from '../../hooks';
+import { useRef } from 'react';
 
 export const FileOptions = () => {
+
+    const openInputRef = useRef<HTMLInputElement>(null);
+    const openFormRef = useRef<HTMLFormElement>(null);
+    const { newDocument, openRenameModal, openDocument, currentDocument } = useTypeWise();
+
+    const handleOpenFile = () => {
+        openInputRef.current?.click()
+    }
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.item(0);
+        if (file) {
+            const formatedFilename = file.name.split('.').slice(0, -1).join('.');
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                if (typeof reader.result === 'string') {
+                    openDocument({
+                        name: formatedFilename,
+                        content: reader.result
+                    })
+                }
+            }
+            reader.readAsText(file)
+        }
+
+        openFormRef.current?.reset();
+    }
+
+    const handleSaveFile = () => {
+        const blob = new Blob([currentDocument.content], { type: 'text/plain' });
+
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `${currentDocument.name}.tw`;
+        link.click();
+
+        window.URL.revokeObjectURL(link.href);
+    }
+
+    const fileOptions = [
+        {
+            name: 'Renombrar',
+            icon: <BiRename />,
+            onclick: openRenameModal
+        },
+        {
+            name: 'Nuevo Archivo',
+            icon: <AiOutlineAppstoreAdd />,
+            onclick: newDocument
+        }, {
+            name: 'Abrir archivo',
+            icon: <AiFillFolderOpen />,
+            onclick: handleOpenFile
+        }, {
+            name: 'Guardar Archivo',
+            icon: <AiFillSave />,
+            onclick: handleSaveFile
+        },
+    ]
 
     return (
         <div className='relative mx-auto'>
@@ -65,6 +105,16 @@ export const FileOptions = () => {
                             ))
                         }
                     </Menu.Items>
+                    <form ref={openFormRef}>
+                        <input
+                            type="file"
+                            ref={openInputRef}
+                            className='invisible'
+                            onChange={handleFileChange}
+                            accept='.tw'
+                            multiple={false}
+                        />
+                    </form>
                 </div>
             </Menu>
         </div>

@@ -1,6 +1,7 @@
 import { Editor } from '../editor';
 import { Tabs } from '../tabs';
 import { Console } from '../console';
+import { RenameModal } from '../modal';
 
 export const Main = () => {
     return (
@@ -30,6 +31,7 @@ export const Main = () => {
                     <Console />
                 </article>
             </section>
+            <RenameModal />
         </main>
     )
 }

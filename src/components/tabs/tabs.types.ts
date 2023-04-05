@@ -1,3 +1,6 @@
+import { DocumentFile } from "../../context";
+
 export interface TabProps {
-    filename: string;
+    document: DocumentFile;
+    current?: boolean;
 }

@@ -1,18 +1,11 @@
+import { useTypeWise } from "../../hooks"
 import { TabProps } from "./tabs.types"
 import { BsFileBinaryFill } from "react-icons/bs"
 
-const tabs = [
-  {
-    filename: "index.tsx",
-    content: "import React from 'react'",
-  },
-  {
-    filename: "Tabs.tsx",
-    content: "import React from 'react'",
-  },
-]
-
 export const Tabs = () => {
+
+  const { documents, currentDocument } = useTypeWise();
+
   return (
     <article
       className="
@@ -23,11 +16,12 @@ export const Tabs = () => {
       "
     >
       {
-        tabs.map((tab, index) => {
+        documents.map((doc) => {
           return (
             <Tab
-              key={index}
-              filename={tab.filename}
+              key={doc.id}
+              document={doc}
+              current={currentDocument.id === doc.id}
             />
           )
         })
@@ -37,19 +31,24 @@ export const Tabs = () => {
 }
 
 
-const Tab = ({ filename }: TabProps) => {
+const Tab = ({ document, current = false }: TabProps) => {
+
+  const { setCurrentDocument, closeDocument } = useTypeWise();
+
+
   return (
     <div
-      className="
-        text-white
-        px-2
-        py-1
-        rounded-md
-        bg-secondary-dark
-        hover:bg-text-dark-theme-darker
-        flex
-        gap-x-1
-      "
+      className={`
+      text-white
+      px-2
+      py-1
+      rounded-md
+      bg-secondary-dark
+      hover:bg-text-dark-theme-darker
+      flex
+      gap-x-1
+      ${current ? '' : 'opacity-50 hover:opacity-100'}
+      `}
     >
       <button
         className="
@@ -58,13 +57,13 @@ const Tab = ({ filename }: TabProps) => {
         gap-x-1
         justify-center
         "
-        onClick={() => console.log('change')}
+        onClick={() => setCurrentDocument(document.id)}
 
       >
 
         <BsFileBinaryFill />
         {
-          filename
+          `${document.name}.tw`
         }
       </button>
       <button
@@ -73,7 +72,7 @@ const Tab = ({ filename }: TabProps) => {
         font-bold
         pl-1
         "
-        onClick={() => console.log('close')}
+        onClick={() => closeDocument(document.id)}
       >
         x
       </button>

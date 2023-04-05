@@ -1,15 +1,33 @@
 import { FC, ReactNode, useReducer } from 'react';
 import { TypeWiseContext, typeWiseReducer } from './';
 
+export interface DocumentFile {
+    id: number;
+    name: string;
+    content: string;
+}
+
+export const initialDocument: DocumentFile = {
+    id: 0,
+    name: 'Untitled',
+    content: ''
+}
+
 export interface TypeWiseState {
     isConsoleOpen: boolean;
+    documents: DocumentFile[];
+    currentDocument: DocumentFile;
+    isRenameModalOpen: boolean;
 }
 
 interface TypeWiseProviderProps {
     children: ReactNode
 }
 const TypeWise_INITIAL_STATE: TypeWiseState = {
-    isConsoleOpen: false
+    isConsoleOpen: false,
+    documents: [initialDocument],
+    currentDocument: initialDocument,
+    isRenameModalOpen: false
 }
 
 export const TypeWiseProvider: FC<TypeWiseProviderProps> = ({ children }) => {
