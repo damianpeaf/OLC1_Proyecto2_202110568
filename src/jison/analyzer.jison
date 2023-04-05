@@ -30,18 +30,6 @@
 
 // * Delimiters
 \s+                         {/* skip */} // Whitespace
-
-// * ID
-([a-zA-ZÑñ]|("_"[a-zA-ZÑñ]))([a-zA-ZÑñ]|[0-9]|"_")* { yytext = yytext.toLowerCase();  return "ID"; }
-
-// * Literals
-
-\'([^\r\n'\\]|\\[btnfr"'\\]|\\[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4})\'      { yytext = yytext.substring(1, yytext.length()-2); return "CHAR_LITERAL"; }
-\"(?:[["\\"]["bnrt/["\\"]]|[^"["\\"])*\"                               { yytext = yytext.substring(1, yytext.length()-2); return "STRING_LITERAL"; }
-[0-9]+                                                                 { return "INT_LITERAL"; }
-[0-9]+\.[0-9]+                                                         { return "DOUBLE_LITERAL"; }
-
-
 // * Types
 "int"                              { return "INT"; }
 "double"                           { return "DOUBLE"; }
@@ -130,9 +118,18 @@
 ","                               { return "COMMA"; }
 "."                               { return "DOT"; }
 
+// * ID
+([a-zA-ZÑñ]|("_"[a-zA-ZÑñ]))([a-zA-ZÑñ]|[0-9]|"_")* { yytext = yytext.toLowerCase();  return "ID"; }
+
+// * Literals
+
+\'([^\r\n'\\]|\\[btnfr"'\\]|\\[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4})\'      { yytext = yytext.substring(1, yyleng-2); return "CHAR_LITERAL"; }
+\"([^\"\\]|\\.)*\"                                                     { yytext = yytext.substring(1, yyleng-2); return "STRING_LITERAL"; }
+[0-9]+                                                                 { return "INT_LITERAL"; }
+[0-9]+\.[0-9]+                                                         { return "DOUBLE_LITERAL"; }
 
 <<EOF>>                            { return "EOF"; }
-.                                 { return "ERROR"; }
+.                                  { return "ERROR"; }
 
 /lex
 
@@ -156,11 +153,14 @@
 %%
 
 // TODO: MAIN
-program : statements 
+program : statements EOF
             {
-                $$ = Builder.node.root({
+                const root =  Builder.node.root({
                     stmts: $1
                 });
+
+                $$ = root;
+                return root
             }
         ;
 
@@ -178,10 +178,6 @@ statements : normal_statements flow_control_statement
                     $$ = [$1];
                 }
             | /* empty */
-                {
-                    $$ = [];
-                }
-            | EOF 
                 {
                     $$ = [];
                 }

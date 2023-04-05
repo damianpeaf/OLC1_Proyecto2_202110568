@@ -1,19 +1,25 @@
 import { AnalyzerParser } from "./analyzer/analyzer";
 import { AST, Builder, NodeBuilder, Root } from "./ast";
-
-
 export class Runtime {
 
+    public ast: AST | null
+
+    constructor() {
+        this.ast = null
+    }
+
     public run(input: string) {
+        this.ast = new AST();
+
         try {
-            const ast = new AST();
-            Builder.node = new NodeBuilder(ast);
+            Builder.node = new NodeBuilder(this.ast);
             const parser = new AnalyzerParser();
             const root = parser.parse(input) as Root;
-            ast.root = root;
+            console.log(root)
+            this.ast.root = root;
 
             // TODO: run ast
-            console.log(ast)
+            console.log(this.ast)
 
             return true
         } catch (error) {

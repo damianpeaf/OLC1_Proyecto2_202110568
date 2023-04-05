@@ -48,6 +48,11 @@ export type TypeWiseActionType =
         type: 'open-rename-modal'
     } | {
         type: 'close-rename-modal'
+    } | {
+        type: 'set-terminal-content',
+        payload: {
+            content: string
+        }
     }
 
 export const typeWiseReducer = (state: TypeWiseState, action: TypeWiseActionType): TypeWiseState => {
@@ -146,6 +151,11 @@ export const typeWiseReducer = (state: TypeWiseState, action: TypeWiseActionType
             return {
                 ...state,
                 isRenameModalOpen: false
+            }
+        case 'set-terminal-content':
+            return {
+                ...state,
+                terminalContent: action.payload.content
             }
         default:
             return state;

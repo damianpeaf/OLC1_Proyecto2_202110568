@@ -1,6 +1,5 @@
-import { Scope } from "./";
+import { Scope, LocalScope } from "./";
 import { Variable, Subroutine } from "../../elements";
-import { LocalScope } from "./LocalScope";
 
 export class GlobalScope extends Scope {
 

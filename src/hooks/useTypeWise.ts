@@ -1,10 +1,10 @@
 import { useContext } from "react"
 import { DocumentFile, TypeWiseContext } from "../context"
+import { Runtime } from "../interpreter"
 
 export const useTypeWise = () => {
 
     const { dispatch, ...state } = useContext(TypeWiseContext)
-
 
     const openTerminal = () => {
         dispatch({ type: 'open-terminal' })
@@ -47,6 +47,16 @@ export const useTypeWise = () => {
         dispatch({ type: 'close-rename-modal' })
     }
 
+    const setTerminalContent = (content: string) => {
+        dispatch({ type: 'set-terminal-content', payload: { content } })
+    }
+
+    const runProgram = () => {
+        const runtime = new Runtime()
+        runtime.run(state.currentDocument.content)
+
+        setTerminalContent(runtime.ast?.context.console.output || '')
+    }
 
     return {
         ...state,
@@ -59,6 +69,8 @@ export const useTypeWise = () => {
         saveDocument,
         setCurrentDocument,
         openRenameModal,
-        closeRenameModal
+        closeRenameModal,
+        setTerminalContent,
+        runProgram
     }
 }

@@ -8,7 +8,6 @@ import { Break, BreakArgs, Continue, ContinueArgs, Return, ReturnArgs } from "..
 import { UnaryMinus, UnaryExpressionArgs, UnaryNegation, TerminalExpression, TerminalExpressionArgs, ArithmeticExpression, ArithmeticExpressionArgs, LogicalExpression, LogicalExpressionArgs, TernaryExpressionArgs, TernaryExpression, RelationalExpression, RelationalExpressionArgs } from "../statements/expression";
 import { Call, CallArgs, Literal, LiteralArgs, Reference, ReferenceArgs } from "../statements/value";
 import { Root, RootArgs } from "./Root";
-import { AnalyzerParser } from "../analyzer/analyzer";
 
 type BuilderArgs<Type> = Omit<Type, 'id' | 'context'>;
 
@@ -143,4 +142,3 @@ export class NodeBuilder {
         return new Call(this.addMissingArgs(args));
     }
 }
-const parser = new AnalyzerParser();

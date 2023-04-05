@@ -1,5 +1,5 @@
 export * from './AST'
-export * from './NodeBuilder'
-export * from './Root'
 export * from './Node'
+export * from './Root'
+export * from './NodeBuilder'
 export * from './Builder'

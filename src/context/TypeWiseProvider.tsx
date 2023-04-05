@@ -18,6 +18,7 @@ export interface TypeWiseState {
     documents: DocumentFile[];
     currentDocument: DocumentFile;
     isRenameModalOpen: boolean;
+    terminalContent: string;
 }
 
 interface TypeWiseProviderProps {
@@ -27,7 +28,8 @@ const TypeWise_INITIAL_STATE: TypeWiseState = {
     isConsoleOpen: false,
     documents: [initialDocument],
     currentDocument: initialDocument,
-    isRenameModalOpen: false
+    isRenameModalOpen: false,
+    terminalContent: ''
 }
 
 export const TypeWiseProvider: FC<TypeWiseProviderProps> = ({ children }) => {
