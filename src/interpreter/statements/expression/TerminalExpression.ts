@@ -35,13 +35,21 @@ export class TerminalExpression extends Expression {
         throw new Error("Method not implemented.");
     }
     public graphviz(): string {
-        throw new Error("Method not implemented.");
+        return `
+            ${this.getGrahpvizNodeDefinition()}
+            ${this.getGrahpvizEdges()}
+        `
     }
+
+    public getGraphvizNode(): string {
+        return this._value.getGraphvizNode()
+    }
+
     public getGrahpvizLabel(): string {
-        throw new Error("Method not implemented.");
+        return this._value.getGrahpvizLabel()
     }
     public getGrahpvizEdges(): string {
-        throw new Error("Method not implemented.");
+        return this._value.getGrahpvizEdges()
     }
     public evaluate() {
         throw new Error("Method not implemented.");

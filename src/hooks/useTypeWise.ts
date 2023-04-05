@@ -52,10 +52,26 @@ export const useTypeWise = () => {
     }
 
     const runProgram = () => {
+        dispatch({ type: 'set-terminal-content', payload: { content: '' } })
+        dispatch({ type: 'reset-graphviz-content' })
+
         const runtime = new Runtime()
         runtime.run(state.currentDocument.content)
 
         setTerminalContent(runtime.ast?.context.console.output || '')
+        if (runtime.ast && runtime.ast.graphviz) {
+            dispatch({ type: 'set-graphviz-content', payload: { content: runtime.ast.graphviz } })
+        } else {
+            dispatch({ type: 'reset-graphviz-content' })
+        }
+    }
+
+    const openAstModal = () => {
+        dispatch({ type: 'open-ast-modal' })
+    }
+
+    const closeAstModal = () => {
+        dispatch({ type: 'close-ast-modal' })
     }
 
     return {
@@ -71,6 +87,8 @@ export const useTypeWise = () => {
         openRenameModal,
         closeRenameModal,
         setTerminalContent,
-        runProgram
+        runProgram,
+        openAstModal,
+        closeAstModal,
     }
 }

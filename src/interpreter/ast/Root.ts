@@ -15,13 +15,24 @@ export class Root extends Node {
     }
 
     public graphviz(): string {
-        throw new Error("Method not implemented.");
+
+        const stmtsGraphs = this.stmts.map(stmt => stmt.graphviz()).join('\n');
+
+        return `
+            digraph G {
+
+            ${this.getGrahpvizNodeDefinition()}
+            ${this.getGrahpvizEdges()}
+            ${stmtsGraphs}
+
+            }
+        `
     }
     public getGrahpvizLabel(): string {
-        throw new Error("Method not implemented.");
+        return 'Root'
     }
     public getGrahpvizEdges(): string {
-        throw new Error("Method not implemented.");
+        return this.stmts.map(stmt => `${this.getGraphvizNode()} -> ${stmt.getGraphvizNode()};`).join('\n');
     }
     public evaluate() {
         throw new Error("Method not implemented.");

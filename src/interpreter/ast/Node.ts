@@ -16,7 +16,12 @@ export abstract class Node {
         this.context = context;
     }
 
-    public abstract graphviz(): string;
+    public graphviz(): string {
+        return `
+            ${this.getGrahpvizNodeDefinition()}
+            ${this.getGrahpvizEdges()}
+        `
+    }
 
     public abstract getGrahpvizLabel(): string;
 

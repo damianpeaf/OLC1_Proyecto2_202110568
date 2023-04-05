@@ -19,6 +19,13 @@ export class AST {
         return this._root as Root;
     }
 
+    get graphviz(): string | null {
+        if (this._root) {
+            return this._root.graphviz();
+        }
+        return null;
+    }
+
     // TODO : Evaluate the AST
 
 }

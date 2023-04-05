@@ -53,6 +53,17 @@ export type TypeWiseActionType =
         payload: {
             content: string
         }
+    } | {
+        type: 'open-ast-modal'
+    } | {
+        type: 'close-ast-modal'
+    } | {
+        type: 'set-graphviz-content',
+        payload: {
+            content: string
+        }
+    } | {
+        type: 'reset-graphviz-content',
     }
 
 export const typeWiseReducer = (state: TypeWiseState, action: TypeWiseActionType): TypeWiseState => {
@@ -156,6 +167,27 @@ export const typeWiseReducer = (state: TypeWiseState, action: TypeWiseActionType
             return {
                 ...state,
                 terminalContent: action.payload.content
+            }
+        case 'open-ast-modal':
+            return {
+                ...state,
+                isAstModalOpen: true
+            }
+
+        case 'close-ast-modal':
+            return {
+                ...state,
+                isAstModalOpen: false
+            }
+        case 'set-graphviz-content':
+            return {
+                ...state,
+                graphviz: action.payload.content
+            }
+        case 'reset-graphviz-content':
+            return {
+                ...state,
+                graphviz: null
             }
         default:
             return state;

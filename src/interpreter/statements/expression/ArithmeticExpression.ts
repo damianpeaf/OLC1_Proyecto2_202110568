@@ -19,15 +19,6 @@ export class ArithmeticExpression extends BinaryExpression<ArithmeticExpressionT
         super(args);
     }
 
-    public graphviz(): string {
-        throw new Error("Method not implemented.");
-    }
-    public getGrahpvizLabel(): string {
-        throw new Error("Method not implemented.");
-    }
-    public getGrahpvizEdges(): string {
-        throw new Error("Method not implemented.");
-    }
     public evaluate() {
         throw new Error("Method not implemented.");
     }

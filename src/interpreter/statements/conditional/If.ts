@@ -16,14 +16,24 @@ export class If extends ConditionalStructure {
         this.chain = chain;
     }
 
-    public graphviz(): string {
-        throw new Error('Method not implemented.');
-    }
     public getGrahpvizLabel(): string {
-        throw new Error('Method not implemented.');
+        return 'If';
     }
     public getGrahpvizEdges(): string {
-        throw new Error('Method not implemented.');
+
+        const n = this.getGraphvizNode()
+
+        return `
+            ${this.chain.length > 0
+                ? `
+                    ${n}A [label="Cadena de anidamiento"];
+                    ${n} -> ${n}A;
+                    ${this.linkStatementsCustom(this.chain, n + 'A')}
+                `
+                : ''
+            }
+
+        `
     }
     public evaluate() {
         throw new Error('Method not implemented.');

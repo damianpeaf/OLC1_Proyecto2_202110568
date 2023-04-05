@@ -24,13 +24,29 @@ export class VariableDeclaration extends Statement {
     }
 
     public graphviz(): string {
-        throw new Error("Method not implemented.");
+        return `
+            ${this.getGrahpvizNodeDefinition()}
+            ${this.getGrahpvizEdges()}
+        `
     }
     public getGrahpvizLabel(): string {
-        throw new Error("Method not implemented.");
+        return 'Declaracion de variable'
     }
     public getGrahpvizEdges(): string {
-        throw new Error("Method not implemented.");
+        const n = this.getGraphvizNode()
+
+        return `
+            ${n}T [label="Tipo: ${this.type}"]
+            ${n} -> ${n}T
+
+            ${n}N [label="Nombre: ${this.name}"]
+            ${n} -> ${n}N
+
+            ${this.value
+                ? this.linkStatement(this.value)
+                : ''
+            }
+        `
     }
     public evaluate() {
 

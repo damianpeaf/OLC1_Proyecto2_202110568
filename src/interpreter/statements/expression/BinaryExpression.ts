@@ -25,4 +25,13 @@ export abstract class BinaryExpression<SubType> extends Expression {
         this.right = right;
     }
 
+    public getGrahpvizLabel(): string {
+        return `Expresion \n Operador: ${this.operator}`;
+    }
+    public getGrahpvizEdges(): string {
+        return `
+            ${this.linkStatement(this.left)}
+            ${this.linkStatement(this.right)}
+        `
+    }
 }

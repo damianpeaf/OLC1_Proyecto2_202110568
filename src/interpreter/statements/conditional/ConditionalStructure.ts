@@ -8,11 +8,28 @@ export type ConditionalStructureArgs = StructureArgs & {
 
 export abstract class ConditionalStructure extends Structure {
 
-    private condition: Expression;
+    public condition: Expression;
 
     constructor({ condition, ...args }: ConditionalStructureArgs) {
         super(args);
         this.condition = condition;
     }
 
+    public graphviz(): string {
+
+        const n = this.getGraphvizNode()
+        return `
+            ${this.getGrahpvizNodeDefinition()}
+            ${this.getGrahpvizEdges()}
+
+            
+            ${n}I [label="Instrucciones"]
+            ${n} -> ${n}I;
+            ${this.linkStatementsCustom(this.statements, n + 'I')}
+
+            ${n}C [label="Condicion"]
+            ${n} -> ${n}C;
+            ${this.linkStatementCustom(this.condition, n + 'C')}
+        `
+    }
 }

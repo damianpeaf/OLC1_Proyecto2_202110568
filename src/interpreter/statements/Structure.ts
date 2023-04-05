@@ -6,11 +6,25 @@ export type StructureArgs = StatementArgs & {
 
 export abstract class Structure extends Statement {
 
-    private statements: Statement[];
+    public statements: Statement[];
 
     constructor({ statements, ...args }: StructureArgs) {
         super(args);
         this.statements = statements;
+    }
+
+    public graphviz(): string {
+
+        const n = this.getGraphvizNode()
+        return `
+            ${this.getGrahpvizNodeDefinition()}
+            ${this.getGrahpvizEdges()}
+
+            
+            ${n}I [label="Instrucciones"]
+            ${n} -> ${n}T;
+            ${this.linkStatementsCustom(this.statements, n + 'I')}
+        `
     }
 
 }

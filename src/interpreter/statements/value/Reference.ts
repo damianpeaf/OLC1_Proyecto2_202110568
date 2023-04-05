@@ -31,15 +31,10 @@ export class Reference extends Value {
         throw new Error('Method not implemented.');
     }
 
-    public graphviz(): string {
-        throw new Error('Method not implemented.');
-    }
     public getGrahpvizLabel(): string {
-        throw new Error('Method not implemented.');
+        return `Referencia: ${this._name}`;
     }
-    public getGrahpvizEdges(): string {
-        throw new Error('Method not implemented.');
-    }
+
     public evaluate() {
         throw new Error('Method not implemented.');
     }

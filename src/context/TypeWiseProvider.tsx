@@ -10,7 +10,26 @@ export interface DocumentFile {
 export const initialDocument: DocumentFile = {
     id: 0,
     name: 'Untitled',
-    content: ''
+    content: `
+    
+// Este es un comentario de una línea
+
+/*
+Este es un comentario
+Multilínea
+Para este lenguaje
+*/
+
+// Declaración de variables
+int a=0;
+INt A=0;
+
+If(i==1){
+int a=15;
+Print("soy el numero "+a);
+}
+
+    `
 }
 
 export interface TypeWiseState {
@@ -19,6 +38,8 @@ export interface TypeWiseState {
     currentDocument: DocumentFile;
     isRenameModalOpen: boolean;
     terminalContent: string;
+    isAstModalOpen: boolean;
+    graphviz: string | null;
 }
 
 interface TypeWiseProviderProps {
@@ -29,7 +50,9 @@ const TypeWise_INITIAL_STATE: TypeWiseState = {
     documents: [initialDocument],
     currentDocument: initialDocument,
     isRenameModalOpen: false,
-    terminalContent: ''
+    terminalContent: '',
+    isAstModalOpen: false,
+    graphviz: null
 }
 
 export const TypeWiseProvider: FC<TypeWiseProviderProps> = ({ children }) => {

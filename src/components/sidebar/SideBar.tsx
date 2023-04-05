@@ -6,7 +6,7 @@ import { useTypeWise } from "../../hooks";
 
 export const SideBar = () => {
 
-    const { openTerminal, runProgram } = useTypeWise();
+    const { openTerminal, runProgram, openAstModal } = useTypeWise();
 
     return (
         <aside
@@ -30,7 +30,7 @@ export const SideBar = () => {
             <SideBarDivider />
             <FileOptions />
             <SideBarDivider />
-            <SideBarItem icon={<VscRepo />} label="Reportes" />
+            <SideBarItem icon={<VscRepo />} label="Reportes" onClick={openAstModal} />
             <SideBarDivider />
             <SideBarItem icon={<BsFillTerminalFill />} label="Consola" onClick={openTerminal} />
             <SideBarDivider />

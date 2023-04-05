@@ -20,14 +20,16 @@ export class SubroutineCall extends Statement {
         this.args = args;
     }
 
-    public graphviz(): string {
-        throw new Error('Method not implemented.');
-    }
     public getGrahpvizLabel(): string {
-        throw new Error('Method not implemented.');
+        return `Llamada a subrutina: ${this.name}`;
     }
     public getGrahpvizEdges(): string {
-        throw new Error('Method not implemented.');
+        const n = this.getGraphvizNode();
+        return `
+            ${n}Args [label="Argumentos"]
+            ${n} -> ${n}Args
+            ${this.linkStatementsCustom(this.args, n + 'Args')}
+        `
     }
     public evaluate() {
         throw new Error('Method not implemented.');
