@@ -1,8 +1,8 @@
-import { VariableType } from "../../elements";
+import { PrimitiveT } from "../../elements";
 import { Statement, StatementArgs } from "../Statement";
 import { SymbolType } from '../../elements/Symbol';
 
-export type ExpressionReturnType = VariableType | SymbolType;
+export type ExpressionReturnType = PrimitiveT | SymbolType;
 
 export type ExpressionArgs = StatementArgs
 

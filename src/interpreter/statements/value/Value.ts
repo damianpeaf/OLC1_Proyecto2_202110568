@@ -1,9 +1,9 @@
 import { Statement } from '../Statement';
-import { NullType, VariableType } from '../../elements';
+import { TypeWiseValueType } from '../../elements';
 
 export abstract class Value extends Statement {
 
-    abstract get type(): VariableType | NullType;
+    abstract get type(): TypeWiseValueType;
     abstract get value(): any;
 
 

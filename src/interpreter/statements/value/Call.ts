@@ -1,4 +1,4 @@
-import { VariableType, NullType } from '../../elements';
+import { TypeWiseValueType } from '../../elements';
 import { StatementArgs } from '../Statement';
 import { SubroutineCall } from '../subroutines/SubroutineCall';
 import { Value } from './';
@@ -21,7 +21,7 @@ export class Call extends Value {
         this._call = call;
     }
 
-    get type(): VariableType | NullType {
+    get type(): TypeWiseValueType {
         // Execute the call and return the type
         throw new Error('Method not implemented.');
     }

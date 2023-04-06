@@ -1,4 +1,4 @@
-import { VariableType, NullType } from '../../elements';
+import { TypeWiseVariableType } from '../../elements';
 import { StatementArgs } from '../Statement';
 import { Value } from './';
 
@@ -22,7 +22,7 @@ export class Reference extends Value {
         this._type = type;
     }
 
-    get type(): VariableType | NullType {
+    get type(): TypeWiseVariableType {
         // Search for the variable type in the context
         throw new Error('Method not implemented.');
     }

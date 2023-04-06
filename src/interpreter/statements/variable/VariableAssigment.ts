@@ -3,25 +3,31 @@ import { Expression } from "../expression";
 
 type VariableAssigmentT = 'direct' | 'increment' | 'decrement'
 
+interface Reference {
+    name: string;
+    index?: Expression | null;
+}
+
 export type VariableAssigmentArgs = StatementArgs & {
     type: VariableAssigmentT;
-    name: string;
+    reference: Reference;
     value?: Expression | null;
 }
 // TODO: Array and Vector
 
 export class VariableAssigment extends Statement {
 
-    private type: VariableAssigmentT;
-    private name: string;
-    private value: Expression | null;
+    public type: VariableAssigmentT;
+    public value: Expression | null;
+    public reference: Required<Reference>;
 
-    constructor({ name, value = null, type, ...stmtArgs }: VariableAssigmentArgs) {
+
+    constructor({ reference: { name, index = null }, value = null, type, ...stmtArgs }: VariableAssigmentArgs) {
         super(stmtArgs);
 
-        this.name = name;
         this.value = value;
         this.type = type;
+        this.reference = { name, index };
     }
 
     public graphviz(): string {

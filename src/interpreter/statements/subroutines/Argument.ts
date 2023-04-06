@@ -1,16 +1,16 @@
-import { VariableType } from '../../elements';
+import { PrimitiveT } from '../../elements';
 import { Statement, StatementArgs } from '../Statement';
 
 
 export type ArgumentArgs = StatementArgs & {
     name: string;
-    type: VariableType;
+    type: PrimitiveT;
 };
 
 export class Argument extends Statement {
 
-    private name: string;
-    private type: VariableType;
+    public name: string;
+    public type: PrimitiveT;
 
     constructor({ name, type, ...args }: ArgumentArgs) {
         super(args);
@@ -31,5 +31,4 @@ export class Argument extends Statement {
     public evaluate() {
         throw new Error('Method not implemented.');
     }
-
 }

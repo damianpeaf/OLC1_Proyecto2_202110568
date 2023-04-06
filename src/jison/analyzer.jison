@@ -105,7 +105,9 @@
 "void"                            { return "VOID"; }
 "true"                            { return "TRUE"; }
 "false"                           { return "FALSE"; }
-// TODO: MAIN
+"main"                            { return "MAIN"; }
+"new"                             { return "NEW"; }
+"list"                            { return "LIST"; }
 
 // * Flow control
 
@@ -252,18 +254,68 @@ variable_declaration : type ID SEMICOLON
                             $$ = Builder.node.variableDcl({
                                 line: @1.first_line,
                                 column: @1.first_column,
-                                type: $1,
-                                name: $2
+                                variable: Builder.element.primitive({
+                                    type: $1,
+                                    name: $2
+                                }),
                             });
                         }
                      | type ID EQUAL expression SEMICOLON
+                          {
+                            $$ = Builder.node.variableDcl({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                variable: Builder.element.primitive({
+                                    type: $1,
+                                    name: $2,
+                                }),
+                                value: $4
+                            });
+                        }
+                     | type LBRACKET RBRACKET ID SEMICOLON
                         {
                             $$ = Builder.node.variableDcl({
                                 line: @1.first_line,
                                 column: @1.first_column,
-                                type: $1,
-                                name: $2,
-                                value: $4
+                                variable: Builder.element.vector({
+                                    type: $1,
+                                    name: $4
+                                }),
+                            });
+                        }
+                     | type LBRACKET RBRACKET ID EQUAL expression SEMICOLON
+                        {
+                            $$ = Builder.node.variableDcl({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                variable: Builder.element.vector({
+                                    type: $1,
+                                    name: $4
+                                }),
+                                value: $6
+                            });
+                        }
+                     | LIST LESS_THAN type GREATER_THAN ID SEMICOLON
+                        {
+                            $$ = Builder.node.variableDcl({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                variable: Builder.element.list({
+                                    type: $3,
+                                    name: $5
+                                }),
+                            });
+                        }
+                     | LIST LESS_THAN type GREATER_THAN ID EQUAL expression SEMICOLON
+                        {
+                            $$ = Builder.node.variableDcl({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                variable: Builder.element.list({
+                                    type: $3,
+                                    name: $5
+                                }),
+                                value: $7
                             });
                         }
                      ;
@@ -277,9 +329,11 @@ variable_assignment : ID EQUAL expression SEMICOLON
                             $$ = Builder.node.variableAss({
                                 line: @1.first_line,
                                 column: @1.first_column,
-                                name: $1,
                                 value: $3,
-                                type: VariableAssigmentType.DIRECT
+                                type: VariableAssigmentType.DIRECT, 
+                                reference:{
+                                    name: $1
+                                }
                             });
                         }
                     | ID PLUS_PLUS SEMICOLON
@@ -287,8 +341,10 @@ variable_assignment : ID EQUAL expression SEMICOLON
                             $$ = Builder.node.variableAss({
                                 line: @1.first_line,
                                 column: @1.first_column,
-                                name: $1,
-                                type: VariableAssigmentType.INCREMENT
+                                type: VariableAssigmentType.INCREMENT,
+                                reference:{
+                                    name: $1
+                                }
                             });
                         }
                     | ID MINUS_MINUS SEMICOLON
@@ -296,8 +352,23 @@ variable_assignment : ID EQUAL expression SEMICOLON
                             $$ = Builder.node.variableAss({
                                 line: @1.first_line,
                                 column: @1.first_column,
-                                name: $1,
-                                type: VariableAssigmentType.DECREMENT
+                                type: VariableAssigmentType.DECREMENT,
+                                reference:{
+                                    name: $1
+                                }
+                            });
+                        }
+                    | ID LBRACE expression RBRACE EQUAL expression SEMICOLON
+                        {
+                            $$ = Builder.node.variableAss({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                value: $6,
+                                type: VariableAssigmentType.INDEXED,
+                                reference:{
+                                    name: $1,
+                                    index: $3
+                                }
                             });
                         }
                     ;
@@ -578,6 +649,17 @@ subroutine_declaration_params : subroutine_declaration_params COMMA subroutine_d
                                     $$ = [$1];
                                 }
                               ;
+
+cast    : LPAREN type RPAREN expression
+        {
+            $$ = Builder.node.cast({
+                line: @1.first_line,
+                column: @1.first_column,
+                type: $2,
+                expression: $4
+            });
+        }
+        ;
 
 subroutine_declaration_param : type ID
                                 {

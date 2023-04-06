@@ -1,9 +1,9 @@
-import { VariableType, NullType } from '../../elements';
+import { PrimitiveT } from '../../elements';
 import { StatementArgs } from '../Statement';
 import { Value } from './';
 
 
-type LiteralType = VariableType
+type LiteralType = PrimitiveT
 
 export type LiteralArgs = StatementArgs & {
     type: LiteralType,
@@ -21,7 +21,7 @@ export class Literal extends Value {
         this._value = value;
     }
 
-    get type(): VariableType | NullType {
+    get type(): PrimitiveT {
         return this._type;
     }
     get value(): any {

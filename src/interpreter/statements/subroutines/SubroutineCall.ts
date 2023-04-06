@@ -1,4 +1,4 @@
-import { VariableType } from '../../elements';
+import { PrimitiveT } from '../../elements';
 import { Statement, StatementArgs } from '../Statement';
 import { Expression } from '../expression';
 

@@ -1,8 +1,6 @@
+import { Variable, TypeWiseValueType, Argument } from ".";
 import { Statement } from "../statements";
-import { Argument } from "../statements/subroutines";
-import { NullType, VoidType } from "./Symbol";
-import { VariableType } from "./Variable";
-
+import { Expression } from "../statements/expression";
 
 export type SubroutineT = "method" | "function"
 
@@ -10,8 +8,9 @@ export type SubroutineArgs = {
     name: string,
     type: SubroutineT,
     parameters: Argument[],
-    returnType: VariableType | VoidType | NullType,
-    body: Statement[]
+    returnType: TypeWiseValueType,
+    body: Statement[],
+    object?: Object | null
 }
 
 export class Subroutine {
@@ -19,15 +18,26 @@ export class Subroutine {
     public name: string;
     public type: SubroutineT;
     public parameters: Argument[];
-    public returnType: VariableType | VoidType | NullType;
+    public returnType: TypeWiseValueType;
     public body: Statement[]
+    public object: Object | null;
 
-    constructor({ name, type, parameters, returnType, body }: SubroutineArgs) {
+    constructor({ name, type, parameters, returnType, body, object = null }: SubroutineArgs) {
         this.name = name;
         this.type = type;
         this.parameters = parameters;
         this.returnType = returnType;
         this.body = body;
+        this.object = object;
+    }
+
+    public call(args: Expression[]): Variable {
+        this.validateParameters(args);
+        throw new Error("Not implemented");
+    }
+
+    private validateParameters(args: Expression[]): void {
+        throw new Error("Not implemented");
     }
 
 }

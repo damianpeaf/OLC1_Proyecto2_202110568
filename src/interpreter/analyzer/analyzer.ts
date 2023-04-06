@@ -3,854 +3,854 @@
  * Returns a Parser implementing JisonParserApi and a Lexer implementing JisonLexerApi.
  */
 
-    import { Builder } from '../ast';
-    import { Type, Symbols, SubroutineType } from '../elements';
-    import { VariableAssigmentType } from '../statements/variable';
-    import { ArithmeticExpressionType,RelationalExpresionType,LogicalExpressionType } from '../statements/expression';
-    import { ReferenceType } from '../statements/value';
+import { Builder } from '../ast';
+import { PrimitiveType, Symbols, SubroutineType } from '../elements';
+import { VariableAssigmentType } from '../statements/variable';
+import { ArithmeticExpressionType, RelationalExpresionType, LogicalExpressionType } from '../statements/expression';
+import { ReferenceType } from '../statements/value';
 
 
-import { JisonParser, JisonParserApi, StateType, SymbolsType, TerminalsType, ProductionsType, o } from '@ts-jison/parser';const $V0=[2,5],$V1=[1,6],$V2=[1,7],$V3=[1,8],$V4=[1,28],$V5=[1,29],$V6=[1,30],$V7=[1,31],$V8=[1,32],$V9=[1,19],$Va=[1,20],$Vb=[1,21],$Vc=[1,22],$Vd=[1,23],$Ve=[1,24],$Vf=[1,33],$Vg=[5,37,48,50],$Vh=[5,8,10,11,24,25,26,27,28,29,33,37,43,48,50,51,52,56,64],$Vi=[1,51],$Vj=[1,42],$Vk=[1,41],$Vl=[1,43],$Vm=[1,44],$Vn=[1,45],$Vo=[1,46],$Vp=[1,47],$Vq=[1,48],$Vr=[1,49],$Vs=[1,50],$Vt=[1,54],$Vu=[1,55],$Vv=[1,56],$Vw=[1,57],$Vx=[1,66],$Vy=[1,67],$Vz=[1,68],$VA=[1,69],$VB=[1,70],$VC=[1,71],$VD=[1,72],$VE=[1,73],$VF=[1,74],$VG=[1,75],$VH=[1,76],$VI=[1,77],$VJ=[1,78],$VK=[1,79],$VL=[1,80],$VM=[9,35,49,59,67,68,69,70,71,72,73,74,75,76,77,78,79,80,82],$VN=[1,86],$VO=[1,87],$VP=[1,102],$VQ=[5,8,9,10,11,24,25,26,27,28,29,33,37,43,48,50,51,52,56,64],$VR=[5,8,9,10,11,24,25,26,27,28,29,33,35,37,43,48,50,51,52,56,64],$VS=[35,59],$VT=[9,35,49,59,67,68,73,74,75,76,77,78,79,80,82],$VU=[9,35,49,59,67,68,69,70,71,73,74,75,76,77,78,79,80,82],$VV=[9,35,49,59,73,74,75,76,77,78,79,80,82],$VW=[9,35,49,59,79,80,82],$VX=[1,141],$VY=[1,162],$VZ=[1,161],$V_=[37,48,50],$V$=[1,196];
+import { JisonParser, JisonParserApi, StateType, SymbolsType, TerminalsType, ProductionsType, o } from '@ts-jison/parser'; const $V0 = [2, 5], $V1 = [1, 6], $V2 = [1, 7], $V3 = [1, 8], $V4 = [1, 28], $V5 = [1, 29], $V6 = [1, 30], $V7 = [1, 31], $V8 = [1, 32], $V9 = [1, 19], $Va = [1, 20], $Vb = [1, 21], $Vc = [1, 22], $Vd = [1, 23], $Ve = [1, 24], $Vf = [1, 33], $Vg = [5, 37, 48, 50], $Vh = [5, 8, 10, 11, 24, 25, 26, 27, 28, 29, 33, 37, 43, 48, 50, 51, 52, 56, 64], $Vi = [1, 51], $Vj = [1, 42], $Vk = [1, 41], $Vl = [1, 43], $Vm = [1, 44], $Vn = [1, 45], $Vo = [1, 46], $Vp = [1, 47], $Vq = [1, 48], $Vr = [1, 49], $Vs = [1, 50], $Vt = [1, 54], $Vu = [1, 55], $Vv = [1, 56], $Vw = [1, 57], $Vx = [1, 66], $Vy = [1, 67], $Vz = [1, 68], $VA = [1, 69], $VB = [1, 70], $VC = [1, 71], $VD = [1, 72], $VE = [1, 73], $VF = [1, 74], $VG = [1, 75], $VH = [1, 76], $VI = [1, 77], $VJ = [1, 78], $VK = [1, 79], $VL = [1, 80], $VM = [9, 35, 49, 59, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 82], $VN = [1, 86], $VO = [1, 87], $VP = [1, 102], $VQ = [5, 8, 9, 10, 11, 24, 25, 26, 27, 28, 29, 33, 37, 43, 48, 50, 51, 52, 56, 64], $VR = [5, 8, 9, 10, 11, 24, 25, 26, 27, 28, 29, 33, 35, 37, 43, 48, 50, 51, 52, 56, 64], $VS = [35, 59], $VT = [9, 35, 49, 59, 67, 68, 73, 74, 75, 76, 77, 78, 79, 80, 82], $VU = [9, 35, 49, 59, 67, 68, 69, 70, 71, 73, 74, 75, 76, 77, 78, 79, 80, 82], $VV = [9, 35, 49, 59, 73, 74, 75, 76, 77, 78, 79, 80, 82], $VW = [9, 35, 49, 59, 79, 80, 82], $VX = [1, 141], $VY = [1, 162], $VZ = [1, 161], $V_ = [37, 48, 50], $V$ = [1, 196];
 
 export class AnalyzerParser extends JisonParser implements JisonParserApi {
-    $?: any;
+  $?: any;
 
-    constructor (yy = {}, lexer = new AnalyzerLexer(yy)) {
-      super(yy, lexer);
+  constructor(yy = {}, lexer = new AnalyzerLexer(yy)) {
+    super(yy, lexer);
+  }
+
+  symbols_: SymbolsType = { "error": 2, "program": 3, "statements": 4, "EOF": 5, "normal_statements": 6, "flow_control_statement": 7, "BREAK": 8, "SEMICOLON": 9, "CONTINUE": 10, "RETURN": 11, "expression": 12, "statement": 13, "variable_declaration": 14, "variable_assignment": 15, "if": 16, "switch": 17, "while": 18, "for": 19, "do_while": 20, "subroutine_call": 21, "subroutine_declaration": 22, "type": 23, "INT": 24, "DOUBLE": 25, "STRING": 26, "BOOLEAN": 27, "CHAR": 28, "ID": 29, "EQUAL": 30, "PLUS_PLUS": 31, "MINUS_MINUS": 32, "IF": 33, "LPAREN": 34, "RPAREN": 35, "LBRACE": 36, "RBRACE": 37, "if_chain": 38, "elseif_chain": 39, "else": 40, "ELSE": 41, "elseif": 42, "SWITCH": 43, "switch_cases": 44, "case_list": 45, "default": 46, "case": 47, "CASE": 48, "COLON": 49, "DEFAULT": 50, "WHILE": 51, "FOR": 52, "for_init": 53, "for_condition": 54, "for_update": 55, "DO": 56, "subroutine_call_aux": 57, "subroutine_call_params": 58, "COMMA": 59, "object_subroutine_call": 60, "DOT": 61, "method_declaration": 62, "function_declaration": 63, "VOID": 64, "subroutine_declaration_params": 65, "subroutine_declaration_param": 66, "PLUS": 67, "MINUS": 68, "TIMES": 69, "DIVIDE": 70, "MOD": 71, "POWER": 72, "EQUALS": 73, "NOT_EQUAL": 74, "LESS_THAN": 75, "LESS_THAN_OR_EQUAL": 76, "GREATER_THAN": 77, "GREATER_THAN_OR_EQUAL": 78, "AND": 79, "OR": 80, "NOT": 81, "INTERROGATION": 82, "INT_LITERAL": 83, "DOUBLE_LITERAL": 84, "STRING_LITERAL": 85, "BOOLEAN_LITERAL": 86, "CHAR_LITERAL": 87, "TRUE": 88, "FALSE": 89, "$accept": 0, "$end": 1 };
+  terminals_: TerminalsType = { 2: "error", 5: "EOF", 8: "BREAK", 9: "SEMICOLON", 10: "CONTINUE", 11: "RETURN", 24: "INT", 25: "DOUBLE", 26: "STRING", 27: "BOOLEAN", 28: "CHAR", 29: "ID", 30: "EQUAL", 31: "PLUS_PLUS", 32: "MINUS_MINUS", 33: "IF", 34: "LPAREN", 35: "RPAREN", 36: "LBRACE", 37: "RBRACE", 41: "ELSE", 43: "SWITCH", 48: "CASE", 49: "COLON", 50: "DEFAULT", 51: "WHILE", 52: "FOR", 56: "DO", 59: "COMMA", 61: "DOT", 64: "VOID", 67: "PLUS", 68: "MINUS", 69: "TIMES", 70: "DIVIDE", 71: "MOD", 72: "POWER", 73: "EQUALS", 74: "NOT_EQUAL", 75: "LESS_THAN", 76: "LESS_THAN_OR_EQUAL", 77: "GREATER_THAN", 78: "GREATER_THAN_OR_EQUAL", 79: "AND", 80: "OR", 81: "NOT", 82: "INTERROGATION", 83: "INT_LITERAL", 84: "DOUBLE_LITERAL", 85: "STRING_LITERAL", 86: "BOOLEAN_LITERAL", 87: "CHAR_LITERAL", 88: "TRUE", 89: "FALSE" };
+  productions_: ProductionsType = [0, [3, 2], [4, 2], [4, 1], [4, 1], [4, 0], [7, 2], [7, 2], [7, 2], [7, 3], [6, 2], [6, 1], [13, 1], [13, 1], [13, 1], [13, 1], [13, 1], [13, 1], [13, 1], [13, 1], [13, 1], [23, 1], [23, 1], [23, 1], [23, 1], [23, 1], [14, 3], [14, 5], [15, 4], [15, 3], [15, 3], [16, 7], [16, 8], [38, 2], [38, 4], [40, 4], [39, 2], [39, 1], [42, 8], [17, 7], [44, 1], [44, 2], [44, 1], [45, 2], [45, 1], [47, 4], [46, 3], [18, 7], [19, 11], [53, 1], [53, 1], [54, 1], [55, 1], [20, 9], [21, 2], [57, 4], [57, 3], [58, 3], [58, 1], [60, 3], [22, 1], [22, 1], [62, 7], [62, 8], [63, 7], [63, 8], [65, 3], [65, 1], [66, 2], [12, 3], [12, 3], [12, 3], [12, 3], [12, 3], [12, 3], [12, 2], [12, 3], [12, 3], [12, 3], [12, 3], [12, 3], [12, 3], [12, 3], [12, 3], [12, 3], [12, 2], [12, 5], [12, 1], [12, 1], [12, 1], [12, 1], [12, 1], [12, 1], [12, 1], [12, 1], [12, 2], [12, 2], [12, 1]];
+  table: Array<StateType> = [{ 3: 1, 4: 2, 5: $V0, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, { 1: [3] }, { 5: [1, 34] }, o($Vg, [2, 3], { 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 57: 25, 62: 26, 63: 27, 7: 35, 13: 36, 8: $V1, 10: $V2, 11: $V3, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 64: $Vf }), o($Vg, [2, 4]), o($Vh, [2, 11]), { 9: [1, 37] }, { 9: [1, 38] }, { 9: [1, 39], 12: 40, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, o($Vh, [2, 12]), o($Vh, [2, 13]), o($Vh, [2, 14]), o($Vh, [2, 15]), o($Vh, [2, 16]), o($Vh, [2, 17]), o($Vh, [2, 18]), o($Vh, [2, 19]), o($Vh, [2, 20]), { 29: [1, 53] }, { 30: $Vt, 31: $Vu, 32: $Vv, 34: $Vw }, { 34: [1, 58] }, { 34: [1, 59] }, { 34: [1, 60] }, { 34: [1, 61] }, { 36: [1, 62] }, { 9: [1, 63] }, o($Vh, [2, 60]), o($Vh, [2, 61]), { 29: [2, 21] }, { 29: [2, 22] }, { 29: [2, 23] }, { 29: [2, 24] }, { 29: [2, 25] }, { 29: [1, 64] }, { 1: [2, 1] }, o($Vg, [2, 2]), o($Vh, [2, 10]), o($Vg, [2, 6]), o($Vg, [2, 7]), o($Vg, [2, 8]), { 9: [1, 65], 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }, { 12: 81, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 82, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 83, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, o($VM, [2, 87]), o($VM, [2, 88]), o($VM, [2, 89]), o($VM, [2, 90]), o($VM, [2, 91]), o($VM, [2, 92]), o($VM, [2, 93]), o($VM, [2, 94], { 31: [1, 84], 32: [1, 85], 34: $Vw }), o($VM, [2, 97]), { 9: $VN, 30: $VO, 34: [1, 88] }, { 12: 89, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 9: [1, 90] }, { 9: [1, 91] }, { 12: 94, 29: $Vi, 34: $Vj, 35: [1, 93], 57: 52, 58: 92, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 95, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 96, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 97, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 14: 99, 15: 100, 23: 101, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $VP, 53: 98 }, { 4: 103, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 37: $V0, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, o($Vh, [2, 54]), { 34: [1, 104] }, o($Vg, [2, 9]), { 12: 105, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 106, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 107, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 108, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 109, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 110, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 111, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 112, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 113, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 114, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 115, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 116, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 117, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 118, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 12: 119, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, o($VM, [2, 75]), { 35: [1, 120], 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }, o($VM, [2, 85]), o($VM, [2, 95]), o($VM, [2, 96]), o($VQ, [2, 26]), { 12: 121, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 23: 125, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 35: [1, 122], 65: 123, 66: 124 }, { 9: [1, 126], 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }, o($VR, [2, 29]), o($VR, [2, 30]), { 35: [1, 127], 59: [1, 128] }, o($VM, [2, 56]), o($VS, [2, 58], { 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }), { 35: [1, 129], 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }, { 35: [1, 130], 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }, { 35: [1, 131], 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }, { 9: [1, 132] }, { 9: [2, 49] }, { 9: [2, 50] }, { 29: [1, 133] }, { 30: $Vt, 31: $Vu, 32: $Vv }, { 37: [1, 134] }, { 23: 125, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 35: [1, 135], 65: 136, 66: 124 }, o($VT, [2, 69], { 69: $Vz, 70: $VA, 71: $VB, 72: $VC }), o($VT, [2, 70], { 69: $Vz, 70: $VA, 71: $VB, 72: $VC }), o($VU, [2, 71], { 72: $VC }), o($VU, [2, 72], { 72: $VC }), o($VU, [2, 73], { 72: $VC }), o($VU, [2, 74]), o($VV, [2, 77], { 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC }), o($VV, [2, 78], { 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC }), o($VV, [2, 79], { 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC }), o($VV, [2, 80], { 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC }), o($VV, [2, 81], { 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC }), o($VV, [2, 82], { 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC }), o($VW, [2, 83], { 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI }), o($VW, [2, 84], { 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI }), { 49: [1, 137], 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }, o($VM, [2, 76]), { 9: [1, 138], 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }, { 36: [1, 139] }, { 35: [1, 140], 59: $VX }, o($VS, [2, 67]), { 29: [1, 142] }, o($VR, [2, 28]), o($VM, [2, 55]), { 12: 143, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 36: [1, 144] }, { 36: [1, 145] }, { 36: [1, 146] }, { 12: 148, 29: $Vi, 34: $Vj, 54: 147, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 9: $VN, 30: $VO }, { 51: [1, 149] }, { 36: [1, 150] }, { 35: [1, 151], 59: $VX }, { 12: 152, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, o($VQ, [2, 27]), { 4: 153, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 37: $V0, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, { 36: [1, 154] }, { 23: 125, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 66: 155 }, o($VS, [2, 68]), o($VS, [2, 57], { 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }), { 4: 156, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 37: $V0, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, { 44: 157, 45: 158, 46: 159, 47: 160, 48: $VY, 50: $VZ }, { 4: 163, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 37: $V0, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, { 9: [1, 164] }, { 9: [2, 51], 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }, { 34: [1, 165] }, { 4: 166, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 37: $V0, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, { 36: [1, 167] }, o([9, 35, 49, 59, 82], [2, 86], { 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK }), { 37: [1, 168] }, { 4: 169, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 37: $V0, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, o($VS, [2, 66]), { 37: [1, 170] }, { 37: [1, 171] }, { 37: [2, 40], 46: 172, 47: 173, 48: $VY, 50: $VZ }, { 37: [2, 42] }, o($V_, [2, 44]), { 49: [1, 174] }, { 12: 175, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 37: [1, 176] }, { 15: 178, 29: $VP, 55: 177 }, { 12: 179, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 37: [1, 180] }, { 4: 181, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 37: $V0, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, o($Vh, [2, 64]), { 37: [1, 182] }, o($Vh, [2, 31], { 38: 183, 39: 184, 42: 186, 41: [1, 185] }), o($Vh, [2, 39]), { 37: [2, 41] }, o($V_, [2, 43]), { 4: 187, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 37: $V0, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, { 49: [1, 188], 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }, o($Vh, [2, 47]), { 35: [1, 189] }, { 35: [2, 52] }, { 35: [1, 190], 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }, o($Vh, [2, 62]), { 37: [1, 191] }, o($Vh, [2, 65]), o($Vh, [2, 32]), { 40: 192, 41: [1, 194], 42: 193 }, { 33: $V$, 36: [1, 195] }, { 41: [2, 37] }, { 37: [2, 46] }, o($V_, $V0, { 6: 3, 7: 4, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 57: 25, 62: 26, 63: 27, 4: 197, 8: $V1, 10: $V2, 11: $V3, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 64: $Vf }), { 36: [1, 198] }, { 9: [1, 199] }, o($Vh, [2, 63]), o($Vh, [2, 33]), { 41: [2, 36] }, { 33: $V$, 36: [1, 200] }, { 4: 201, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 37: $V0, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, { 34: [1, 202] }, o($V_, [2, 45]), { 4: 203, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 37: $V0, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, o($Vh, [2, 53]), { 4: 204, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 37: $V0, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, { 37: [1, 205] }, { 12: 206, 29: $Vi, 34: $Vj, 57: 52, 68: $Vk, 81: $Vl, 83: $Vm, 84: $Vn, 85: $Vo, 86: $Vp, 87: $Vq, 88: $Vr, 89: $Vs }, { 37: [1, 207] }, { 37: [1, 208] }, o($Vh, [2, 34]), { 35: [1, 209], 67: $Vx, 68: $Vy, 69: $Vz, 70: $VA, 71: $VB, 72: $VC, 73: $VD, 74: $VE, 75: $VF, 76: $VG, 77: $VH, 78: $VI, 79: $VJ, 80: $VK, 82: $VL }, o($Vh, [2, 48]), o($Vh, [2, 35]), { 36: [1, 210] }, { 4: 211, 6: 3, 7: 4, 8: $V1, 10: $V2, 11: $V3, 13: 5, 14: 9, 15: 10, 16: 11, 17: 12, 18: 13, 19: 14, 20: 15, 21: 16, 22: 17, 23: 18, 24: $V4, 25: $V5, 26: $V6, 27: $V7, 28: $V8, 29: $V9, 33: $Va, 37: $V0, 43: $Vb, 51: $Vc, 52: $Vd, 56: $Ve, 57: 25, 62: 26, 63: 27, 64: $Vf }, { 37: [1, 212] }, { 41: [2, 38] }];
+  defaultActions: { [key: number]: any } = { 28: [2, 21], 29: [2, 22], 30: [2, 23], 31: [2, 24], 32: [2, 25], 34: [2, 1], 99: [2, 49], 100: [2, 50], 159: [2, 42], 172: [2, 41], 178: [2, 52], 186: [2, 37], 187: [2, 46], 193: [2, 36], 212: [2, 38] };
+
+  performAction(yytext: string, yyleng: number, yylineno: number, yy: any, yystate: number /* action[1] */, $$: any /* vstack */, _$: any /* lstack */): any {
+    /* this == yyval */
+    var $0 = $$.length - 1;
+    switch (yystate) {
+      case 1:
+
+        const root = Builder.node.root({
+          stmts: $$[$0 - 1]
+        });
+
+        this.$ = root;
+        return root
+
+        break;
+      case 2: case 36: case 41:
+
+        $$[$0 - 1].push($$[$0]);
+        this.$ = $$[$0 - 1];
+
+        break;
+      case 3: case 40:
+
+        this.$ = $$[$0];
+
+        break;
+      case 4: case 37: case 42:
+
+        this.$ = [$$[$0]];
+
+        break;
+      case 5:
+
+        this.$ = [];
+
+        break;
+      case 6:
+
+        this.$ = Builder.node.break({
+          line: _$[$0 - 1].first_line,
+          column: _$[$0 - 1].first_column
+        });
+
+        break;
+      case 7:
+
+        this.$ = Builder.node.continue({
+          line: _$[$0 - 1].first_line,
+          column: _$[$0 - 1].first_column
+        });
+
+        break;
+      case 8:
+
+        this.$ = Builder.node.return({
+          line: _$[$0 - 1].first_line,
+          column: _$[$0 - 1].first_column
+        });
+
+        break;
+      case 9:
+
+        this.$ = Builder.node.return({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          value: $$[$0 - 1]
+        });
+
+        break;
+      case 10:
+
+        $$[$0 - 1].push($$[$0]);
+        this.$ = $$[$0 - 1];
+
+        break;
+      case 11:
+
+        this.$ = [$$[$0]];
+
+        break;
+      case 12: case 13: case 14: case 15: case 16: case 17: case 18: case 19: case 20: case 49: case 50: case 51: case 52: case 60: case 61:
+        this.$ = $$[$0];
+        break;
+      case 21:
+        this.$ = PrimitiveType.INT;
+        break;
+      case 22:
+        this.$ = PrimitiveType.DOUBLE;
+        break;
+      case 23:
+        this.$ = PrimitiveType.STRING;
+        break;
+      case 24:
+        this.$ = PrimitiveType.BOOLEAN;
+        break;
+      case 25:
+        this.$ = PrimitiveType.CHAR;
+        break;
+      case 26:
+
+        this.$ = Builder.node.variableDcl({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          type: $$[$0 - 2],
+          name: $$[$0 - 1]
+        });
+
+        break;
+      case 27:
+
+        this.$ = Builder.node.variableDcl({
+          line: _$[$0 - 4].first_line,
+          column: _$[$0 - 4].first_column,
+          type: $$[$0 - 4],
+          name: $$[$0 - 3],
+          value: $$[$0 - 1]
+        });
+
+        break;
+      case 28:
+
+        this.$ = Builder.node.variableAss({
+          line: _$[$0 - 3].first_line,
+          column: _$[$0 - 3].first_column,
+          name: $$[$0 - 3],
+          value: $$[$0 - 1],
+          type: VariableAssigmentType.DIRECT
+        });
+
+        break;
+      case 29:
+
+        this.$ = Builder.node.variableAss({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          name: $$[$0 - 2],
+          type: VariableAssigmentType.INCREMENT
+        });
+
+        break;
+      case 30:
+
+        this.$ = Builder.node.variableAss({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          name: $$[$0 - 2],
+          type: VariableAssigmentType.DECREMENT
+        });
+
+        break;
+      case 31:
+
+        this.$ = Builder.node.if({
+          line: _$[$0 - 6].first_line,
+          column: _$[$0 - 6].first_column,
+          condition: $$[$0 - 4],
+          statements: $$[$0 - 1],
+          chain: []
+        });
+
+        break;
+      case 32:
+
+        this.$ = Builder.node.if({
+          line: _$[$0 - 7].first_line,
+          column: _$[$0 - 7].first_column,
+          condition: $$[$0 - 5],
+          statements: $$[$0 - 2],
+          chain: $$[$0 - 1]
+        });
+
+        break;
+      case 33:
+
+        this.$ = $$[$0 - 1];
+        this.$.push($$[$0]);
+
+        break;
+      case 34:
+
+        this.$ = [$$[$0 - 3]];
+
+        break;
+      case 35:
+
+        return Builder.node.else({
+          line: _$[$0 - 3].first_line,
+          column: _$[$0 - 3].first_column,
+          statements: $$[$0 - 1]
+        });
+
+        break;
+      case 38:
+
+        this.$ = Builder.node.elseIf({
+          line: _$[$0 - 7].first_line,
+          column: _$[$0 - 7].first_column,
+          condition: $$[$0 - 4],
+          statements: $$[$0 - 1]
+        });
+
+        break;
+      case 39:
+
+        this.$ = Builder.node.switch({
+          line: _$[$0 - 6].first_line,
+          column: _$[$0 - 6].first_column,
+          value: $$[$0 - 4],
+          cases: $$[$0 - 1]
+        });
+
+        break;
+      case 43:
+
+        $$[$0 - 1].push($$[$0]);
+        this.$ = $$[$0 - 1];
+
+        break;
+      case 44:
+
+        this.$ = [$$[$0]];
+
+        break;
+      case 45:
+
+        this.$ = Builder.node.case({
+          line: _$[$0 - 3].first_line,
+          column: _$[$0 - 3].first_column,
+          condition: $$[$0 - 2],
+          statements: $$[$0]
+        });
+
+        break;
+      case 46:
+
+        this.$ = Builder.node.default({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          statements: $$[$0]
+        });
+
+        break;
+      case 47:
+
+        this.$ = Builder.node.while({
+          line: _$[$0 - 6].first_line,
+          column: _$[$0 - 6].first_column,
+          condition: $$[$0 - 4],
+          statements: $$[$0 - 1]
+        });
+
+        break;
+      case 48:
+
+        this.$ = Builder.node.for({
+          line: _$[$0 - 10].first_line,
+          column: _$[$0 - 10].first_column,
+          init: $$[$0 - 8],
+          condition: $$[$0 - 6],
+          update: $$[$0 - 4],
+          statements: $$[$0 - 1]
+        });
+
+        break;
+      case 53:
+
+        this.$ = Builder.node.doWhile({
+          line: _$[$0 - 8].first_line,
+          column: _$[$0 - 8].first_column,
+          condition: $$[$0 - 2],
+          statements: $$[$0 - 6]
+        });
+
+        break;
+      case 54:
+        this.$ = $$[$0 - 1];
+        break;
+      case 55:
+
+        this.$ = Builder.node.subroutineCall({
+          line: _$[$0 - 3].first_line,
+          column: _$[$0 - 3].first_column,
+          name: $$[$0 - 3],
+          args: $$[$0 - 1]
+        });
+
+        break;
+      case 56:
+
+        this.$ = Builder.node.subroutineCall({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          name: $$[$0 - 2],
+          args: []
+        });
+
+        break;
+      case 57:
+
+        $$[$0 - 2].push($$[$0]);
+        this.$ = $$[$0 - 2];
+
+        break;
+      case 58:
+
+        this.$ = [$$[$0]];
+
+        break;
+      case 62:
+
+        this.$ = Builder.node.subroutineDcl({
+          line: _$[$0 - 6].first_line,
+          column: _$[$0 - 6].first_column,
+          name: $$[$0 - 5],
+          args: [],
+          statements: $$[$0 - 1],
+          type: SubroutineType.METHOD,
+          returnType: Symbols.VOID
+        });
+
+        break;
+      case 63:
+
+        this.$ = Builder.node.subroutineDcl({
+          line: _$[$0 - 7].first_line,
+          column: _$[$0 - 7].first_column,
+          name: $$[$0 - 6],
+          args: $$[$0 - 4],
+          statements: $$[$0 - 1],
+          type: SubroutineType.METHOD,
+          returnType: Symbols.VOID
+        });
+
+        break;
+      case 64:
+
+        this.$ = Builder.node.subroutineDcl({
+          line: _$[$0 - 6].first_line,
+          column: _$[$0 - 6].first_column,
+          name: $$[$0 - 5],
+          args: [],
+          statements: $$[$0 - 1],
+          type: SubroutineType.FUNCTION,
+          returnType: $$[$0 - 6]
+        });
+
+        break;
+      case 65:
+
+        this.$ = Builder.node.subroutineDcl({
+          line: _$[$0 - 7].first_line,
+          column: _$[$0 - 7].first_column,
+          name: $$[$0 - 6],
+          args: $$[$0 - 4],
+          statements: $$[$0 - 1],
+          type: SubroutineType.FUNCTION,
+          returnType: $$[$0 - 7]
+        });
+
+        break;
+      case 66:
+
+        $$[$0 - 2].push($$[$0]);
+        this.$ = $$[$0 - 2];
+
+        break;
+      case 67:
+
+        this.$ = [$$[$0]];
+
+        break;
+      case 68:
+
+        this.$ = Builder.node.argument({
+          line: _$[$0 - 1].first_line,
+          column: _$[$0 - 1].first_column,
+          type: $$[$0 - 1],
+          name: $$[$0]
+        });
+
+        break;
+      case 69:
+
+        this.$ = Builder.node.arithmeticExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: ArithmeticExpressionType.PLUS,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 70:
+
+        this.$ = Builder.node.arithmeticExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: ArithmeticExpressionType.MINUS,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 71:
+
+        this.$ = Builder.node.arithmeticExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: ArithmeticExpressionType.TIMES,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 72:
+
+        this.$ = Builder.node.arithmeticExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: ArithmeticExpressionType.DIVIDE,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 73:
+
+        this.$ = Builder.node.arithmeticExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: ArithmeticExpressionType.MOD,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 74:
+
+        this.$ = Builder.node.arithmeticExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: ArithmeticExpressionType.POWER,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 75:
+
+        this.$ = Builder.node.unaryMinusExp({
+          line: _$[$0 - 1].first_line,
+          column: _$[$0 - 1].first_column,
+          operand: $$[$0]
+        });
+
+        break;
+      case 76:
+
+        this.$ = $$[$0 - 1];
+
+        break;
+      case 77:
+
+        this.$ = Builder.node.relationalExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: RelationalExpresionType.EQUALS,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 78:
+
+        this.$ = Builder.node.relationalExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: RelationalExpresionType.NOT_EQUAL,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 79:
+
+        this.$ = Builder.node.relationalExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: RelationalExpresionType.LESS_THAN,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 80:
+
+        this.$ = Builder.node.relationalExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: RelationalExpresionType.LESS_THAN_OR_EQUAL,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 81:
+
+        this.$ = Builder.node.relationalExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: RelationalExpresionType.GREATER_THAN,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 82:
+
+        this.$ = Builder.node.relationalExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: RelationalExpresionType.GREATER_THAN_OR_EQUAL,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 83:
+
+        this.$ = Builder.node.logicalExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: LogicalExpressionType.AND,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 84:
+
+        this.$ = Builder.node.logicalExp({
+          line: _$[$0 - 2].first_line,
+          column: _$[$0 - 2].first_column,
+          operator: LogicalExpressionType.OR,
+          left: $$[$0 - 2],
+          right: $$[$0]
+        });
+
+        break;
+      case 85:
+
+        this.$ = Builder.node.unaryNotExp({
+          line: _$[$0 - 1].first_line,
+          column: _$[$0 - 1].first_column,
+          operand: $$[$0]
+        });
+
+        break;
+      case 86:
+
+        this.$ = Builder.node.ternaryExp({
+          line: _$[$0 - 4].first_line,
+          column: _$[$0 - 4].first_column,
+          condition: $$[$0 - 4],
+          trueExpression: $$[$0 - 2],
+          falseExpression: $$[$0]
+        });
+
+        break;
+      case 87:
+
+        this.$ = Builder.node.terminalExp({
+          line: _$[$0].first_line,
+          column: _$[$0].first_column,
+          value: Builder.node.literal({
+            line: _$[$0].first_line,
+            column: _$[$0].first_column,
+            type: PrimitiveType.INT,
+            value: $$[$0]
+          })
+        });
+
+        break;
+      case 88:
+
+        this.$ = Builder.node.terminalExp({
+          line: _$[$0].first_line,
+          column: _$[$0].first_column,
+          value: Builder.node.literal({
+            line: _$[$0].first_line,
+            column: _$[$0].first_column,
+            type: PrimitiveType.DOUBLE,
+            value: $$[$0]
+          })
+        });
+
+        break;
+      case 89:
+
+        this.$ = Builder.node.terminalExp({
+          line: _$[$0].first_line,
+          column: _$[$0].first_column,
+          value: Builder.node.literal({
+            line: _$[$0].first_line,
+            column: _$[$0].first_column,
+            type: PrimitiveType.STRING,
+            value: $$[$0]
+          })
+        });
+
+        break;
+      case 90: case 92: case 93:
+
+        this.$ = Builder.node.terminalExp({
+          line: _$[$0].first_line,
+          column: _$[$0].first_column,
+          value: Builder.node.literal({
+            line: _$[$0].first_line,
+            column: _$[$0].first_column,
+            type: PrimitiveType.BOOLEAN,
+            value: $$[$0]
+          })
+        });
+
+        break;
+      case 91:
+
+        this.$ = Builder.node.terminalExp({
+          line: _$[$0].first_line,
+          column: _$[$0].first_column,
+          value: Builder.node.literal({
+            line: _$[$0].first_line,
+            column: _$[$0].first_column,
+            type: PrimitiveType.CHAR,
+            value: $$[$0]
+          })
+        });
+
+        break;
+      case 94:
+
+        this.$ = Builder.node.terminalExp({
+          line: _$[$0].first_line,
+          column: _$[$0].first_column,
+          value: Builder.node.reference({
+            line: _$[$0].first_line,
+            column: _$[$0].first_column,
+            name: $$[$0],
+            type: ReferenceType.DIRECT
+          })
+        });
+
+        break;
+      case 95:
+
+        this.$ = Builder.node.terminalExp({
+          line: _$[$0 - 1].first_line,
+          column: _$[$0 - 1].first_column,
+          value: Builder.node.reference({
+            line: _$[$0 - 1].first_line,
+            column: _$[$0 - 1].first_column,
+            name: $$[$0 - 1],
+            type: ReferenceType.INCREMENT
+          })
+        });
+
+        break;
+      case 96:
+
+        this.$ = Builder.node.terminalExp({
+          line: _$[$0 - 1].first_line,
+          column: _$[$0 - 1].first_column,
+          value: Builder.node.reference({
+            line: _$[$0 - 1].first_line,
+            column: _$[$0 - 1].first_column,
+            name: $$[$0 - 1],
+            type: ReferenceType.DECREMENT
+          })
+        });
+
+        break;
+      case 97:
+
+        this.$ = Builder.node.terminalExp({
+          line: _$[$0].first_line,
+          column: _$[$0].first_column,
+          value: Builder.node.call({
+            line: _$[$0].first_line,
+            column: _$[$0].first_column,
+            call: $$[$0]
+          })
+        });
+
+        break;
     }
-
-    symbols_: SymbolsType = {"error":2,"program":3,"statements":4,"EOF":5,"normal_statements":6,"flow_control_statement":7,"BREAK":8,"SEMICOLON":9,"CONTINUE":10,"RETURN":11,"expression":12,"statement":13,"variable_declaration":14,"variable_assignment":15,"if":16,"switch":17,"while":18,"for":19,"do_while":20,"subroutine_call":21,"subroutine_declaration":22,"type":23,"INT":24,"DOUBLE":25,"STRING":26,"BOOLEAN":27,"CHAR":28,"ID":29,"EQUAL":30,"PLUS_PLUS":31,"MINUS_MINUS":32,"IF":33,"LPAREN":34,"RPAREN":35,"LBRACE":36,"RBRACE":37,"if_chain":38,"elseif_chain":39,"else":40,"ELSE":41,"elseif":42,"SWITCH":43,"switch_cases":44,"case_list":45,"default":46,"case":47,"CASE":48,"COLON":49,"DEFAULT":50,"WHILE":51,"FOR":52,"for_init":53,"for_condition":54,"for_update":55,"DO":56,"subroutine_call_aux":57,"subroutine_call_params":58,"COMMA":59,"object_subroutine_call":60,"DOT":61,"method_declaration":62,"function_declaration":63,"VOID":64,"subroutine_declaration_params":65,"subroutine_declaration_param":66,"PLUS":67,"MINUS":68,"TIMES":69,"DIVIDE":70,"MOD":71,"POWER":72,"EQUALS":73,"NOT_EQUAL":74,"LESS_THAN":75,"LESS_THAN_OR_EQUAL":76,"GREATER_THAN":77,"GREATER_THAN_OR_EQUAL":78,"AND":79,"OR":80,"NOT":81,"INTERROGATION":82,"INT_LITERAL":83,"DOUBLE_LITERAL":84,"STRING_LITERAL":85,"BOOLEAN_LITERAL":86,"CHAR_LITERAL":87,"TRUE":88,"FALSE":89,"$accept":0,"$end":1};
-    terminals_: TerminalsType = {2:"error",5:"EOF",8:"BREAK",9:"SEMICOLON",10:"CONTINUE",11:"RETURN",24:"INT",25:"DOUBLE",26:"STRING",27:"BOOLEAN",28:"CHAR",29:"ID",30:"EQUAL",31:"PLUS_PLUS",32:"MINUS_MINUS",33:"IF",34:"LPAREN",35:"RPAREN",36:"LBRACE",37:"RBRACE",41:"ELSE",43:"SWITCH",48:"CASE",49:"COLON",50:"DEFAULT",51:"WHILE",52:"FOR",56:"DO",59:"COMMA",61:"DOT",64:"VOID",67:"PLUS",68:"MINUS",69:"TIMES",70:"DIVIDE",71:"MOD",72:"POWER",73:"EQUALS",74:"NOT_EQUAL",75:"LESS_THAN",76:"LESS_THAN_OR_EQUAL",77:"GREATER_THAN",78:"GREATER_THAN_OR_EQUAL",79:"AND",80:"OR",81:"NOT",82:"INTERROGATION",83:"INT_LITERAL",84:"DOUBLE_LITERAL",85:"STRING_LITERAL",86:"BOOLEAN_LITERAL",87:"CHAR_LITERAL",88:"TRUE",89:"FALSE"};
-    productions_: ProductionsType = [0,[3,2],[4,2],[4,1],[4,1],[4,0],[7,2],[7,2],[7,2],[7,3],[6,2],[6,1],[13,1],[13,1],[13,1],[13,1],[13,1],[13,1],[13,1],[13,1],[13,1],[23,1],[23,1],[23,1],[23,1],[23,1],[14,3],[14,5],[15,4],[15,3],[15,3],[16,7],[16,8],[38,2],[38,4],[40,4],[39,2],[39,1],[42,8],[17,7],[44,1],[44,2],[44,1],[45,2],[45,1],[47,4],[46,3],[18,7],[19,11],[53,1],[53,1],[54,1],[55,1],[20,9],[21,2],[57,4],[57,3],[58,3],[58,1],[60,3],[22,1],[22,1],[62,7],[62,8],[63,7],[63,8],[65,3],[65,1],[66,2],[12,3],[12,3],[12,3],[12,3],[12,3],[12,3],[12,2],[12,3],[12,3],[12,3],[12,3],[12,3],[12,3],[12,3],[12,3],[12,3],[12,2],[12,5],[12,1],[12,1],[12,1],[12,1],[12,1],[12,1],[12,1],[12,1],[12,2],[12,2],[12,1]];
-    table: Array<StateType> = [{3:1,4:2,5:$V0,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},{1:[3]},{5:[1,34]},o($Vg,[2,3],{14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,57:25,62:26,63:27,7:35,13:36,8:$V1,10:$V2,11:$V3,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,43:$Vb,51:$Vc,52:$Vd,56:$Ve,64:$Vf}),o($Vg,[2,4]),o($Vh,[2,11]),{9:[1,37]},{9:[1,38]},{9:[1,39],12:40,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},o($Vh,[2,12]),o($Vh,[2,13]),o($Vh,[2,14]),o($Vh,[2,15]),o($Vh,[2,16]),o($Vh,[2,17]),o($Vh,[2,18]),o($Vh,[2,19]),o($Vh,[2,20]),{29:[1,53]},{30:$Vt,31:$Vu,32:$Vv,34:$Vw},{34:[1,58]},{34:[1,59]},{34:[1,60]},{34:[1,61]},{36:[1,62]},{9:[1,63]},o($Vh,[2,60]),o($Vh,[2,61]),{29:[2,21]},{29:[2,22]},{29:[2,23]},{29:[2,24]},{29:[2,25]},{29:[1,64]},{1:[2,1]},o($Vg,[2,2]),o($Vh,[2,10]),o($Vg,[2,6]),o($Vg,[2,7]),o($Vg,[2,8]),{9:[1,65],67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL},{12:81,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:82,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:83,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},o($VM,[2,87]),o($VM,[2,88]),o($VM,[2,89]),o($VM,[2,90]),o($VM,[2,91]),o($VM,[2,92]),o($VM,[2,93]),o($VM,[2,94],{31:[1,84],32:[1,85],34:$Vw}),o($VM,[2,97]),{9:$VN,30:$VO,34:[1,88]},{12:89,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{9:[1,90]},{9:[1,91]},{12:94,29:$Vi,34:$Vj,35:[1,93],57:52,58:92,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:95,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:96,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:97,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{14:99,15:100,23:101,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$VP,53:98},{4:103,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,37:$V0,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},o($Vh,[2,54]),{34:[1,104]},o($Vg,[2,9]),{12:105,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:106,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:107,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:108,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:109,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:110,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:111,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:112,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:113,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:114,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:115,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:116,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:117,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:118,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{12:119,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},o($VM,[2,75]),{35:[1,120],67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL},o($VM,[2,85]),o($VM,[2,95]),o($VM,[2,96]),o($VQ,[2,26]),{12:121,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{23:125,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,35:[1,122],65:123,66:124},{9:[1,126],67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL},o($VR,[2,29]),o($VR,[2,30]),{35:[1,127],59:[1,128]},o($VM,[2,56]),o($VS,[2,58],{67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL}),{35:[1,129],67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL},{35:[1,130],67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL},{35:[1,131],67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL},{9:[1,132]},{9:[2,49]},{9:[2,50]},{29:[1,133]},{30:$Vt,31:$Vu,32:$Vv},{37:[1,134]},{23:125,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,35:[1,135],65:136,66:124},o($VT,[2,69],{69:$Vz,70:$VA,71:$VB,72:$VC}),o($VT,[2,70],{69:$Vz,70:$VA,71:$VB,72:$VC}),o($VU,[2,71],{72:$VC}),o($VU,[2,72],{72:$VC}),o($VU,[2,73],{72:$VC}),o($VU,[2,74]),o($VV,[2,77],{67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC}),o($VV,[2,78],{67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC}),o($VV,[2,79],{67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC}),o($VV,[2,80],{67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC}),o($VV,[2,81],{67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC}),o($VV,[2,82],{67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC}),o($VW,[2,83],{67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI}),o($VW,[2,84],{67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI}),{49:[1,137],67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL},o($VM,[2,76]),{9:[1,138],67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL},{36:[1,139]},{35:[1,140],59:$VX},o($VS,[2,67]),{29:[1,142]},o($VR,[2,28]),o($VM,[2,55]),{12:143,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{36:[1,144]},{36:[1,145]},{36:[1,146]},{12:148,29:$Vi,34:$Vj,54:147,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{9:$VN,30:$VO},{51:[1,149]},{36:[1,150]},{35:[1,151],59:$VX},{12:152,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},o($VQ,[2,27]),{4:153,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,37:$V0,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},{36:[1,154]},{23:125,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,66:155},o($VS,[2,68]),o($VS,[2,57],{67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL}),{4:156,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,37:$V0,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},{44:157,45:158,46:159,47:160,48:$VY,50:$VZ},{4:163,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,37:$V0,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},{9:[1,164]},{9:[2,51],67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL},{34:[1,165]},{4:166,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,37:$V0,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},{36:[1,167]},o([9,35,49,59,82],[2,86],{67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK}),{37:[1,168]},{4:169,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,37:$V0,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},o($VS,[2,66]),{37:[1,170]},{37:[1,171]},{37:[2,40],46:172,47:173,48:$VY,50:$VZ},{37:[2,42]},o($V_,[2,44]),{49:[1,174]},{12:175,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{37:[1,176]},{15:178,29:$VP,55:177},{12:179,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{37:[1,180]},{4:181,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,37:$V0,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},o($Vh,[2,64]),{37:[1,182]},o($Vh,[2,31],{38:183,39:184,42:186,41:[1,185]}),o($Vh,[2,39]),{37:[2,41]},o($V_,[2,43]),{4:187,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,37:$V0,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},{49:[1,188],67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL},o($Vh,[2,47]),{35:[1,189]},{35:[2,52]},{35:[1,190],67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL},o($Vh,[2,62]),{37:[1,191]},o($Vh,[2,65]),o($Vh,[2,32]),{40:192,41:[1,194],42:193},{33:$V$,36:[1,195]},{41:[2,37]},{37:[2,46]},o($V_,$V0,{6:3,7:4,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,57:25,62:26,63:27,4:197,8:$V1,10:$V2,11:$V3,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,43:$Vb,51:$Vc,52:$Vd,56:$Ve,64:$Vf}),{36:[1,198]},{9:[1,199]},o($Vh,[2,63]),o($Vh,[2,33]),{41:[2,36]},{33:$V$,36:[1,200]},{4:201,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,37:$V0,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},{34:[1,202]},o($V_,[2,45]),{4:203,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,37:$V0,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},o($Vh,[2,53]),{4:204,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,37:$V0,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},{37:[1,205]},{12:206,29:$Vi,34:$Vj,57:52,68:$Vk,81:$Vl,83:$Vm,84:$Vn,85:$Vo,86:$Vp,87:$Vq,88:$Vr,89:$Vs},{37:[1,207]},{37:[1,208]},o($Vh,[2,34]),{35:[1,209],67:$Vx,68:$Vy,69:$Vz,70:$VA,71:$VB,72:$VC,73:$VD,74:$VE,75:$VF,76:$VG,77:$VH,78:$VI,79:$VJ,80:$VK,82:$VL},o($Vh,[2,48]),o($Vh,[2,35]),{36:[1,210]},{4:211,6:3,7:4,8:$V1,10:$V2,11:$V3,13:5,14:9,15:10,16:11,17:12,18:13,19:14,20:15,21:16,22:17,23:18,24:$V4,25:$V5,26:$V6,27:$V7,28:$V8,29:$V9,33:$Va,37:$V0,43:$Vb,51:$Vc,52:$Vd,56:$Ve,57:25,62:26,63:27,64:$Vf},{37:[1,212]},{41:[2,38]}];
-    defaultActions: {[key:number]: any} = {28:[2,21],29:[2,22],30:[2,23],31:[2,24],32:[2,25],34:[2,1],99:[2,49],100:[2,50],159:[2,42],172:[2,41],178:[2,52],186:[2,37],187:[2,46],193:[2,36],212:[2,38]};
-
-    performAction (yytext:string, yyleng:number, yylineno:number, yy:any, yystate:number /* action[1] */, $$:any /* vstack */, _$:any /* lstack */): any {
-/* this == yyval */
-          var $0 = $$.length - 1;
-        switch (yystate) {
-case 1:
-
-                const root =  Builder.node.root({
-                    stmts: $$[$0-1]
-                });
-
-                this.$ = root;
-                return root
-            
-break;
-case 2: case 36: case 41:
-
-                    $$[$0-1].push($$[$0]);
-                    this.$ = $$[$0-1];
-                
-break;
-case 3: case 40:
-
-                    this.$ = $$[$0];
-                
-break;
-case 4: case 37: case 42:
-
-                    this.$ = [$$[$0]];
-                
-break;
-case 5:
-
-                    this.$ = [];
-                
-break;
-case 6:
-
-                                this.$ = Builder.node.break({
-                                    line: _$[$0-1].first_line,
-                                    column: _$[$0-1].first_column
-                                });
-                            
-break;
-case 7:
-
-                                this.$ = Builder.node.continue({
-                                    line: _$[$0-1].first_line,
-                                    column: _$[$0-1].first_column
-                                });
-                            
-break;
-case 8:
-
-                                this.$ = Builder.node.return({
-                                    line: _$[$0-1].first_line,
-                                    column: _$[$0-1].first_column
-                                });
-                            
-break;
-case 9:
-
-                                this.$ = Builder.node.return({
-                                    line: _$[$0-2].first_line,
-                                    column: _$[$0-2].first_column,
-                                    value: $$[$0-1]
-                                });
-                            
-break;
-case 10:
-
-                            $$[$0-1].push($$[$0]);
-                            this.$ = $$[$0-1];
-                        
-break;
-case 11:
-
-                            this.$ = [$$[$0]];
-                        
-break;
-case 12: case 13: case 14: case 15: case 16: case 17: case 18: case 19: case 20: case 49: case 50: case 51: case 52: case 60: case 61:
- this.$ = $$[$0]; 
-break;
-case 21:
- this.$ = Type.INT; 
-break;
-case 22:
- this.$ = Type.DOUBLE; 
-break;
-case 23:
- this.$ = Type.STRING; 
-break;
-case 24:
- this.$ = Type.BOOLEAN; 
-break;
-case 25:
- this.$ = Type.CHAR; 
-break;
-case 26:
-
-                            this.$ = Builder.node.variableDcl({
-                                line: _$[$0-2].first_line,
-                                column: _$[$0-2].first_column,
-                                type: $$[$0-2],
-                                name: $$[$0-1]
-                            });
-                        
-break;
-case 27:
-
-                            this.$ = Builder.node.variableDcl({
-                                line: _$[$0-4].first_line,
-                                column: _$[$0-4].first_column,
-                                type: $$[$0-4],
-                                name: $$[$0-3],
-                                value: $$[$0-1]
-                            });
-                        
-break;
-case 28:
-
-                            this.$ = Builder.node.variableAss({
-                                line: _$[$0-3].first_line,
-                                column: _$[$0-3].first_column,
-                                name: $$[$0-3],
-                                value: $$[$0-1],
-                                type: VariableAssigmentType.DIRECT
-                            });
-                        
-break;
-case 29:
-
-                            this.$ = Builder.node.variableAss({
-                                line: _$[$0-2].first_line,
-                                column: _$[$0-2].first_column,
-                                name: $$[$0-2],
-                                type: VariableAssigmentType.INCREMENT
-                            });
-                        
-break;
-case 30:
-
-                            this.$ = Builder.node.variableAss({
-                                line: _$[$0-2].first_line,
-                                column: _$[$0-2].first_column,
-                                name: $$[$0-2],
-                                type: VariableAssigmentType.DECREMENT
-                            });
-                        
-break;
-case 31:
-
-            this.$ = Builder.node.if({
-                line: _$[$0-6].first_line,
-                column: _$[$0-6].first_column,
-                condition: $$[$0-4],
-                statements: $$[$0-1],
-                chain: []
-            });
-        
-break;
-case 32:
-
-            this.$ = Builder.node.if({
-                line: _$[$0-7].first_line,
-                column: _$[$0-7].first_column,
-                condition: $$[$0-5],
-                statements: $$[$0-2],
-                chain: $$[$0-1]
-            });
-        
-break;
-case 33:
-
-                this.$ = $$[$0-1];
-                this.$.push($$[$0]);
-            
-break;
-case 34:
-
-                this.$ = [$$[$0-3]];
-            
-break;
-case 35:
-
-            return Builder.node.else({
-                line: _$[$0-3].first_line,
-                column: _$[$0-3].first_column,
-                statements: $$[$0-1]
-            });
-        
-break;
-case 38:
-
-                this.$ = Builder.node.elseIf({
-                    line: _$[$0-7].first_line,
-                    column: _$[$0-7].first_column,
-                    condition: $$[$0-4],
-                    statements: $$[$0-1]
-                });
-            
-break;
-case 39:
-
-                this.$ = Builder.node.switch({
-                    line: _$[$0-6].first_line,
-                    column: _$[$0-6].first_column,
-                    value: $$[$0-4],
-                    cases: $$[$0-1]
-                });
-            
-break;
-case 43:
-
-                $$[$0-1].push($$[$0]);
-                this.$ = $$[$0-1];
-            
-break;
-case 44:
-
-                this.$ = [$$[$0]];
-            
-break;
-case 45:
-
-            this.$ = Builder.node.case({
-                line: _$[$0-3].first_line,
-                column: _$[$0-3].first_column,
-                condition: $$[$0-2],
-                statements: $$[$0]
-            });
-        
-break;
-case 46:
-
-                this.$ = Builder.node.default({
-                    line: _$[$0-2].first_line,
-                    column: _$[$0-2].first_column,
-                    statements: $$[$0]
-                });
-            
-break;
-case 47:
-
-            this.$ = Builder.node.while({
-                line: _$[$0-6].first_line,
-                column: _$[$0-6].first_column,
-                condition: $$[$0-4],
-                statements: $$[$0-1]
-            });
-        
-break;
-case 48:
-
-            this.$ = Builder.node.for({
-                line: _$[$0-10].first_line,
-                column: _$[$0-10].first_column,
-                init: $$[$0-8],
-                condition: $$[$0-6],
-                update: $$[$0-4],
-                statements: $$[$0-1]
-            });
-        
-break;
-case 53:
-
-                this.$ = Builder.node.doWhile({
-                    line: _$[$0-8].first_line,
-                    column: _$[$0-8].first_column,
-                    condition: $$[$0-2],
-                    statements: $$[$0-6]
-                });
-            
-break;
-case 54:
- this.$ = $$[$0-1]; 
-break;
-case 55:
-
-                            this.$ = Builder.node.subroutineCall({
-                                line: _$[$0-3].first_line,
-                                column: _$[$0-3].first_column,
-                                name: $$[$0-3],
-                                args: $$[$0-1]
-                            });
-                        
-break;
-case 56:
-
-                            this.$ = Builder.node.subroutineCall({
-                                line: _$[$0-2].first_line,
-                                column: _$[$0-2].first_column,
-                                name: $$[$0-2],
-                                args: []
-                            });
-                        
-break;
-case 57:
-
-                                $$[$0-2].push($$[$0]);
-                                this.$ = $$[$0-2];
-                            
-break;
-case 58:
-
-                                this.$ = [$$[$0]];
-                            
-break;
-case 62:
-
-                            this.$ = Builder.node.subroutineDcl({
-                                line: _$[$0-6].first_line,
-                                column: _$[$0-6].first_column,
-                                name: $$[$0-5],
-                                args: [],
-                                statements: $$[$0-1],
-                                type: SubroutineType.METHOD,
-                                returnType: Symbols.VOID
-                            });
-                        
-break;
-case 63:
-
-                            this.$ = Builder.node.subroutineDcl({
-                                line: _$[$0-7].first_line,
-                                column: _$[$0-7].first_column,
-                                name: $$[$0-6],
-                                args: $$[$0-4],
-                                statements: $$[$0-1],
-                                type: SubroutineType.METHOD,
-                                returnType: Symbols.VOID
-                            });
-                        
-break;
-case 64:
-
-                            this.$ = Builder.node.subroutineDcl({
-                                line: _$[$0-6].first_line,
-                                column: _$[$0-6].first_column,
-                                name: $$[$0-5],
-                                args: [],
-                                statements: $$[$0-1],
-                                type: SubroutineType.FUNCTION,
-                                returnType: $$[$0-6]
-                            });
-                        
-break;
-case 65:
-
-                            this.$ = Builder.node.subroutineDcl({
-                                line: _$[$0-7].first_line,
-                                column: _$[$0-7].first_column,
-                                name: $$[$0-6],
-                                args: $$[$0-4],
-                                statements: $$[$0-1],
-                                type: SubroutineType.FUNCTION,
-                                returnType: $$[$0-7]
-                            });
-                        
-break;
-case 66:
-
-                                    $$[$0-2].push($$[$0]);
-                                    this.$ = $$[$0-2];
-                                
-break;
-case 67:
-
-                                    this.$ = [$$[$0]];
-                                
-break;
-case 68:
-
-                                    this.$ = Builder.node.argument({
-                                        line: _$[$0-1].first_line,
-                                        column: _$[$0-1].first_column,
-                                        type: $$[$0-1],
-                                        name: $$[$0]
-                                    });
-                                
-break;
-case 69:
-
-                    this.$ = Builder.node.arithmeticExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: ArithmeticExpressionType.PLUS,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 70:
-
-                    this.$ = Builder.node.arithmeticExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: ArithmeticExpressionType.MINUS,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 71:
-
-                    this.$ = Builder.node.arithmeticExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: ArithmeticExpressionType.TIMES,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 72:
-
-                    this.$ = Builder.node.arithmeticExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: ArithmeticExpressionType.DIVIDE,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 73:
-
-                    this.$ = Builder.node.arithmeticExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: ArithmeticExpressionType.MOD,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 74:
-
-                    this.$ = Builder.node.arithmeticExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: ArithmeticExpressionType.POWER,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 75:
-
-                    this.$ = Builder.node.unaryMinusExp({
-                        line: _$[$0-1].first_line,
-                        column: _$[$0-1].first_column,
-                        operand: $$[$0]
-                    });
-                
-break;
-case 76:
-
-                    this.$ = $$[$0-1];
-                
-break;
-case 77:
-
-                    this.$ = Builder.node.relationalExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: RelationalExpresionType.EQUALS,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 78:
-
-                    this.$ = Builder.node.relationalExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: RelationalExpresionType.NOT_EQUAL,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 79:
-
-                    this.$ = Builder.node.relationalExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: RelationalExpresionType.LESS_THAN,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 80:
-
-                    this.$ = Builder.node.relationalExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: RelationalExpresionType.LESS_THAN_OR_EQUAL,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 81:
-
-                    this.$ = Builder.node.relationalExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: RelationalExpresionType.GREATER_THAN,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 82:
-
-                    this.$ = Builder.node.relationalExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: RelationalExpresionType.GREATER_THAN_OR_EQUAL,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 83:
-
-                    this.$ = Builder.node.logicalExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: LogicalExpressionType.AND,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 84:
-
-                    this.$ = Builder.node.logicalExp({
-                        line: _$[$0-2].first_line,
-                        column: _$[$0-2].first_column,
-                        operator: LogicalExpressionType.OR,
-                        left: $$[$0-2],
-                        right: $$[$0]
-                    });
-                
-break;
-case 85:
-
-                    this.$ = Builder.node.unaryNotExp({
-                        line: _$[$0-1].first_line,
-                       column: _$[$0-1].first_column,
-                        operand: $$[$0]
-                    });
-                
-break;
-case 86:
-
-                    this.$ = Builder.node.ternaryExp({
-                        line: _$[$0-4].first_line,
-                        column: _$[$0-4].first_column,
-                        condition: $$[$0-4],
-                        trueExpression: $$[$0-2],
-                        falseExpression: $$[$0]
-                    });
-                
-break;
-case 87:
-
-                    this.$ = Builder.node.terminalExp({
-                        line: _$[$0].first_line,
-                        column: _$[$0].first_column,
-                        value: Builder.node.literal({
-                            line: _$[$0].first_line,
-                            column: _$[$0].first_column,
-                            type: Type.INT,
-                            value: $$[$0]
-                        })
-                    });
-                
-break;
-case 88:
-
-                    this.$ = Builder.node.terminalExp({
-                        line: _$[$0].first_line,
-                        column: _$[$0].first_column,
-                        value: Builder.node.literal({
-                            line: _$[$0].first_line,
-                            column: _$[$0].first_column,
-                            type: Type.DOUBLE,
-                            value: $$[$0]
-                        })
-                    });
-                
-break;
-case 89:
-
-                    this.$ = Builder.node.terminalExp({
-                        line: _$[$0].first_line,
-                        column: _$[$0].first_column,
-                        value: Builder.node.literal({
-                            line: _$[$0].first_line,
-                            column: _$[$0].first_column,
-                            type: Type.STRING,
-                            value: $$[$0]
-                        })
-                    });
-                
-break;
-case 90: case 92: case 93:
-
-                    this.$ = Builder.node.terminalExp({
-                        line: _$[$0].first_line,
-                        column: _$[$0].first_column,
-                        value: Builder.node.literal({
-                            line: _$[$0].first_line,
-                            column: _$[$0].first_column,
-                            type: Type.BOOLEAN,
-                            value: $$[$0]
-                        })
-                    });
-                
-break;
-case 91:
-
-                    this.$ = Builder.node.terminalExp({
-                        line: _$[$0].first_line,
-                        column: _$[$0].first_column,
-                        value: Builder.node.literal({
-                            line: _$[$0].first_line,
-                            column: _$[$0].first_column,
-                            type: Type.CHAR,
-                            value: $$[$0]
-                        })
-                    });
-                
-break;
-case 94:
-
-                    this.$ = Builder.node.terminalExp({
-                        line: _$[$0].first_line,
-                        column: _$[$0].first_column,
-                        value: Builder.node.reference({
-                            line: _$[$0].first_line,
-                            column: _$[$0].first_column,
-                            name: $$[$0],
-                            type: ReferenceType.DIRECT
-                        })
-                    });
-                
-break;
-case 95:
-
-                    this.$ = Builder.node.terminalExp({
-                        line: _$[$0-1].first_line,
-                        column: _$[$0-1].first_column,
-                        value: Builder.node.reference({
-                            line: _$[$0-1].first_line,
-                            column: _$[$0-1].first_column,
-                            name: $$[$0-1],
-                            type: ReferenceType.INCREMENT
-                        })
-                    });
-                
-break;
-case 96:
-
-                    this.$ = Builder.node.terminalExp({
-                        line: _$[$0-1].first_line,
-                        column: _$[$0-1].first_column,
-                        value: Builder.node.reference({
-                            line: _$[$0-1].first_line,
-                            column: _$[$0-1].first_column,
-                            name: $$[$0-1],
-                            type: ReferenceType.DECREMENT
-                        })
-                    });
-                
-break;
-case 97:
-
-                    this.$ = Builder.node.terminalExp({
-                        line: _$[$0].first_line,
-                        column: _$[$0].first_column,
-                        value: Builder.node.call({
-                            line: _$[$0].first_line,
-                            column: _$[$0].first_column,
-                            call: $$[$0]
-                        })
-                    });
-                
-break;
-        }
-    }
+  }
 }
 
 
 /* generated by ts-jison-lex 0.3.0 */
 import { JisonLexer, JisonLexerApi } from '@ts-jison/lexer';
 export class AnalyzerLexer extends JisonLexer implements JisonLexerApi {
-    options: any = {"case-insensitive":true,"moduleName":"Analyzer"};
-    constructor (yy = {}) {
-        super(yy);
-    }
+  options: any = { "case-insensitive": true, "moduleName": "Analyzer" };
+  constructor(yy = {}) {
+    super(yy);
+  }
 
-    rules: RegExp[] = [/^(?:\/\/.*)/i,/^(?:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])/i,/^(?:\s+)/i,/^(?:int\b)/i,/^(?:double\b)/i,/^(?:boolean\b)/i,/^(?:char\b)/i,/^(?:string\b)/i,/^(?:\+)/i,/^(?:-)/i,/^(?:\*)/i,/^(?:\/)/i,/^(?:%)/i,/^(?:==)/i,/^(?:!=)/i,/^(?:<)/i,/^(?:<=)/i,/^(?:>)/i,/^(?:>=)/i,/^(?:\?)/i,/^(?::)/i,/^(?:&&)/i,/^(?:\\\|\\\|)/i,/^(?:!)/i,/^(?:\()/i,/^(?:\))/i,/^(?:;)/i,/^(?:=)/i,/^(?:\\\+\\\+)/i,/^(?:\\-\\-)/i,/^(?:\[)/i,/^(?:\])/i,/^(?:\{)/i,/^(?:\})/i,/^(?:if\b)/i,/^(?:else\b)/i,/^(?:switch\b)/i,/^(?:case\b)/i,/^(?:default\b)/i,/^(?:while\b)/i,/^(?:for\b)/i,/^(?:do\b)/i,/^(?:void\b)/i,/^(?:true\b)/i,/^(?:false\b)/i,/^(?:return\b)/i,/^(?:continue\b)/i,/^(?:break\b)/i,/^(?:,)/i,/^(?:\.)/i,/^(?:([a-zA-ZÑñ]|(_[a-zA-ZÑñ]))([a-zA-ZÑñ]|[0-9]|_)*)/i,/^(?:'([^\r\n'\\]|\\[btnfr"'\\]|\\[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4})')/i,/^(?:"([^\"\\]|\\.)*")/i,/^(?:[0-9]+)/i,/^(?:[0-9]+\.[0-9]+)/i,/^(?:$)/i,/^(?:.)/i];
-    conditions: any = {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56],"inclusive":true}}
-    performAction (yy:any,yy_:any,$avoiding_name_collisions:any,YY_START:any): any {
-          var YYSTATE=YY_START;
-        switch($avoiding_name_collisions) {
-    case 0:/* skip */
-      break;
-    case 1:/* skip */
-      break;
-    case 2:/* skip */
-      break;
-    case 3: return "INT"; 
-      break;
-    case 4: return "DOUBLE"; 
-      break;
-    case 5: return "BOOLEAN"; 
-      break;
-    case 6: return "CHAR"; 
-      break;
-    case 7: return "STRING"; 
-      break;
-    case 8: return "PLUS"; 
-      break;
-    case 9: return "MINUS"; 
-      break;
-    case 10: return "TIMES"; 
-      break;
-    case 11: return "DIVIDE"; 
-      break;
-    case 12: return "MOD"; 
-      break;
-    case 13: return "EQUALS"; 
-      break;
-    case 14: return "NOT_EQUAL"; 
-      break;
-    case 15: return "LESS_THAN"; 
-      break;
-    case 16: return "LESS_THAN_OR_EQUAL"; 
-      break;
-    case 17: return "GREATER_THAN"; 
-      break;
-    case 18: return "GREATER_THAN_OR_EQUAL"; 
-      break;
-    case 19: return "INTERROGATION"; 
-      break;
-    case 20: return "COLON"; 
-      break;
-    case 21: return "AND"; 
-      break;
-    case 22: return "OR;" 
-      break;
-    case 23: return "NOT"; 
-      break;
-    case 24: return "LPAREN"; 
-      break;
-    case 25: return "RPAREN"; 
-      break;
-    case 26: return "SEMICOLON"; 
-      break;
-    case 27: return "EQUAL"; 
-      break;
-    case 28: return "PLUS_PLUS"; 
-      break;
-    case 29: return "MINUS_MINUS"; 
-      break;
-    case 30: return "LBRACKET"; 
-      break;
-    case 31: return "RBRACKET"; 
-      break;
-    case 32: return "LBRACE"; 
-      break;
-    case 33: return "RBRACE"; 
-      break;
-    case 34: return "IF"; 
-      break;
-    case 35: return "ELSE"; 
-      break;
-    case 36: return "SWITCH"; 
-      break;
-    case 37: return "CASE"; 
-      break;
-    case 38: return "DEFAULT"; 
-      break;
-    case 39: return "WHILE"; 
-      break;
-    case 40: return "FOR"; 
-      break;
-    case 41: return "DO"; 
-      break;
-    case 42: return "VOID"; 
-      break;
-    case 43: return "TRUE"; 
-      break;
-    case 44: return "FALSE"; 
-      break;
-    case 45: return "RETURN"; 
-      break;
-    case 46: return "CONTINUE"; 
-      break;
-    case 47: return "BREAK"; 
-      break;
-    case 48: return "COMMA"; 
-      break;
-    case 49: return "DOT"; 
-      break;
-    case 50: yy_.yytext = yy_.yytext.toLowerCase();  return "ID"; 
-      break;
-    case 51: yy_.yytext = yy_.yytext.substring(1, yy_.yyleng-2); return "CHAR_LITERAL"; 
-      break;
-    case 52: yy_.yytext = yy_.yytext.substring(1, yy_.yyleng-2); return "STRING_LITERAL"; 
-      break;
-    case 53: return "INT_LITERAL"; 
-      break;
-    case 54: return "DOUBLE_LITERAL"; 
-      break;
-    case 55: return "EOF"; 
-      break;
-    case 56: return "ERROR"; 
-      break;
-        }
+  rules: RegExp[] = [/^(?:\/\/.*)/i, /^(?:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])/i, /^(?:\s+)/i, /^(?:int\b)/i, /^(?:double\b)/i, /^(?:boolean\b)/i, /^(?:char\b)/i, /^(?:string\b)/i, /^(?:\+)/i, /^(?:-)/i, /^(?:\*)/i, /^(?:\/)/i, /^(?:%)/i, /^(?:==)/i, /^(?:!=)/i, /^(?:<)/i, /^(?:<=)/i, /^(?:>)/i, /^(?:>=)/i, /^(?:\?)/i, /^(?::)/i, /^(?:&&)/i, /^(?:\\\|\\\|)/i, /^(?:!)/i, /^(?:\()/i, /^(?:\))/i, /^(?:;)/i, /^(?:=)/i, /^(?:\\\+\\\+)/i, /^(?:\\-\\-)/i, /^(?:\[)/i, /^(?:\])/i, /^(?:\{)/i, /^(?:\})/i, /^(?:if\b)/i, /^(?:else\b)/i, /^(?:switch\b)/i, /^(?:case\b)/i, /^(?:default\b)/i, /^(?:while\b)/i, /^(?:for\b)/i, /^(?:do\b)/i, /^(?:void\b)/i, /^(?:true\b)/i, /^(?:false\b)/i, /^(?:return\b)/i, /^(?:continue\b)/i, /^(?:break\b)/i, /^(?:,)/i, /^(?:\.)/i, /^(?:([a-zA-ZÑñ]|(_[a-zA-ZÑñ]))([a-zA-ZÑñ]|[0-9]|_)*)/i, /^(?:'([^\r\n'\\]|\\[btnfr"'\\]|\\[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4})')/i, /^(?:"([^\"\\]|\\.)*")/i, /^(?:[0-9]+)/i, /^(?:[0-9]+\.[0-9]+)/i, /^(?:$)/i, /^(?:.)/i];
+  conditions: any = { "INITIAL": { "rules": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56], "inclusive": true } }
+  performAction(yy: any, yy_: any, $avoiding_name_collisions: any, YY_START: any): any {
+    var YYSTATE = YY_START;
+    switch ($avoiding_name_collisions) {
+      case 0:/* skip */
+        break;
+      case 1:/* skip */
+        break;
+      case 2:/* skip */
+        break;
+      case 3: return "INT";
+        break;
+      case 4: return "DOUBLE";
+        break;
+      case 5: return "BOOLEAN";
+        break;
+      case 6: return "CHAR";
+        break;
+      case 7: return "STRING";
+        break;
+      case 8: return "PLUS";
+        break;
+      case 9: return "MINUS";
+        break;
+      case 10: return "TIMES";
+        break;
+      case 11: return "DIVIDE";
+        break;
+      case 12: return "MOD";
+        break;
+      case 13: return "EQUALS";
+        break;
+      case 14: return "NOT_EQUAL";
+        break;
+      case 15: return "LESS_THAN";
+        break;
+      case 16: return "LESS_THAN_OR_EQUAL";
+        break;
+      case 17: return "GREATER_THAN";
+        break;
+      case 18: return "GREATER_THAN_OR_EQUAL";
+        break;
+      case 19: return "INTERROGATION";
+        break;
+      case 20: return "COLON";
+        break;
+      case 21: return "AND";
+        break;
+      case 22: return "OR;"
+        break;
+      case 23: return "NOT";
+        break;
+      case 24: return "LPAREN";
+        break;
+      case 25: return "RPAREN";
+        break;
+      case 26: return "SEMICOLON";
+        break;
+      case 27: return "EQUAL";
+        break;
+      case 28: return "PLUS_PLUS";
+        break;
+      case 29: return "MINUS_MINUS";
+        break;
+      case 30: return "LBRACKET";
+        break;
+      case 31: return "RBRACKET";
+        break;
+      case 32: return "LBRACE";
+        break;
+      case 33: return "RBRACE";
+        break;
+      case 34: return "IF";
+        break;
+      case 35: return "ELSE";
+        break;
+      case 36: return "SWITCH";
+        break;
+      case 37: return "CASE";
+        break;
+      case 38: return "DEFAULT";
+        break;
+      case 39: return "WHILE";
+        break;
+      case 40: return "FOR";
+        break;
+      case 41: return "DO";
+        break;
+      case 42: return "VOID";
+        break;
+      case 43: return "TRUE";
+        break;
+      case 44: return "FALSE";
+        break;
+      case 45: return "RETURN";
+        break;
+      case 46: return "CONTINUE";
+        break;
+      case 47: return "BREAK";
+        break;
+      case 48: return "COMMA";
+        break;
+      case 49: return "DOT";
+        break;
+      case 50: yy_.yytext = yy_.yytext.toLowerCase(); return "ID";
+        break;
+      case 51: yy_.yytext = yy_.yytext.substring(1, yy_.yyleng - 2); return "CHAR_LITERAL";
+        break;
+      case 52: yy_.yytext = yy_.yytext.substring(1, yy_.yyleng - 2); return "STRING_LITERAL";
+        break;
+      case 53: return "INT_LITERAL";
+        break;
+      case 54: return "DOUBLE_LITERAL";
+        break;
+      case 55: return "EOF";
+        break;
+      case 56: return "ERROR";
+        break;
     }
+  }
 }
 

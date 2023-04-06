@@ -1,34 +1,24 @@
 import { Statement, StatementArgs } from "../";
-import { VariableType } from "../../elements";
 import { Expression } from "../expression";
+import { Variable } from '../../elements/Variable';
 
 
 export type VariableDeclarationArgs = StatementArgs & {
-    type: VariableType;
-    name: string;
+    variable: Variable,
     value?: Expression | null;
 }
 
 export class VariableDeclaration extends Statement {
 
-    private type: VariableType;
-    private name: string;
-    private value: any | null;
+    public variable: Variable
+    public value: Expression | null;
 
-    constructor({ type, name, value = null, ...stmtArgs }: VariableDeclarationArgs) {
+    constructor({ variable, value = null, ...stmtArgs }: VariableDeclarationArgs) {
         super(stmtArgs);
-
-        this.name = name;
+        this.variable = variable
         this.value = value;
-        this.type = type;
     }
 
-    public graphviz(): string {
-        return `
-            ${this.getGrahpvizNodeDefinition()}
-            ${this.getGrahpvizEdges()}
-        `
-    }
     public getGrahpvizLabel(): string {
         return 'Declaracion de variable'
     }
@@ -36,11 +26,6 @@ export class VariableDeclaration extends Statement {
         const n = this.getGraphvizNode()
 
         return `
-            ${n}T [label="Tipo: ${this.type}"]
-            ${n} -> ${n}T
-
-            ${n}N [label="Nombre: ${this.name}"]
-            ${n} -> ${n}N
 
             ${this.value
                 ? this.linkStatement(this.value)
