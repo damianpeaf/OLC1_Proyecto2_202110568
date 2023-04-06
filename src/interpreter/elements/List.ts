@@ -5,7 +5,7 @@ import { DefaultSubroutine } from "./DefaultSubroutine";
 
 export type ListType = "INT[[]]" | "DOUBLE[[]]" | "STRING[[]]" | "BOOLEAN[[]]" | "CHAR[[]]"
 
-export type ListArgs = ObjectArgs & {
+export type ListArgs = Omit<ObjectArgs, 'type'> & {
     primitive: PrimitiveT
 }
 
@@ -14,7 +14,7 @@ export class List extends Object {
     public primitive: PrimitiveT;
     public data: Variable[] = [];
 
-    constructor({ primitive, ...args }: Omit<ListArgs, 'type'>) {
+    constructor({ primitive, ...args }: ListArgs) {
         const type = primitive + '[[]]'
         super({ type, ...args });
         this.primitive = primitive;

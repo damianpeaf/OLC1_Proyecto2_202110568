@@ -1,7 +1,7 @@
 import { Statement, StatementArgs } from "..";
 import { Expression } from "../expression";
 
-type VariableAssigmentT = 'direct' | 'increment' | 'decrement'
+type VariableAssigmentT = 'direct' | 'increment' | 'decrement' | 'indexed'
 
 interface Reference {
     name: string;
@@ -52,4 +52,5 @@ export class VariableAssigmentType {
     public static readonly DIRECT = 'direct';
     public static readonly INCREMENT = 'increment';
     public static readonly DECREMENT = 'decrement';
+    public static readonly INDEXED = 'indexed';
 }

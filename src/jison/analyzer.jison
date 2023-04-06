@@ -6,10 +6,10 @@
 
 %{
     import { Builder } from '../ast';
-    import { Type, Symbols, SubroutineType } from '../elements';
+    import { Symbols, SubroutineType } from '../elements';
     import { VariableAssigmentType } from '../statements/variable';
     import { ArithmeticExpressionType,RelationalExpresionType,LogicalExpressionType } from '../statements/expression';
-    import { ReferenceType } from '../statements/value';
+    import { ReferenceType, InitializerType } from '../statements/value';
 
 %}
 
@@ -236,13 +236,25 @@ statement : variable_declaration    { $$ = $1; }
           | do_while                { $$ = $1; }
           | subroutine_call         { $$ = $1; }
           | subroutine_declaration  { $$ = $1; }
+          | main_declaration        { $$ = $1; }
           ;
 
-type : INT      { $$ = Type.INT; }
-     | DOUBLE   { $$ = Type.DOUBLE; }
-     | STRING   { $$ = Type.STRING; }
-     | BOOLEAN  { $$ = Type.BOOLEAN; }
-     | CHAR     { $$ = Type.CHAR; }
+main_declaration : MAIN subroutine_call 
+                    {
+                        $$ = Builder.node.main({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            call: $2
+                        });
+                    }
+                    ;
+ 
+
+type : INT      { $$ = Symbols.INT; }
+     | DOUBLE   { $$ = Symbols.DOUBLE; }
+     | STRING   { $$ = Symbols.STRING; }
+     | BOOLEAN  { $$ = Symbols.BOOLEAN; }
+     | CHAR     { $$ = Symbols.CHAR; }
      ;
 
 
@@ -278,7 +290,7 @@ variable_declaration : type ID SEMICOLON
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 variable: Builder.element.vector({
-                                    type: $1,
+                                    primitive: $1,
                                     name: $4
                                 }),
                             });
@@ -289,7 +301,7 @@ variable_declaration : type ID SEMICOLON
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 variable: Builder.element.vector({
-                                    type: $1,
+                                    primitive: $1,
                                     name: $4
                                 }),
                                 value: $6
@@ -301,7 +313,7 @@ variable_declaration : type ID SEMICOLON
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 variable: Builder.element.list({
-                                    type: $3,
+                                    primitive: $3,
                                     name: $5
                                 }),
                             });
@@ -312,7 +324,7 @@ variable_declaration : type ID SEMICOLON
                                 line: @1.first_line,
                                 column: @1.first_column,
                                 variable: Builder.element.list({
-                                    type: $3,
+                                    primitive: $3,
                                     name: $5
                                 }),
                                 value: $7
@@ -368,6 +380,19 @@ variable_assignment : ID EQUAL expression SEMICOLON
                                 reference:{
                                     name: $1,
                                     index: $3
+                                }
+                            });
+                        }
+                    | ID LBRACE LBRACE expression RBRACE RBRACE EQUAL expression SEMICOLON
+                        {
+                            $$ = Builder.node.variableAss({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                value: $8,
+                                type: VariableAssigmentType.INDEXED,
+                                reference:{
+                                    name: $1,
+                                    index: $4
                                 }
                             });
                         }
@@ -656,7 +681,7 @@ cast    : LPAREN type RPAREN expression
                 line: @1.first_line,
                 column: @1.first_column,
                 type: $2,
-                expression: $4
+                value: $4
             });
         }
         ;
@@ -857,7 +882,7 @@ expression  : expression PLUS expression                           // a + b
                         value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
-                            type: Type.INT,
+                            type: Symbols.INT,
                             value: $1
                         })
                     });
@@ -870,7 +895,7 @@ expression  : expression PLUS expression                           // a + b
                         value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
-                            type: Type.DOUBLE,
+                            type: Symbols.DOUBLE,
                             value: $1
                         })
                     });
@@ -883,7 +908,7 @@ expression  : expression PLUS expression                           // a + b
                         value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
-                            type: Type.STRING,
+                            type: Symbols.STRING,
                             value: $1
                         })
                     });
@@ -896,7 +921,7 @@ expression  : expression PLUS expression                           // a + b
                         value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
-                            type: Type.BOOLEAN,
+                            type: Symbols.BOOLEAN,
                             value: $1
                         })
                     });
@@ -909,7 +934,7 @@ expression  : expression PLUS expression                           // a + b
                         value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
-                            type: Type.CHAR,
+                            type: Symbols.CHAR,
                             value: $1
                         })
                     });
@@ -922,7 +947,7 @@ expression  : expression PLUS expression                           // a + b
                         value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
-                            type: Type.BOOLEAN,
+                            type: Symbols.BOOLEAN,
                             value: $1
                         })
                     });
@@ -935,7 +960,7 @@ expression  : expression PLUS expression                           // a + b
                         value: Builder.node.literal({
                             line: @1.first_line,
                             column: @1.first_column,
-                            type: Type.BOOLEAN,
+                            type: Symbols.BOOLEAN,
                             value: $1
                         })
                     });
@@ -995,4 +1020,58 @@ expression  : expression PLUS expression                           // a + b
                         })
                     });
                 }
+            | initializers 
+                {
+                    $$ = Builder.node.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: $1
+                    });
+                }
             ;
+
+initializers    : list_initializer
+                | vector_initializer
+                ;
+
+vector_initializer : RBRACE expression_list LBRACE
+                        {
+                            $$ = Builder.node.initializer({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                objectType: InitializerType.VECTOR,
+                                initializer:{
+                                    values: $2
+                                }
+                            });
+                        }
+                    | NEW type LBRACKET expression RBRACKET 
+                        {
+                            $$ = Builder.node.initializer({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                objectType: InitializerType.VECTOR,
+                                initializer:{
+                                    primitive: $2,
+                                    reserve: $4
+                                }
+                            });
+                        }
+                    ;
+
+list_initializer : NEW LIST LESS_THAN type GREATER_THAN 
+                    {
+                        $$ = Builder.node.initializer({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            objectType: InitializerType.LIST,
+                            initializer:{
+                                primitive: $4
+                            }
+                        });
+                    }
+                    ;
+
+expression_list : expression { $$ = [$1] }
+                | expression_list COMMA expression { $1.push($3); $$ = $1; }
+                ;

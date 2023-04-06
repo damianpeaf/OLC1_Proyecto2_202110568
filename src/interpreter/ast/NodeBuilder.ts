@@ -5,9 +5,12 @@ import { Argument, ArgumentArgs, SubroutineDeclaration, SubroutineDeclarationArg
 import { SubroutineCall, SubroutineCallArgs } from "../statements/subroutines/SubroutineCall";
 import { DoWhile, DoWhileArgs, For, ForArgs, While, whileArgs } from "../statements/loop";
 import { Break, BreakArgs, Continue, ContinueArgs, Return, ReturnArgs } from "../statements/flow-control";
-import { UnaryMinus, UnaryExpressionArgs, UnaryNegation, TerminalExpression, TerminalExpressionArgs, ArithmeticExpression, ArithmeticExpressionArgs, LogicalExpression, LogicalExpressionArgs, TernaryExpressionArgs, TernaryExpression, RelationalExpression, RelationalExpressionArgs } from "../statements/expression";
-import { Call, CallArgs, Literal, LiteralArgs, Reference, ReferenceArgs } from "../statements/value";
+import { UnaryMinus, UnaryExpressionArgs, UnaryNegation, TerminalExpression, TerminalExpressionArgs, ArithmeticExpression, ArithmeticExpressionArgs, LogicalExpression, LogicalExpressionArgs, TernaryExpressionArgs, TernaryExpression, RelationalExpression, RelationalExpressionArgs, CastArgs } from "../statements/expression";
+import { Call, CallArgs, Initializer, InitializerArgs, Literal, LiteralArgs, Reference, ReferenceArgs } from "../statements/value";
 import { Root, RootArgs } from "./Root";
+import { Cast } from "../statements/expression";
+import { MainArgs } from "../statements";
+import { Main } from '../statements/Main';
 
 type BuilderArgs<Type> = Omit<Type, 'id' | 'context'>;
 
@@ -140,5 +143,17 @@ export class NodeBuilder {
 
     call(args: BuilderArgs<CallArgs>) {
         return new Call(this.addMissingArgs(args));
+    }
+
+    cast(args: BuilderArgs<CastArgs>) {
+        return new Cast(this.addMissingArgs(args));
+    }
+
+    main(args: BuilderArgs<MainArgs>) {
+        return new Main(this.addMissingArgs(args));
+    }
+
+    initializer(args: BuilderArgs<InitializerArgs>) {
+        return new Initializer(this.addMissingArgs(args));
     }
 }

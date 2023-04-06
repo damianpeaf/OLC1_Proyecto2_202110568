@@ -2,19 +2,6 @@ import { Value } from "../value";
 import { VariableAssigment } from "../variable";
 import { Expression, ExpressionArgs, ExpressionReturnType } from "./Expression";
 
-
-export type ReferenceType =
-    "VARIABLE" |
-    "INCREMENT" |
-    "DECREMENT" |
-    "INT_LITERAL" |
-    "DOUBLE_LITERAL" |
-    "STRING_LITERAL" |
-    "BOOLEAN_LITERAL" |
-    "TRUE" |
-    "FALSE" |
-    "SUBROUTINE_CALL";
-
 export type TerminalExpressionArgs = ExpressionArgs & {
     value: Value
 }
