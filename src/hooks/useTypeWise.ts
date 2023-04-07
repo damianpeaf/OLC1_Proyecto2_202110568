@@ -60,13 +60,19 @@ export const useTypeWise = () => {
         runtime.run(state.currentDocument.content)
 
         setTerminalContent(runtime.ast?.context.console.output || '')
-        if (runtime.ast && runtime.ast.graphviz) {
-            dispatch({ type: 'set-graphviz-content', payload: { content: runtime.ast.graphviz } })
+        if (runtime.ast) {
+
             dispatch({ type: 'set-terminal-content', payload: { content: runtime.ast.context.console.output } })
             dispatch({ type: 'set-errors', payload: { errors: runtime.ast.context.errorTable.errors } })
+
+
+            if (runtime.ast.graphviz) {
+                dispatch({ type: 'set-graphviz-content', payload: { content: runtime.ast.graphviz } })
+            }
         } else {
             dispatch({ type: 'reset-graphviz-content' })
         }
+
     }
 
     const openAstModal = () => {

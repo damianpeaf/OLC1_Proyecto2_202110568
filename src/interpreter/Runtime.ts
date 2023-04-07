@@ -14,16 +14,29 @@ export class Runtime {
         try {
             const builder = new Builder(this.ast);
             const parser = new AnalyzerParser();
-            const root = parser.parse(input) as Root;
-            this.ast.root = root;
 
-            // TODO: run ast
+            parser.parseError = (error, hash) => {
+                Builder.ast.context.errorTable.addError({
+                    message: `Se esperaba los tokens: ${hash.expected.join(', ')} pero se encontro: ${hash.text}`,
+                    line: hash.loc.last_line,
+                    column: hash.loc.last_column,
+                    type: 'Sintactico'
+                })
+
+                throw Error(error)
+            }
+
+            const root = parser.parse(input) as Root;
+            if (this.ast.context.errorTable.errors.length > 0) {
+                return false
+            }
+
+            this.ast.root = root;
             // console.log(this.ast.graphviz)
             this.ast.evalGlobalState();
 
             return true
         } catch (error) {
-            console.log(error);
             return false
         }
     }

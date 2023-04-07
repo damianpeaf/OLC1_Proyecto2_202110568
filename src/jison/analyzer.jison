@@ -126,13 +126,31 @@
 
 // * Literals
 
-\'([^\r\n'\\]|\\[btnfr"'\\]|\\[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4})\'      { yytext = yytext.substring(1, yyleng-1); return "CHAR_LITERAL"; }
-\"([^\"\\]|\\.)*\"                                                     { yytext = yytext.substring(1, yyleng-1); return "STRING_LITERAL"; }
+\'([^\r\n'\\]|\\[btnfr"'\\]|\\[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4})\'      { yytext = yytext.substring(1, yyleng-1)  
+                                                                                        .replace(/\\n/g, '\n')
+                                                                                        .replace(/\\\\/g, '\\')
+                                                                                        .replace(/\\"/g, '"')
+                                                                                        .replace(/\\t/g, '\t')
+                                                                                        .replace(/\\\'/g, '\''); return "CHAR_LITERAL"; }
+\"([^\"\\]|\\.)*\"                                                     { yytext = yytext.substring(1, yyleng-1)  
+                                                                                        .replace(/\\n/g, '\n')
+                                                                                        .replace(/\\\\/g, '\\')
+                                                                                        .replace(/\\"/g, '"')
+                                                                                        .replace(/\\t/g, '\t')
+                                                                                        .replace(/\\\'/g, '\''); return "STRING_LITERAL"; }
 [0-9]+("."[0-9]+)                                                   { return "DOUBLE_LITERAL"; }
 [0-9]+                                                                 { return "INT_LITERAL"; }
 
 <<EOF>>                            { return "EOF"; }
-.                                  { return "ERROR"; }
+.                                  { 
+                                        Builder.ast.context.errorTable.addError({
+                                            type: "Lexico",
+                                            message: `No se reconoció el token: ${yytext}`,
+                                            line: yylineno+1,
+                                            column:  yylloc.last_column+1
+                                        });
+                                        return "UNEXPECTED_TOKEN"; 
+                                    }
 
 /lex
 

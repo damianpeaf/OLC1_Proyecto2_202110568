@@ -8,7 +8,7 @@ export const ErrorTable = ({ errors }: ErrorTableProps) => {
 
     return (
 
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="relative overflow-x-auto shadow-md rounded-lg">
             <table className="w-full text-sm text-left  text-gray-400">
                 <thead className="text-xs  uppercase  bg-gray-700 text-gray-400">
                     <tr>

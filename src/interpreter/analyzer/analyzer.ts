@@ -1038,9 +1038,19 @@ export class AnalyzerLexer extends JisonLexer implements JisonLexerApi {
       break;
     case 53: yy_.yytext = yy_.yytext.toLowerCase();  return "ID"; 
       break;
-    case 54: yy_.yytext = yy_.yytext.substring(1, yy_.yyleng-1); return "CHAR_LITERAL"; 
+    case 54: yy_.yytext = yy_.yytext.substring(1, yy_.yyleng-1)  
+                                                                                        .replace(/\\n/g, '\n')
+                                                                                        .replace(/\\\\/g, '\\')
+                                                                                        .replace(/\\"/g, '"')
+                                                                                        .replace(/\\t/g, '\t')
+                                                                                        .replace(/\\\'/g, '\''); return "CHAR_LITERAL"; 
       break;
-    case 55: yy_.yytext = yy_.yytext.substring(1, yy_.yyleng-1); return "STRING_LITERAL"; 
+    case 55: yy_.yytext = yy_.yytext.substring(1, yy_.yyleng-1)  
+                                                                                        .replace(/\\n/g, '\n')
+                                                                                        .replace(/\\\\/g, '\\')
+                                                                                        .replace(/\\"/g, '"')
+                                                                                        .replace(/\\t/g, '\t')
+                                                                                        .replace(/\\\'/g, '\''); return "STRING_LITERAL"; 
       break;
     case 56: return "DOUBLE_LITERAL"; 
       break;
@@ -1048,7 +1058,15 @@ export class AnalyzerLexer extends JisonLexer implements JisonLexerApi {
       break;
     case 58: return "EOF"; 
       break;
-    case 59: return "ERROR"; 
+    case 59: 
+                                        Builder.ast.context.errorTable.addError({
+                                            type: "Lexico",
+                                            message: `No se reconoció el token: ${yy_.yytext}`,
+                                            line: yy_.yylineno+1,
+                                            column:  yy_.yylloc.last_column+1
+                                        });
+                                        return "UNEXPECTED_TOKEN"; 
+                                    
       break;
         }
     }

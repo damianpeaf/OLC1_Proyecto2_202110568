@@ -1,6 +1,6 @@
 import { MdOutlineCloseFullscreen } from 'react-icons/md';
 import { useTypeWise } from '../../hooks';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ErrorTable } from './ErrorTable';
 
 export const Console = () => {
@@ -57,13 +57,20 @@ export const Console = () => {
                     mb-2
                     h-4/5
                     console-font
-                    text-gray-300
+                    text-gray-400
                 "
             >
                 {
                     errors.length > 0
                         ? <ErrorTable errors={errors} />
-                        : terminalContent
+                        : terminalContent.split('\n').map((line, index) => (
+                            <React.Fragment key={index}>
+                                <span className='whitespace-pre-wrap'>
+                                    {line.replace(/\t/g, '\u00a0\u00a0\u00a0\u00a0')}
+                                </span>
+                                {index !== terminalContent.split('\n').length - 1 && <br />}
+                            </React.Fragment>
+                        ))
                 }
             </article>
         </section>
