@@ -1,13 +1,13 @@
-import { TypeWiseType } from "./Symbol";
+import { TypeWiseValueType } from "./Symbol";
 
 export type ArgumentArgs = {
-    type: TypeWiseType
+    type: TypeWiseValueType[]
     name: string
 }
 
 export class Argument {
 
-    public type: TypeWiseType;
+    public type: TypeWiseValueType[];
     public name: string;
 
     constructor({ type, name }: ArgumentArgs) {

@@ -1,4 +1,5 @@
-import { Statement } from "../statements";
+import { Main, Statement, Structure } from "../statements";
+import { SubroutineCall, SubroutineDeclaration } from "../statements/subroutines";
 import { Node, NodeArgs } from "./";
 
 export type RootArgs = NodeArgs & {
@@ -8,6 +9,8 @@ export type RootArgs = NodeArgs & {
 export class Root extends Node {
 
     public stmts: Statement[];
+
+    public main: Main[] = [];
 
     public constructor({ stmts, ...args }: RootArgs) {
         super(args);
@@ -36,6 +39,46 @@ export class Root extends Node {
     }
     public evaluate() {
         throw new Error("Method not implemented.");
+    }
+
+    evalGlobalState() {
+        // Search for subrotuines declarations
+        this.stmts.map(stmt => {
+            if (stmt instanceof SubroutineDeclaration) {
+                stmt.evaluate();
+            }
+        })
+
+        // Search for main
+        this.stmts.forEach(stmt => {
+            if (stmt instanceof Main) {
+                this.main.push(stmt);
+
+                // Evaluate all statements except subrotuines calls and declarations
+            } else if (!(stmt instanceof SubroutineCall) && !(stmt instanceof SubroutineDeclaration)) {
+                stmt.evaluate();
+            }
+        })
+
+        // Main validation
+
+        if (this.main.length > 1) {
+            this.context.errorTable.addError({
+                message: 'Multiples declaraciones de main',
+                line: this.main[1].line,
+                column: this.main[1].column,
+                type: 'Semantico'
+            })
+        } else if (this.main.length == 0) {
+            this.context.errorTable.addError({
+                message: 'No se ha declarado main',
+                line: 0,
+                column: 0,
+                type: 'Semantico'
+            })
+        } else {
+            this.main[0].evaluate();
+        }
     }
 
 }

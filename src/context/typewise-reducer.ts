@@ -3,6 +3,7 @@ import {
     TypeWiseState,
     initialDocument
 } from '.';
+import { Error } from '../interpreter/context/error';
 
 
 export type TypeWiseActionType =
@@ -64,6 +65,11 @@ export type TypeWiseActionType =
         }
     } | {
         type: 'reset-graphviz-content',
+    } | {
+        type: 'set-errors',
+        payload: {
+            errors: Error[]
+        }
     }
 
 export const typeWiseReducer = (state: TypeWiseState, action: TypeWiseActionType): TypeWiseState => {
@@ -188,6 +194,11 @@ export const typeWiseReducer = (state: TypeWiseState, action: TypeWiseActionType
             return {
                 ...state,
                 graphviz: null
+            }
+        case 'set-errors':
+            return {
+                ...state,
+                errors: action.payload.errors
             }
         default:
             return state;

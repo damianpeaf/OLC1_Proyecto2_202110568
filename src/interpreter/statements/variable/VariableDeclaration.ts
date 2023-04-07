@@ -20,20 +20,36 @@ export class VariableDeclaration extends Statement {
         this.value = value;
     }
 
+    public evaluate() {
+        const isDeclared = this.context.scopeTrace.variableExists(this.variable.name)
+
+        if (isDeclared) {
+            this.context.errorTable.addError({
+                column: this.column,
+                line: this.line,
+                message: `La variable ${this.variable.name} ya ha sido declarada`,
+                type: 'Semantico'
+            })
+            return;
+        }
+
+        if (this.value) {
+            this.value.evaluate()
+            if (this.value.validateType(this.variable.type)) {
+                this.variable.value = this.value.value
+            }
+        }
+
+        this.context.scopeTrace.addVariable(this.variable);
+    }
+
     public getGrahpvizLabel(): string {
         return 'Declaracion de variable'
     }
     public getGrahpvizEdges(): string {
         const n = this.getGraphvizNode()
 
-        let variableType = ''
-
-        if (this.variable instanceof Primitive) {
-            variableType = this.variable.type
-        } else if (this.variable instanceof Vector) {
-            variableType = this.variable.type
-        }
-
+        // ? type
 
         return `
             ${n}T [label="Tipo: ${this.variable.type}"]
@@ -50,11 +66,5 @@ export class VariableDeclaration extends Statement {
                 : ''
             }
         `
-    }
-    public evaluate() {
-
-        // context
-
-        throw new Error("Method not implemented.");
     }
 }

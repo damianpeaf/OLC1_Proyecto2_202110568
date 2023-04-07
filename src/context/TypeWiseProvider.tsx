@@ -1,5 +1,6 @@
 import { FC, ReactNode, useReducer, useEffect } from 'react';
 import { TypeWiseActionType, TypeWiseContext, typeWiseReducer } from './';
+import { Error } from '../interpreter/context/error';
 
 export interface DocumentFile {
     id: number;
@@ -21,6 +22,7 @@ export interface TypeWiseState {
     terminalContent: string;
     isAstModalOpen: boolean;
     graphviz: string | null;
+    errors: Error[];
 }
 
 interface TypeWiseProviderProps {
@@ -36,7 +38,8 @@ const TypeWise_INITIAL_STATE: TypeWiseState =
             isRenameModalOpen: false,
             terminalContent: '',
             isAstModalOpen: false,
-            graphviz: null
+            graphviz: null,
+            errors: []
         }
 
 export const TypeWiseProvider: FC<TypeWiseProviderProps> = ({ children }) => {

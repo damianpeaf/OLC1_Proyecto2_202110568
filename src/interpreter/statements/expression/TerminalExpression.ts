@@ -1,6 +1,6 @@
+import { TypeWiseValueType } from "../../elements";
 import { Value } from "../value";
-import { VariableAssigment } from "../variable";
-import { Expression, ExpressionArgs, ExpressionReturnType } from "./Expression";
+import { Expression, ExpressionArgs } from "./Expression";
 
 export type TerminalExpressionArgs = ExpressionArgs & {
     value: Value
@@ -15,11 +15,11 @@ export class TerminalExpression extends Expression {
         this._value = value;
     }
 
-    get returnType(): ExpressionReturnType {
-        throw new Error("Method not implemented.");
+    get returnType(): TypeWiseValueType {
+        return this._value.type;
     }
     get value(): any {
-        throw new Error("Method not implemented.");
+        return this._value.value;
     }
     public graphviz(): string {
         return `
@@ -39,7 +39,7 @@ export class TerminalExpression extends Expression {
         return this._value.getGrahpvizEdges()
     }
     public evaluate() {
-        throw new Error("Method not implemented.");
+        this._value.evaluate();
     }
 
 

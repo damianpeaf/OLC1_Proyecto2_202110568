@@ -1,4 +1,5 @@
 import { Statement, StatementArgs } from "..";
+import { Symbols } from "../../elements";
 import { Expression } from "../expression";
 
 type VariableAssigmentT = 'direct' | 'increment' | 'decrement' | 'indexed'
@@ -21,13 +22,70 @@ export class VariableAssigment extends Statement {
     public value: Expression | null;
     public reference: Required<Reference>;
 
-
     constructor({ reference: { name, index = null }, value = null, type, ...stmtArgs }: VariableAssigmentArgs) {
         super(stmtArgs);
 
         this.value = value;
         this.type = type;
         this.reference = { name, index };
+    }
+
+    public evaluate() {
+        const { name, index } = this.reference;
+        const { value } = this;
+
+        const variable = this.context.scopeTrace.getVariable(name);
+
+        if (!variable) {
+            this.context.errorTable.addError({
+                message: `La variable ${name} no ha sido declarada`,
+                line: this.line,
+                column: this.column,
+                type: 'Semantico'
+            });
+            return;
+        }
+
+        // Perform the assigment
+        switch (this.type) {
+            case VariableAssigmentType.DIRECT:
+                if (value) {
+                    value.evaluate();
+                    if (value.validateType(variable.type)) {
+                        variable.value = value.value;
+                    }
+                }
+                break;
+            case VariableAssigmentType.INCREMENT:
+                if (variable.type === Symbols.INT || variable.type === Symbols.DOUBLE) {
+                    variable.value += 1;
+                } else {
+                    this.context.errorTable.addError({
+                        message: `La variable ${name} no es de tipo numerico`,
+                        line: this.line,
+                        column: this.column,
+                        type: 'Semantico'
+                    });
+                }
+                break;
+            case VariableAssigmentType.DECREMENT:
+                if (variable.type === Symbols.INT || variable.type === Symbols.DOUBLE) {
+                    variable.value -= 1;
+                }
+                else {
+                    this.context.errorTable.addError({
+                        message: `La variable ${name} no es de tipo numerico`,
+                        line: this.line,
+                        column: this.column,
+                        type: 'Semantico'
+                    });
+                }
+                break;
+            case VariableAssigmentType.INDEXED:
+                throw new Error('Not implemented yet');
+
+        }
+
     }
 
     public getGrahpvizLabel(): string {
@@ -96,9 +154,6 @@ export class VariableAssigment extends Statement {
         }
 
         return edges
-    }
-    public evaluate() {
-        throw new Error("Method not implemented.");
     }
 }
 

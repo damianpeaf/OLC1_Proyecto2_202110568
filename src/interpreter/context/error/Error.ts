@@ -10,10 +10,10 @@ export type ErrorArgs = {
 }
 export class Error {
 
-    private type: ErrorType;
-    private message: string;
-    private line: number;
-    private column: number;
+    public type: ErrorType;
+    public message: string;
+    public line: number;
+    public column: number;
 
     constructor({ type, message, line, column }: ErrorArgs) {
         this.type = type;

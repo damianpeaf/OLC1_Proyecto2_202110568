@@ -4,13 +4,13 @@ import { Statement, StatementArgs } from '../Statement';
 
 export type ArgumentArgs = StatementArgs & {
     name: string;
-    type: PrimitiveT;
+    type: PrimitiveT[];
 };
 
 export class Argument extends Statement {
 
     public name: string;
-    public type: PrimitiveT;
+    public type: PrimitiveT[];
 
     constructor({ name, type, ...args }: ArgumentArgs) {
         super(args);

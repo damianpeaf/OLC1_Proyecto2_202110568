@@ -21,6 +21,20 @@ export class SubroutineCall extends Statement {
         this.args = args;
     }
 
+    public evaluate() {
+        const subroutine = this.context.scopeTrace.getSubroutine(this.name);
+        if (subroutine) {
+            return subroutine.call(this.args, this);
+        } else {
+            this.context.errorTable.addError({
+                message: `La subrutina ${this.name} no existe`,
+                column: this.column,
+                line: this.line,
+                type: 'Semantico'
+            })
+        }
+    }
+
     public getGrahpvizLabel(): string {
         return `Llamada a subrutina: ${this.name}`;
     }
@@ -31,9 +45,6 @@ export class SubroutineCall extends Statement {
             ${n} -> ${n}Args
             ${this.linkStatementsCustom(this.args, n + 'Args')}
         `
-    }
-    public evaluate() {
-        throw new Error('Method not implemented.');
     }
 
 }

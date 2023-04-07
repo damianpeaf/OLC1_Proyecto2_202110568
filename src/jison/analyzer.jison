@@ -693,7 +693,7 @@ subroutine_declaration_param : type ID
                                     $$ = Builder.node.argument({
                                         line: @1.first_line,
                                         column: @1.first_column,
-                                        type: $1,
+                                        type: [$1],
                                         name: $2
                                     });
                                 }

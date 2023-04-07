@@ -1,16 +1,16 @@
-import { Symbols } from './Symbol';
+import { Symbols, TypeWiseValueType } from './Symbol';
 
 export type VariableArgs = {
     name: string;
     value?: any;
-    type: string;
+    type: TypeWiseValueType;
 }
 
 export abstract class Variable {
 
     public name: string;
     public value: any;
-    public type: string;
+    public type: TypeWiseValueType;
 
     constructor({
         name,

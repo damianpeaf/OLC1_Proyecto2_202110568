@@ -15,13 +15,15 @@ export class Main extends Statement {
     }
 
     public getGrahpvizLabel(): string {
-        throw new Error("Method not implemented.");
+        return `Main`;
     }
     public getGrahpvizEdges(): string {
-        throw new Error("Method not implemented.");
+        return `
+            ${this.linkStatement(this.call)}
+        `
     }
     public evaluate() {
-        throw new Error("Method not implemented.");
+        this.call.evaluate();
     }
 
 }

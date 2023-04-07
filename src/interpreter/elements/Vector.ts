@@ -1,4 +1,4 @@
-import { Object, PrimitiveT, ObjectArgs, Subroutine, PrimitiveType } from ".";
+import { Object, PrimitiveT, ObjectArgs, Subroutine, PrimitiveType, TypeWiseValueType } from ".";
 
 export type VectorType = "INT[]" | "DOUBLE[]" | "STRING[]" | "BOOLEAN[]" | "CHAR[]"
 
@@ -11,7 +11,7 @@ export class Vector extends Object {
     public primitive: PrimitiveT;
 
     constructor({ primitive, ...args }: VectorArgs) {
-        const type = primitive + '[]'
+        const type = primitive + '[]' as TypeWiseValueType;
         super({ type, ...args });
         this.primitive = primitive;
     }

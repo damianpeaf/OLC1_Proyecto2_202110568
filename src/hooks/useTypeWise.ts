@@ -54,6 +54,7 @@ export const useTypeWise = () => {
     const runProgram = () => {
         dispatch({ type: 'set-terminal-content', payload: { content: '' } })
         dispatch({ type: 'reset-graphviz-content' })
+        dispatch({ type: 'set-errors', payload: { errors: [] } })
 
         const runtime = new Runtime()
         runtime.run(state.currentDocument.content)
@@ -61,6 +62,8 @@ export const useTypeWise = () => {
         setTerminalContent(runtime.ast?.context.console.output || '')
         if (runtime.ast && runtime.ast.graphviz) {
             dispatch({ type: 'set-graphviz-content', payload: { content: runtime.ast.graphviz } })
+            dispatch({ type: 'set-terminal-content', payload: { content: runtime.ast.context.console.output } })
+            dispatch({ type: 'set-errors', payload: { errors: runtime.ast.context.errorTable.errors } })
         } else {
             dispatch({ type: 'reset-graphviz-content' })
         }

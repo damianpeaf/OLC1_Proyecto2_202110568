@@ -1,4 +1,5 @@
 import { Context } from "../context";
+import { printSubroutine } from "../default";
 import { Root } from "./";
 
 export class AST {
@@ -26,6 +27,16 @@ export class AST {
         return null;
     }
 
+    public evalGlobalState() {
+        if (this._root) {
+            this.initDefaults();
+            return this._root.evalGlobalState()
+        }
+        return null;
+    }
     // TODO : Evaluate the AST
 
+    private initDefaults() {
+        this.context.scopeTrace.addSubroutine(printSubroutine())
+    }
 }

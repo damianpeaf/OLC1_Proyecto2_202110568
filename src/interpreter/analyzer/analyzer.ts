@@ -512,7 +512,7 @@ case 79:
                                     this.$ = Builder.node.argument({
                                         line: _$[$0-1].first_line,
                                         column: _$[$0-1].first_column,
-                                        type: $$[$0-1],
+                                        type: [$$[$0-1]],
                                         name: $$[$0]
                                     });
                                 

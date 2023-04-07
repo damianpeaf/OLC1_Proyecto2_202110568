@@ -1,21 +1,43 @@
-import { Subroutine, SubroutineArgs, TypeWiseValueType } from '.';
+import { Subroutine, SubroutineArgs, Symbols, TypeWiseValueType } from '.';
+import { Context } from '../context';
+import { Statement } from '../statements';
 import { Expression } from '../statements/expression';
 
 export type DefaultSubroutineArgs = SubroutineArgs & {
-    customCall: (args: Expression[]) => TypeWiseValueType
+    customCall: (args: CustomArgsI) => any
+}
+
+interface CustomArgsI {
+    args: Expression[],
+    context: Context
 }
 
 export class DefaultSubroutine extends Subroutine {
 
-    public customCall: (args: Expression[]) => TypeWiseValueType;
+    public customCall: (args: CustomArgsI) => any;
 
     constructor({ customCall, ...args }: DefaultSubroutineArgs) {
         super(args);
         this.customCall = customCall;
     }
 
-    public call(args: Expression[]): any {
-        return this.customCall(args);
+    public call(args: Expression[], source: Statement): any {
+        const validArgs = this.validateParameters(args, source);
+
+        if (!validArgs) {
+            return Symbols.NULL;
+        }
+
+        const returnValue = this.customCall({
+            args,
+            context: this.context
+        });
+
+        if (this.type == 'function') {
+            return returnValue;
+        } else {
+            return Symbols.VOID;
+        }
     }
 
 }

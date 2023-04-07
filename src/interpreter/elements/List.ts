@@ -1,5 +1,6 @@
 
-import { Object, PrimitiveT, ObjectArgs, Subroutine, Variable, Symbols, SubroutineType, Argument } from ".";
+import { Object, PrimitiveT, ObjectArgs, Subroutine, Variable, Symbols, SubroutineType, Argument, TypeWiseType } from ".";
+import { Builder } from "../ast";
 import { Expression } from "../statements/expression";
 import { DefaultSubroutine } from "./DefaultSubroutine";
 
@@ -15,7 +16,7 @@ export class List extends Object {
     public data: Variable[] = [];
 
     constructor({ primitive, ...args }: ListArgs) {
-        const type = primitive + '[[]]'
+        const type = primitive + '[[]]' as TypeWiseType;
         super({ type, ...args });
         this.primitive = primitive;
     }
@@ -25,19 +26,18 @@ export class List extends Object {
     }
 
     private initDefaultMethods(): void {
-        this.methods.set('add', new DefaultSubroutine({
+        this.methods.set('add', Builder.element.defaultSubroutine({
             body: [],
             name: 'add',
             object: this,
             parameters: [new Argument({
                 name: 'value',
-                type: this.primitive
+                type: [this.primitive]
             })],
             returnType: Symbols.VOID,
             type: SubroutineType.METHOD,
-            customCall: (args: Expression[]) => {
+            customCall: ({ args, context }) => {
                 this.add(args[0].evaluate());
-                return Symbols.VOID;
             }
         }));
     }

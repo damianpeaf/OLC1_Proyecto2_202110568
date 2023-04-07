@@ -1,8 +1,5 @@
-import { PrimitiveT } from "../../elements";
 import { Statement, StatementArgs } from "../Statement";
-import { SymbolType } from '../../elements/Symbol';
-
-export type ExpressionReturnType = PrimitiveT | SymbolType;
+import { TypeWiseValueType } from '../../elements/Symbol';
 
 export type ExpressionArgs = StatementArgs
 
@@ -13,6 +10,19 @@ export abstract class Expression extends Statement {
     }
 
     // TODO: Unify this on an object
-    abstract get returnType(): ExpressionReturnType;
+    abstract get returnType(): TypeWiseValueType;
     abstract get value(): any;
+
+    public validateType(type: TypeWiseValueType) {
+        if (this.returnType !== type) {
+            this.context.errorTable.addError({
+                column: this.column,
+                line: this.line,
+                message: `El tipo de dato ${this.returnType} no es compatible con el tipo ${type}`,
+                type: 'Semantico'
+            })
+            return false
+        }
+        return true
+    }
 }

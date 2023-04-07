@@ -23,6 +23,6 @@ export class Literal extends Value {
 
 
     public evaluate() {
-        throw new Error('Method not implemented.');
+
     }
 }

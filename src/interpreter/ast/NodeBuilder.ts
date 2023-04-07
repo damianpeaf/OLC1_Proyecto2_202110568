@@ -16,8 +16,8 @@ type BuilderArgs<Type> = Omit<Type, 'id' | 'context'>;
 
 export class NodeBuilder {
 
-    private astRef: AST;
-    private nodeCount: number;
+    public astRef: AST;
+    public nodeCount: number;
 
 
     constructor(ast: AST) {

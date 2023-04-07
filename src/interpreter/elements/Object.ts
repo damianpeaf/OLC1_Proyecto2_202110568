@@ -1,12 +1,12 @@
-import { Variable, VariableArgs, Subroutine } from '.';
+import { Variable, VariableArgs, Subroutine, TypeWiseValueType } from '.';
 
 export type ObjectArgs = VariableArgs & {
-    type: string;
+    type: TypeWiseValueType;
 }
 
 export class Object extends Variable {
 
-    public type: string;
+    public type: TypeWiseValueType;
     public properties: Map<string, Variable> = new Map();
     public methods: Map<string, Subroutine> = new Map();
 

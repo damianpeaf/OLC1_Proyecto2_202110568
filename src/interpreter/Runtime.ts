@@ -12,14 +12,14 @@ export class Runtime {
         this.ast = new AST();
 
         try {
-            Builder.node = new NodeBuilder(this.ast);
+            const builder = new Builder(this.ast);
             const parser = new AnalyzerParser();
             const root = parser.parse(input) as Root;
-            console.log(root)
             this.ast.root = root;
 
             // TODO: run ast
-            console.log(this.ast.graphviz)
+            // console.log(this.ast.graphviz)
+            this.ast.evalGlobalState();
 
             return true
         } catch (error) {
