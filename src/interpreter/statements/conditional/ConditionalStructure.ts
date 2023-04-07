@@ -22,14 +22,27 @@ export abstract class ConditionalStructure extends Structure {
             ${this.getGrahpvizNodeDefinition()}
             ${this.getGrahpvizEdges()}
 
-            
-            ${n}I [label="Instrucciones"]
-            ${n} -> ${n}I;
-            ${this.linkStatementsCustom(this.statements, n + 'I')}
+            ${n}LPAREN [label="("];
+            ${n} -> ${n}LPAREN;
 
-            ${n}C [label="Condicion"]
+            ${n}C [label="Condicion"];
             ${n} -> ${n}C;
             ${this.linkStatementCustom(this.condition, n + 'C')}
+            
+            ${n}RPAREN [label=")"];
+            ${n} -> ${n}RPAREN;
+
+            ${n}LBRACE [label="{"];
+            ${n} -> ${n}LBRACE;
+            
+            ${n}I [label="Instrucciones"];
+            ${n} -> ${n}I;
+
+            ${n}RBRACE [label="}"];
+            ${n} -> ${n}RBRACE;
+
+            ${this.linkStatementsCustom(this.statements, n + 'I')}
+            
         `
     }
 }

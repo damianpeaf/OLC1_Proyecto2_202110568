@@ -1,4 +1,4 @@
-import { SubroutineT, SymbolType, PrimitiveT } from "../../elements";
+import { SubroutineT, TypeWiseValueType } from "../../elements";
 import { Structure, StructureArgs } from "../Structure";
 import { Argument } from './Argument';
 
@@ -7,7 +7,7 @@ export type SubroutineDeclarationArgs = StructureArgs & {
     name: string;
     args: Argument[];
     type: SubroutineT;
-    returnType: PrimitiveT | SymbolType;
+    returnType: TypeWiseValueType;
 }
 
 
@@ -16,7 +16,7 @@ export class SubroutineDeclaration extends Structure {
     private name: string;
     private args: Argument[];
     private type: SubroutineT;
-    private returnType: PrimitiveT | SymbolType;
+    private returnType: TypeWiseValueType;
 
     constructor({ name, args, type, returnType, ...stmtArgs }: SubroutineDeclarationArgs) {
         super(stmtArgs);

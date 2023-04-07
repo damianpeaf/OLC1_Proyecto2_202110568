@@ -30,22 +30,76 @@ export class VariableAssigment extends Statement {
         this.reference = { name, index };
     }
 
-    public graphviz(): string {
-        throw new Error("Method not implemented.");
-    }
     public getGrahpvizLabel(): string {
-        throw new Error("Method not implemented.");
+        return 'Asignacion de variable'
     }
     public getGrahpvizEdges(): string {
-        throw new Error("Method not implemented.");
+        const n = this.getGraphvizNode()
+
+        let edges = `
+            ${n}I [label="Identificador: ${this.reference.name}"]
+            ${n} -> ${n}I
+        `
+
+        switch (this.type) {
+            case VariableAssigmentType.DIRECT:
+                edges += `
+    
+                ${n}IGUAL [label="="]
+                ${n} -> ${n}IGUAL
+    
+                ${this.value
+                        ? this.linkStatement(this.value)
+                        : ''
+                    }
+            `
+                break;
+            case VariableAssigmentType.INCREMENT:
+                edges += `
+
+                ${n}MAS [label="++"]
+                ${n} -> ${n}MAS	
+            `
+                break;
+            case VariableAssigmentType.DECREMENT:
+                edges += `
+
+                ${n}MENOS [label="--"]
+                ${n} -> ${n}MENOS
+            `
+                break;
+
+            case VariableAssigmentType.INDEXED:
+                edges += `
+
+                
+                ${n}LBRACKET [label="["]
+                ${n} -> ${n}LBRACKET
+
+                ${this.reference.index
+                        ? this.linkStatement(this.reference.index)
+                        : ''
+                    }
+
+                ${n}RBRACKET [label="]"]
+                ${n} -> ${n}RBRACKET
+
+                ${n}IGUAL [label="="]
+                ${n} -> ${n}IGUAL
+
+                ${this.value
+                        ? this.linkStatement(this.value)
+                        : ''
+                    }
+            `
+                break;
+        }
+
+        return edges
     }
     public evaluate() {
-
-        // Get the variables from the context
-
         throw new Error("Method not implemented.");
     }
-
 }
 
 export class VariableAssigmentType {

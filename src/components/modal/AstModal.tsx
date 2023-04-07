@@ -15,7 +15,7 @@ export const AstModal = () => {
 
   return (
     <Transition appear show={isAstModalOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={closeAstModal}>
+      <Dialog as="div" className="relative z-50" onClose={closeAstModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

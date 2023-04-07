@@ -20,9 +20,15 @@ export abstract class Structure extends Statement {
             ${this.getGrahpvizNodeDefinition()}
             ${this.getGrahpvizEdges()}
 
+            ${n}LBRACE [label="{"]
+            ${n} -> ${n}LBRACE
             
             ${n}I [label="Instrucciones"]
-            ${n} -> ${n}T;
+            ${n} -> ${n}I;
+
+            ${n}RBRACE [label="}"]
+            ${n} -> ${n}RBRACE
+
             ${this.linkStatementsCustom(this.statements, n + 'I')}
         `
     }

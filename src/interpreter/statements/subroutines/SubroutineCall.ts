@@ -6,14 +6,15 @@ import { Expression } from '../expression';
 export type SubroutineCallArgs = StatementArgs & {
     name: string;
     args: Expression[];
+    objectName?: string | null;
 };
 
 export class SubroutineCall extends Statement {
 
-    private name: string;
-    private args: Expression[];
+    public name: string;
+    public args: Expression[];
 
-    constructor({ name, args, ...stmtArgs }: SubroutineCallArgs) {
+    constructor({ name, args, objectName = null, ...stmtArgs }: SubroutineCallArgs) {
         super(stmtArgs);
 
         this.name = name;

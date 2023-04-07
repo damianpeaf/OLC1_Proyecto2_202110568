@@ -1,7 +1,7 @@
 import { AST } from "./AST";
 import { VariableAssigment, VariableAssigmentArgs, VariableDeclaration, VariableDeclarationArgs } from "../statements/variable";
 import { Case, CaseArgs, Default, DefaultArgs, Else, ElseIf, ElseIfArgs, If, Switch, SwitchArgs, elseArgs, ifArgs } from "../statements/conditional";
-import { Argument, ArgumentArgs, SubroutineDeclaration, SubroutineDeclarationArgs } from "../statements/subroutines";
+import { Argument, ArgumentArgs, ObjectSubroutineCall, ObjectSubroutineCallArgs, SubroutineDeclaration, SubroutineDeclarationArgs } from "../statements/subroutines";
 import { SubroutineCall, SubroutineCallArgs } from "../statements/subroutines/SubroutineCall";
 import { DoWhile, DoWhileArgs, For, ForArgs, While, whileArgs } from "../statements/loop";
 import { Break, BreakArgs, Continue, ContinueArgs, Return, ReturnArgs } from "../statements/flow-control";
@@ -155,5 +155,9 @@ export class NodeBuilder {
 
     initializer(args: BuilderArgs<InitializerArgs>) {
         return new Initializer(this.addMissingArgs(args));
+    }
+
+    objectSubroutineCall(args: BuilderArgs<ObjectSubroutineCallArgs>) {
+        return new ObjectSubroutineCall(this.addMissingArgs(args));
     }
 }

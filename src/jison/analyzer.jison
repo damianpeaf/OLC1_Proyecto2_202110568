@@ -39,6 +39,11 @@
 
 // * Operators
 
+// * Increment/Decrement
+
+"++"                            { return "PLUS_PLUS"; }
+"--"                            { return "MINUS_MINUS"; }
+
 // * Arithmetic
 
 "+"                               { return "PLUS"; }
@@ -80,10 +85,6 @@
 
 "="                               { return "EQUAL"; }
 
-// * Increment/Decrement
-
-"\+\+"                            { return "PLUS_PLUS"; }
-"\-\-"                            { return "MINUS_MINUS"; }
 
 // * Data structures operators
 
@@ -125,10 +126,10 @@
 
 // * Literals
 
-\'([^\r\n'\\]|\\[btnfr"'\\]|\\[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4})\'      { yytext = yytext.substring(1, yyleng-2); return "CHAR_LITERAL"; }
-\"([^\"\\]|\\.)*\"                                                     { yytext = yytext.substring(1, yyleng-2); return "STRING_LITERAL"; }
+\'([^\r\n'\\]|\\[btnfr"'\\]|\\[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4})\'      { yytext = yytext.substring(1, yyleng-1); return "CHAR_LITERAL"; }
+\"([^\"\\]|\\.)*\"                                                     { yytext = yytext.substring(1, yyleng-1); return "STRING_LITERAL"; }
+[0-9]+("."[0-9]+)                                                   { return "DOUBLE_LITERAL"; }
 [0-9]+                                                                 { return "INT_LITERAL"; }
-[0-9]+\.[0-9]+                                                         { return "DOUBLE_LITERAL"; }
 
 <<EOF>>                            { return "EOF"; }
 .                                  { return "ERROR"; }
@@ -154,7 +155,6 @@
 
 %%
 
-// TODO: MAIN
 program : statements EOF
             {
                 const root =  Builder.node.root({
@@ -237,6 +237,7 @@ statement : variable_declaration    { $$ = $1; }
           | subroutine_call         { $$ = $1; }
           | subroutine_declaration  { $$ = $1; }
           | main_declaration        { $$ = $1; }
+          | object_subroutine_call  { $$ = $1; }
           ;
 
 main_declaration : MAIN subroutine_call 
@@ -258,9 +259,6 @@ type : INT      { $$ = Symbols.INT; }
      ;
 
 
-// TODO: Add support for arrays and vectors [DECLARATION]
-// - Vectors -> reservation and element list
-// - Arrays -> new 
 variable_declaration : type ID SEMICOLON
                         {
                             $$ = Builder.node.variableDcl({
@@ -332,10 +330,6 @@ variable_declaration : type ID SEMICOLON
                         }
                      ;
 
-// TODO: Casts
-// TODO: Add support for arrays and vectors [ASSIGNMENT]
-// - Vectors -> reservation and element list
-// - Arrays -> new
 variable_assignment : ID EQUAL expression SEMICOLON
                         {
                             $$ = Builder.node.variableAss({
@@ -370,7 +364,7 @@ variable_assignment : ID EQUAL expression SEMICOLON
                                 }
                             });
                         }
-                    | ID LBRACE expression RBRACE EQUAL expression SEMICOLON
+                    | ID LBRACKET expression RBRACKET EQUAL expression SEMICOLON
                         {
                             $$ = Builder.node.variableAss({
                                 line: @1.first_line,
@@ -383,7 +377,7 @@ variable_assignment : ID EQUAL expression SEMICOLON
                                 }
                             });
                         }
-                    | ID LBRACE LBRACE expression RBRACE RBRACE EQUAL expression SEMICOLON
+                    | ID LBRACKET LBRACKET expression RBRACKET RBRACKET EQUAL expression SEMICOLON
                         {
                             $$ = Builder.node.variableAss({
                                 line: @1.first_line,
@@ -415,7 +409,7 @@ if : IF LPAREN expression RPAREN LBRACE statements RBRACE
                 column: @1.first_column,
                 condition: $3,
                 statements: $6,
-                chain: $7
+                chain: $8
             });
         }
    ;
@@ -425,7 +419,7 @@ if_chain : elseif_chain else
                 $$ = $1;
                 $$.push($2);
             }
-         | ELSE LBRACE statements RBRACE
+         | else
             {
                 $$ = [$1];
             }
@@ -433,7 +427,7 @@ if_chain : elseif_chain else
 
 else : ELSE LBRACE statements RBRACE
         {
-            return Builder.node.else({
+            $$ = Builder.node.else({
                 line: @1.first_line,
                 column: @1.first_column,
                 statements: $3
@@ -547,14 +541,12 @@ for : FOR LPAREN for_init SEMICOLON for_condition SEMICOLON for_update RPAREN LB
 
 for_init : variable_declaration { $$ = $1; }
          | variable_assignment { $$ = $1; }
-        //  | subroutine_call // ??????
          ;
 
 for_condition : expression { $$ = $1; }
               ;
 
 for_update : variable_assignment { $$ = $1; }
-           // | subroutine_call // ??????
            ;
 
 do_while : DO LBRACE statements RBRACE WHILE LPAREN expression RPAREN SEMICOLON
@@ -602,8 +594,18 @@ subroutine_call_params : subroutine_call_params COMMA expression
                             }
                        ;
 
-object_subroutine_call : ID DOT subroutine_call
-                        // TODO: Not implemented AST node
+object_subroutine_call : object_subroutine_call_aux SEMICOLON { $$ = $1; }
+                       ;
+
+object_subroutine_call_aux : ID DOT subroutine_call_aux
+                        {
+                            $$ = Builder.node.objectSubroutineCall({
+                                line: @1.first_line,
+                                column: @1.first_column,
+                                objectName: $1,
+                                call: $3
+                            });
+                        }
                        ;
 
 
@@ -1006,9 +1008,49 @@ expression  : expression PLUS expression                           // a + b
                         })
                     });
                 }
+            | ID LBRACKET expression RBRACKET                      // a[1]
+                {
+                    $$ = Builder.node.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: Builder.node.reference({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            name: $1,
+                            type: ReferenceType.DIRECT,
+                            index: $3
+                        })
+                    });
+                }
+            | ID LBRACKET LBRACKET expression RBRACKET RBRACKET    // a[[1]]
+                {
+                    $$ = Builder.node.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: Builder.node.reference({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            name: $1,
+                            type: ReferenceType.DIRECT,
+                            index: $4
+                        })
+                    });
+                }
 
             // SUBROUTINE CALLS
             | subroutine_call_aux 
+                {
+                    $$ = Builder.node.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: Builder.node.call({
+                            line: @1.first_line,
+                            column: @1.first_column,
+                            call: $1
+                        })
+                    });
+                }
+            | object_subroutine_call_aux
                 {
                     $$ = Builder.node.terminalExp({
                         line: @1.first_line,
@@ -1028,13 +1070,21 @@ expression  : expression PLUS expression                           // a + b
                         value: $1
                     });
                 }
+            | cast 
+                {
+                    $$ = Builder.node.terminalExp({
+                        line: @1.first_line,
+                        column: @1.first_column,
+                        value: $1
+                    });
+                }
             ;
 
 initializers    : list_initializer
                 | vector_initializer
                 ;
 
-vector_initializer : RBRACE expression_list LBRACE
+vector_initializer : LBRACE expression_list RBRACE
                         {
                             $$ = Builder.node.initializer({
                                 line: @1.first_line,

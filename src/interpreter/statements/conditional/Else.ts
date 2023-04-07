@@ -9,15 +9,14 @@ export class Else extends Structure {
         super(args);
     }
 
-    public graphviz(): string {
-        throw new Error('Method not implemented.');
-    }
+
     public getGrahpvizLabel(): string {
-        throw new Error('Method not implemented.');
+        return 'Else';
     }
     public getGrahpvizEdges(): string {
-        throw new Error('Method not implemented.');
+        return '';
     }
+
     public evaluate() {
         throw new Error('Method not implemented.');
     }

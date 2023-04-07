@@ -11,11 +11,10 @@ export class Object extends Variable {
     public methods: Map<string, Subroutine> = new Map();
 
     constructor({
-        type,
         ...args
     }: ObjectArgs) {
         super(args);
-        this.type = type;
+        this.type = args.type;
     }
 
 }

@@ -40,7 +40,7 @@ export abstract class Statement extends Node {
     public linkStatementCustom(statement: Statement, node: string) {
         return `
             ${statement.graphviz()}
-            ${node} -> ${statement.getGraphvizNode()} 
+            ${node} -> ${statement.getGraphvizNode()};
         `
     }
 

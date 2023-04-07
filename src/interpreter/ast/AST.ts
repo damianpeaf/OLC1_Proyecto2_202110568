@@ -21,7 +21,7 @@ export class AST {
 
     get graphviz(): string | null {
         if (this._root) {
-            return this._root.graphviz();
+            return this._root.graphviz().replace(/[\t\n]+/g, '')
         }
         return null;
     }

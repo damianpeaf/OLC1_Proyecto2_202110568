@@ -3,8 +3,8 @@ import { TypeWiseValueType } from '../../elements';
 
 export abstract class Value extends Statement {
 
-    abstract get type(): TypeWiseValueType;
-    abstract get value(): any;
+    public type: TypeWiseValueType;
+    public value: any;
 
 
     public getGrahpvizLabel(): string {

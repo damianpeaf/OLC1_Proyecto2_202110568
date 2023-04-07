@@ -1,5 +1,6 @@
 import { TypeWiseVariableType } from '../../elements';
 import { StatementArgs } from '../Statement';
+import { Expression } from '../expression';
 import { Value } from './';
 
 
@@ -7,28 +8,22 @@ export type ReferenceT = "DIRECT" | "INCREMENT" | "DECREMENT"
 
 export type ReferenceArgs = StatementArgs & {
     name: string;
-    type: ReferenceT
+    type: ReferenceT;
+    index?: Expression | null;
 }
 
 export class Reference extends Value {
 
     private _name: string;
     private _type: ReferenceT;
+    private _index: Expression | null;
 
-    constructor({ name, type, ...args }: ReferenceArgs) {
+    constructor({ name, type, index = null, ...args }: ReferenceArgs) {
         super(args);
 
         this._name = name;
         this._type = type;
-    }
-
-    get type(): TypeWiseVariableType {
-        // Search for the variable type in the context
-        throw new Error('Method not implemented.');
-    }
-    get value(): any {
-        // Search for the variable value in the context
-        throw new Error('Method not implemented.');
+        this._index = index;
     }
 
     public getGrahpvizLabel(): string {

@@ -12,21 +12,15 @@ export type LiteralArgs = StatementArgs & {
 
 export class Literal extends Value {
 
-    private _type: LiteralType;
-    private _value: any;
+    public type: LiteralType;
+    public value: any;
 
     constructor({ type, value, ...args }: LiteralArgs) {
         super(args);
-        this._type = type;
-        this._value = value;
+        this.type = type;
+        this.value = value;
     }
 
-    get type(): PrimitiveT {
-        return this._type;
-    }
-    get value(): any {
-        return this._value;
-    }
 
     public evaluate() {
         throw new Error('Method not implemented.');

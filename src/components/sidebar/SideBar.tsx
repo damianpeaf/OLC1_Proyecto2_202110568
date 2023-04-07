@@ -21,7 +21,7 @@ export const SideBar = () => {
             flex
             flex-col
             lg:pt-4
-            z-50
+            z-40
             "
         >
             <SideBarItem icon={<VscHome />} label="Home" />

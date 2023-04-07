@@ -19,11 +19,10 @@ export class Primitive extends Variable {
     public type: PrimitiveT;
 
     constructor({
-        type,
         ...args
     }: PrimitiveArgs) {
         super(args);
-        this.type = type;
+        this.type = args.type;
     }
 
 }

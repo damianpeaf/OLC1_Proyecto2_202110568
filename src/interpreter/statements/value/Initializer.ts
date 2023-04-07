@@ -11,11 +11,6 @@ interface InitializerI {
     reserve?: Expression | null
 }
 
-/*
-    VECTOR: only values
-            primitive and reserv
-    LIST:   primitive
-*/
 
 export type InitializerArgs = StatementArgs & {
     initializer: InitializerI
@@ -39,14 +34,24 @@ export class Initializer extends Value {
             primitive,
             reserve
         };
+
+        // TODO: COMPUTE TYPE
+
+        /*
+            VECTOR: only values
+                    primitive and reserv
+            LIST:   primitive
+        */
     }
 
-    get type(): TypeWiseValueType {
-        throw new Error("Method not implemented.");
+    public getGrahpvizLabel(): string {
+        return `Inicializador: \n ${this.type}`;
     }
-    get value(): any {
-        throw new Error("Method not implemented.");
+
+    public getGrahpvizEdges(): string {
+        return '';
     }
+
     public evaluate() {
         throw new Error("Method not implemented.");
     }

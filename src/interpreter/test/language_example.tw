@@ -13,24 +13,24 @@ INt A=0;
 
 If(i==1){
 int a=15;
-Print(“soy el numero ”+a);
+Print("soy el numero "+a);
 }
 
 
 // Inicialización de variables
-string cadena = “hola”;
-char var_1 = ‘a’;
+string cadena = "hola";
+char var_1 = 'a';
 boolean verdadero;
 
 
 // Asignación de variables
 numero = 4;
 verdadero = true;
-cadena = “valor = “ + valor;
+cadena = "valor = " + valor;
 
 
 int edad = (int) 18.6; //toma el valor entero de 18
-char letra = (char) 70; //tomar el valor ‘F’ ya que el 70 en ascii es F
+char letra = (char) 70; //tomar el valor 'F' ya que el 70 en ascii es F
 double numero = (double) 16; //toma el valor 16.0
 
 edad++; //tiene el valor de 19
@@ -48,12 +48,12 @@ string[ ] vector2 = {"hola", "Mundo"}; //vector de 2 posiciones, con "Hola" y "M
 
 
 string[ ] vector2 = {"hola", "Mundo"}; //creamos un vector de 2 posiciones de tipo string
-string valorPosicion = vector2[0]; //posición 0, valorPosicion = “hola”
+string valorPosicion = vector2[0]; //posición 0, valorPosicion = "hola"
 
 string[ ] vector2 = {"hola", "Mundo"}; //vector de 2 posiciones, con "Hola" y "Mundo"
 int[ ] vectorNumero = {2020,2021,2022};
-vector2[0] = “OLC1 ”;
-vector2[1] = “1er Semestre ”+vectorNumero[1];
+vector2[0] = "OLC1 ";
+vector2[1] = "1er Semestre "+vectorNumero[1];
 
 list<int> lista1 = new list<int>; //se crea una lista vacía de tipo entero
 list<char> lista1 = new list<char>; //se crea una lista vacía de tipo char
