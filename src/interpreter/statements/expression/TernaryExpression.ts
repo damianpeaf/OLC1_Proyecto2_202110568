@@ -1,4 +1,5 @@
-import { Expression, ExpressionArgs, ExpressionReturnType } from "./Expression";
+import { Symbols, TypeWiseValueType } from "../../elements";
+import { Expression, ExpressionArgs } from "./Expression";
 
 
 export type TernaryExpressionArgs = ExpressionArgs & {
@@ -13,6 +14,9 @@ export class TernaryExpression extends Expression {
     public trueExpression: Expression;
     public falseExpression: Expression;
 
+    private _v: any
+    private _t: TypeWiseValueType
+
     constructor({ condition, trueExpression, falseExpression, ...args }: TernaryExpressionArgs) {
         super(args);
         this.condition = condition;
@@ -20,23 +24,58 @@ export class TernaryExpression extends Expression {
         this.falseExpression = falseExpression;
     }
 
-    get returnType(): ExpressionReturnType {
-        throw new Error("Method not implemented.");
+    get returnType(): TypeWiseValueType {
+        return this._t
     }
     get value(): any {
-        throw new Error("Method not implemented.");
-    }
-    public graphviz(): string {
-        throw new Error("Method not implemented.");
+        return this._v
     }
     public getGrahpvizLabel(): string {
-        throw new Error("Method not implemented.");
+        return 'Operador ternario'
     }
     public getGrahpvizEdges(): string {
-        throw new Error("Method not implemented.");
+        const n = this.getGraphvizNode()
+        return `
+        ${this.linkStatement(this.condition)}
+
+        ${n}QUESTION [label="?"]
+        ${n} -> ${n}QUESTION
+
+        ${this.linkStatement(this.trueExpression)}
+
+        ${n}COLON[label=":"]
+        ${n} -> ${n}COLON
+
+        ${this.linkStatement(this.falseExpression)}
+
+        `
     }
     public evaluate() {
-        throw new Error("Method not implemented.");
+        this.condition.evaluate()
+
+        const v = this.condition.value
+        const t = this.condition.returnType
+
+        if (t === Symbols.BOOLEAN) {
+            if (v) {
+                this.trueExpression.evaluate()
+                this._v = this.trueExpression.value
+                this._t = this.trueExpression.returnType
+            } else {
+                this.falseExpression.evaluate()
+                this._v = this.falseExpression.value
+                this._t = this.falseExpression.returnType
+            }
+        } else {
+            this.context.errorTable.addError({
+                column: this.column,
+                line: this.line,
+                message: `No se puede aplicar el operador ternario a un valor de tipo ${t}`,
+                type: 'Semantico'
+            })
+            this._t = Symbols.NULL
+            this._v = null
+        }
     }
 
 }

@@ -18,7 +18,7 @@ export abstract class Expression extends Statement {
             this.context.errorTable.addError({
                 column: this.column,
                 line: this.line,
-                message: `El tipo de dato ${this.returnType} no es compatible con el tipo ${type}`,
+                message: `El tipo de dato ${this.returnType} no es asignable con el tipo ${type}`,
                 type: 'Semantico'
             })
             return false

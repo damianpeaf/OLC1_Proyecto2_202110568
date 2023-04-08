@@ -19,8 +19,10 @@ export class UnaryMinus extends UnaryExpression {
         const n = this.getGraphvizNode()
         return `
             ${n}MINUS [label="-"]
-            ${this.linkStatementCustom(this.operand, n + 'MINUS')}
-        `
+            ${n} -> ${n}MINUS
+
+            ${this.linkStatement(this.operand)}
+            `
     }
     public evaluate() {
         this.operand.evaluate()

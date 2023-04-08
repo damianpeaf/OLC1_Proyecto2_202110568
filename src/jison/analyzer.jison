@@ -56,10 +56,10 @@
 
 "=="                              { return "EQUALS"; }
 "!="                              { return "NOT_EQUAL"; }
-"<"                               { return "LESS_THAN"; }
 "<="                              { return "LESS_THAN_OR_EQUAL"; }
-">"                               { return "GREATER_THAN"; }
 ">="                              { return "GREATER_THAN_OR_EQUAL"; }
+"<"                               { return "LESS_THAN"; }
+">"                               { return "GREATER_THAN"; }
 
 // * Ternary
 
