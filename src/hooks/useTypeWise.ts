@@ -83,6 +83,14 @@ export const useTypeWise = () => {
         dispatch({ type: 'close-ast-modal' })
     }
 
+    const toogleTerminal = () => {
+        if (state.isConsoleOpen) {
+            closeTerminal()
+        } else {
+            openTerminal()
+        }
+    }
+
     return {
         ...state,
         openTerminal,
@@ -99,5 +107,6 @@ export const useTypeWise = () => {
         runProgram,
         openAstModal,
         closeAstModal,
+        toogleTerminal
     }
 }

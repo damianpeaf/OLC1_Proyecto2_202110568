@@ -1,5 +1,6 @@
 import { Symbols, TypeWiseValueType } from '../../elements';
 import { BinaryExpression, BinaryExpressionArgs } from './';
+import { charToNumber } from './cast/cast';
 import { BinaryStrategy, evalBinaryStrategy } from './strategys/BinaryStrategy';
 
 export type ArithmeticExpressionT =
@@ -76,17 +77,6 @@ export class ArithmeticExpressionType {
     public static readonly DIVIDE: ArithmeticExpressionT = "DIVIDE";
     public static readonly MOD: ArithmeticExpressionT = "MOD";
     public static readonly POWER: ArithmeticExpressionT = "POWER";
-}
-
-
-const charToNumber = (operation: (a: any, b: any) => any) => {
-    return (a: any, b: any) => {
-        if (typeof a === 'number') {
-            return operation(a, b.charCodeAt(0));
-        } else {
-            return operation(a.charCodeAt(0), b);
-        }
-    }
 }
 
 
