@@ -1,9 +1,5 @@
-import { PrimitiveT } from "../../elements";
-import { Statement, StatementArgs } from "../Statement";
-import { SymbolType } from '../../elements/Symbol';
+import { StatementArgs } from "../Statement";
 import { Expression } from "./Expression";
-
-export type BinaryExpressionReturnType = PrimitiveT | SymbolType;
 
 export type BinaryExpressionArgs<SubType> = StatementArgs & {
     operator: SubType;

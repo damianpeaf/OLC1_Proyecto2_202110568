@@ -903,7 +903,7 @@ expression  : expression PLUS expression                           // a + b
                             line: @1.first_line,
                             column: @1.first_column,
                             type: Symbols.INT,
-                            value: $1
+                            value: Number($1)
                         })
                     });
                 }
@@ -916,7 +916,7 @@ expression  : expression PLUS expression                           // a + b
                             line: @1.first_line,
                             column: @1.first_column,
                             type: Symbols.DOUBLE,
-                            value: $1
+                            value: Number($1)
                         })
                     });
                 }
@@ -929,19 +929,6 @@ expression  : expression PLUS expression                           // a + b
                             line: @1.first_line,
                             column: @1.first_column,
                             type: Symbols.STRING,
-                            value: $1
-                        })
-                    });
-                }
-            | BOOLEAN_LITERAL                                      // true
-                {
-                    $$ = Builder.node.terminalExp({
-                        line: @1.first_line,
-                        column: @1.first_column,
-                        value: Builder.node.literal({
-                            line: @1.first_line,
-                            column: @1.first_column,
-                            type: Symbols.BOOLEAN,
                             value: $1
                         })
                     });
@@ -968,7 +955,7 @@ expression  : expression PLUS expression                           // a + b
                             line: @1.first_line,
                             column: @1.first_column,
                             type: Symbols.BOOLEAN,
-                            value: $1
+                            value: true
                         })
                     });
                 }
@@ -981,7 +968,7 @@ expression  : expression PLUS expression                           // a + b
                             line: @1.first_line,
                             column: @1.first_column,
                             type: Symbols.BOOLEAN,
-                            value: $1
+                            value: false
                         })
                     });
                 }
