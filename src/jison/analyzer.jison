@@ -441,6 +441,10 @@ if_chain : elseif_chain else
             {
                 $$ = [$1];
             }
+         | elseif_chain
+            {
+                $$ = $1;
+            }
          ;
 
 else : ELSE LBRACE statements RBRACE

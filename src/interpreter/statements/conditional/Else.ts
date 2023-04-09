@@ -18,7 +18,16 @@ export class Else extends Structure {
     }
 
     public evaluate() {
-        throw new Error('Method not implemented.');
+
+        this.context.scopeTrace.newScope({
+            reason: 'else'
+        });
+
+        this.statements.forEach((statement) => statement.evaluate());
+
+        this.context.scopeTrace.endScope();
+
+        return true;
     }
 
 }

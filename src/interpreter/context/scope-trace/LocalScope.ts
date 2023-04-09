@@ -1,7 +1,7 @@
 import { Variable, Subroutine } from "../../elements";
 import { GlobalScope, Scope } from "./"
 
-export type LocalScopeType = "subroutine" | "function" | "if" | "while" | "for" | "switch" | "case" | "default"
+export type LocalScopeType = "subroutine" | "function" | "if" | 'else-if' | 'else' | "while" | "for" | "switch" | "case" | "default"
 
 export class LocalScope extends Scope {
 
