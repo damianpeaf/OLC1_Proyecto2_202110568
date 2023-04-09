@@ -1,0 +1,14 @@
+ int i = 1;
+do {
+    if (i == 5) {
+        i++;
+        continue;
+    }
+    if (i == 8) {
+        break;
+    }
+    print(i);
+    i++;
+} while (i <= 10);
+
+main print("terminé");
