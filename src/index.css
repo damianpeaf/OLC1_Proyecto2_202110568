@@ -37,7 +37,7 @@ body{
 
 @layer components {
     .sidebar-icon {
-        @apply mx-auto relative flex items-center justify-center h-12 w-12 my-2 text-white text-2xl hover:bg-text-dark-theme-darker rounded-xl cursor-pointer transition-all relative;
+        @apply mx-auto flex items-center justify-center h-12 w-12 my-2 text-white text-2xl hover:bg-text-dark-theme-darker rounded-xl cursor-pointer transition-all relative;
     }
 
     .sidebar-hr {
@@ -52,6 +52,7 @@ body{
         @apply left-[65px] top-[10px] px-6 max-w-[200px] z-10;
         @apply opacity-0 transition-all;
         @apply pointer-events-none;
+        @apply text-center
     }
 
 

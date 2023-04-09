@@ -1,5 +1,6 @@
-import { VscRunAll, VscHome, VscRepo } from "react-icons/vsc";
+import { VscRunAll, VscRepo } from "react-icons/vsc";
 import { BsFillTerminalFill } from "react-icons/bs";
+import { TbBinaryTree2 } from "react-icons/tb";
 
 import { FileOptions, SideBarItemProps } from "./";
 import { useTypeWise } from "../../hooks";
@@ -24,13 +25,13 @@ export const SideBar = () => {
             z-40
             "
         >
-            <SideBarItem icon={<VscHome />} label="Home" />
-            <SideBarDivider />
             <SideBarItem icon={<VscRunAll />} label="Ejecutar" onClick={() => runProgram()} />
             <SideBarDivider />
             <FileOptions />
             <SideBarDivider />
-            <SideBarItem icon={<VscRepo />} label="Reportes" onClick={openAstModal} />
+            <SideBarItem icon={<TbBinaryTree2 />} label="Reporte AST" onClick={openAstModal} />
+            <SideBarDivider />
+            <SideBarItem icon={<VscRepo />} label="Reporte Tabla simbolos" />
             <SideBarDivider />
             <SideBarItem icon={<BsFillTerminalFill />} label="Consola" onClick={toogleTerminal} />
             <SideBarDivider />

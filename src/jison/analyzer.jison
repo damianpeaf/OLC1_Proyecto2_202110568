@@ -69,7 +69,7 @@
 // * Logical
 
 "&&"                              { return "AND"; }
-"\|\|"                            { return "OR;" }
+"||"                              { return "OR" }
 "!"                               { return "NOT"; }
 
 // * Grouping
