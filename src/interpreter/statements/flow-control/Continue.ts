@@ -1,25 +1,36 @@
 import { Statement, StatementArgs } from '../Statement';
+import { DoWhile, For, While } from '../loop';
 
 
 export type ContinueArgs = StatementArgs;
 
 export class Continue extends Statement {
 
+
     constructor(args: ContinueArgs) {
         super(args);
     }
 
-    public graphviz(): string {
-        throw new Error('Method not implemented.');
-    }
     public getGrahpvizLabel(): string {
-        throw new Error('Method not implemented.');
+        return "Continue";
     }
     public getGrahpvizEdges(): string {
-        throw new Error('Method not implemented.');
+        return "";
     }
     public evaluate() {
-        throw new Error('Method not implemented.');
+        const item = this.context.callStack.peek();
+
+        if (item && (item instanceof While || item instanceof For || item instanceof DoWhile)) {
+            item.continue = true;
+        } else {
+            this.context.errorTable.addError({
+                type: 'Semantico',
+                message: "Unicamente es posible utilizar la sentencia 'continue' en estructuras ciclicas como: 'while', 'for' o 'do-while'.",
+                line: this.line,
+                column: this.column
+            })
+
+        }
     }
 
 }

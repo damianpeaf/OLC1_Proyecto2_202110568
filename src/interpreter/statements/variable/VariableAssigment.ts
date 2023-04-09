@@ -38,7 +38,7 @@ export class VariableAssigment extends Statement {
 
         if (!variable) {
             this.context.errorTable.addError({
-                message: `La variable ${name} no ha sido declarada`,
+                message: `La variable '${name}' no ha sido declarada`,
                 line: this.line,
                 column: this.column,
                 type: 'Semantico'

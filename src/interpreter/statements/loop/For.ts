@@ -1,18 +1,18 @@
 import { LoopStructure, LoopStructureArgs } from "./LoopStructure";
 import { VariableDeclaration, VariableAssigment } from '../variable';
-import { Breakable } from "../../context";
+import { Breakable, Continueable } from "../../context";
 
 export type ForArgs = LoopStructureArgs & {
     init: VariableDeclaration | VariableAssigment;
     update: VariableAssigment;
 }
 
-export class For extends LoopStructure implements Breakable {
+export class For extends LoopStructure implements Breakable, Continueable {
 
     private init: VariableDeclaration | VariableAssigment
     private update: VariableAssigment
     public break: boolean;
-
+    public continue: boolean;
 
     constructor({ init, update, ...args }: ForArgs) {
         super(args);
@@ -20,6 +20,7 @@ export class For extends LoopStructure implements Breakable {
         this.init = init;
         this.update = update;
         this.break = false;
+        this.continue = false;
     }
 
     public graphviz(): string {

@@ -52,7 +52,7 @@ export class Reference extends Value {
             this.context.errorTable.addError({
                 column: this.column,
                 line: this.line,
-                message: `La variable ${name} no ha sido declarada`,
+                message: `La variable '${this._name}' no ha sido declarada`,
                 type: 'Semantico'
             })
         }

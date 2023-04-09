@@ -1,0 +1,16 @@
+int i = 0;
+
+while (i < 10) {
+
+    i++;
+    if (i % 2 == 0) {
+        continue;
+    }
+    print(i);
+
+    if (i == 7) {
+        break;
+    }
+}
+
+main print(i);
