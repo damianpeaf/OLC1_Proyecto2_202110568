@@ -29,6 +29,8 @@ export class Case extends ConditionalStructure implements Breakable {
     public getGrahpvizLabel(): string {
         return "Case";
     }
+
+    // TODO: Improve this
     public getGrahpvizEdges(): string {
         return "";
     }

@@ -9,4 +9,4 @@ for (int i = 1; i <= 10; i++) {
     }
 }
 
-main print(i);
+main print("terminé");

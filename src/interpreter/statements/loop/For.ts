@@ -28,6 +28,8 @@ export class For extends LoopStructure implements Breakable, Continueable {
     public getGrahpvizLabel(): string {
         return `For`;
     }
+
+    // TODO: Improve this
     public getGrahpvizEdges(): string {
         const n = this.getGraphvizNode();
 
@@ -39,18 +41,20 @@ export class For extends LoopStructure implements Breakable, Continueable {
 
             ${n}UPDATE [label="actualización"]
             ${n} -> ${n}UPDATE
+
+            ${this.linkStatementCustom(this.update, n + 'UPDATE')}
         `
 
     }
     public evaluate() {
 
-        this.init.evaluate();
         this.break = false;
         this.context.scopeTrace.newScope({
             reason: "for",
         })
 
         this.context.callStack.push(this);
+        this.init.evaluate();
 
         while (true) {
             // Recompute the condition
