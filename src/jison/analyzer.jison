@@ -276,8 +276,13 @@ type : INT      { $$ = Symbols.INT; }
      | CHAR     { $$ = Symbols.CHAR; }
      ;
 
+variable_declaration : variable_declaration_aux SEMICOLON
+                        {
+                            $$ = $1;
+                        }
+                     ;
 
-variable_declaration : type ID SEMICOLON
+variable_declaration_aux : type ID
                         {
                             $$ = Builder.node.variableDcl({
                                 line: @1.first_line,
@@ -288,7 +293,7 @@ variable_declaration : type ID SEMICOLON
                                 }),
                             });
                         }
-                     | type ID EQUAL expression SEMICOLON
+                     | type ID EQUAL expression
                           {
                             $$ = Builder.node.variableDcl({
                                 line: @1.first_line,
@@ -300,7 +305,7 @@ variable_declaration : type ID SEMICOLON
                                 value: $4
                             });
                         }
-                     | type LBRACKET RBRACKET ID SEMICOLON
+                     | type LBRACKET RBRACKET ID
                         {
                             $$ = Builder.node.variableDcl({
                                 line: @1.first_line,
@@ -311,7 +316,7 @@ variable_declaration : type ID SEMICOLON
                                 }),
                             });
                         }
-                     | type LBRACKET RBRACKET ID EQUAL expression SEMICOLON
+                     | type LBRACKET RBRACKET ID EQUAL expression
                         {
                             $$ = Builder.node.variableDcl({
                                 line: @1.first_line,
@@ -323,7 +328,7 @@ variable_declaration : type ID SEMICOLON
                                 value: $6
                             });
                         }
-                     | LIST LESS_THAN type GREATER_THAN ID SEMICOLON
+                     | LIST LESS_THAN type GREATER_THAN ID
                         {
                             $$ = Builder.node.variableDcl({
                                 line: @1.first_line,
@@ -334,7 +339,7 @@ variable_declaration : type ID SEMICOLON
                                 }),
                             });
                         }
-                     | LIST LESS_THAN type GREATER_THAN ID EQUAL expression SEMICOLON
+                     | LIST LESS_THAN type GREATER_THAN ID EQUAL expression
                         {
                             $$ = Builder.node.variableDcl({
                                 line: @1.first_line,
@@ -348,7 +353,13 @@ variable_declaration : type ID SEMICOLON
                         }
                      ;
 
-variable_assignment : ID EQUAL expression SEMICOLON
+variable_assignment : variable_assignment_aux SEMICOLON
+                        {
+                            $$ = $1;
+                        }
+                    ;
+
+variable_assignment_aux : ID EQUAL expression
                         {
                             $$ = Builder.node.variableAss({
                                 line: @1.first_line,
@@ -360,7 +371,7 @@ variable_assignment : ID EQUAL expression SEMICOLON
                                 }
                             });
                         }
-                    | ID PLUS_PLUS SEMICOLON
+                    | ID PLUS_PLUS
                         {
                             $$ = Builder.node.variableAss({
                                 line: @1.first_line,
@@ -371,7 +382,7 @@ variable_assignment : ID EQUAL expression SEMICOLON
                                 }
                             });
                         }
-                    | ID MINUS_MINUS SEMICOLON
+                    | ID MINUS_MINUS
                         {
                             $$ = Builder.node.variableAss({
                                 line: @1.first_line,
@@ -382,7 +393,7 @@ variable_assignment : ID EQUAL expression SEMICOLON
                                 }
                             });
                         }
-                    | ID LBRACKET expression RBRACKET EQUAL expression SEMICOLON
+                    | ID LBRACKET expression RBRACKET EQUAL expression
                         {
                             $$ = Builder.node.variableAss({
                                 line: @1.first_line,
@@ -395,7 +406,7 @@ variable_assignment : ID EQUAL expression SEMICOLON
                                 }
                             });
                         }
-                    | ID LBRACKET LBRACKET expression RBRACKET RBRACKET EQUAL expression SEMICOLON
+                    | ID LBRACKET LBRACKET expression RBRACKET RBRACKET EQUAL expression
                         {
                             $$ = Builder.node.variableAss({
                                 line: @1.first_line,
@@ -561,14 +572,14 @@ for : FOR LPAREN for_init SEMICOLON for_condition SEMICOLON for_update RPAREN LB
         }
     ;
 
-for_init : variable_declaration { $$ = $1; }
-         | variable_assignment { $$ = $1; }
+for_init : variable_declaration_aux { $$ = $1; }
+         | variable_assignment_aux { $$ = $1; }
          ;
 
 for_condition : expression { $$ = $1; }
               ;
 
-for_update : variable_assignment { $$ = $1; }
+for_update : variable_assignment_aux { $$ = $1; }
            ;
 
 do_while : DO LBRACE statements RBRACE WHILE LPAREN expression RPAREN SEMICOLON
