@@ -9,7 +9,7 @@ export abstract class Expression extends Statement {
         super(args);
     }
 
-    // TODO: Unify this on an object
+    // Note: I should use a tranfer object here. -_-
     abstract get returnType(): TypeWiseValueType;
     abstract get value(): any;
 

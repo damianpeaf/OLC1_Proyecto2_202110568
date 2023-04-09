@@ -1,24 +1,33 @@
+import { Breakable } from "../../context";
 import { Structure, StructureArgs } from "../Structure";
 
 export type DefaultArgs = StructureArgs & {
 }
 
-export class Default extends Structure {
+export class Default extends Structure implements Breakable {
 
+    public break: boolean;
     constructor({ ...args }: DefaultArgs) {
         super(args);
-    }
-    public graphviz(): string {
-        throw new Error("Method not implemented.");
-    }
-    public getGrahpvizLabel(): string {
-        throw new Error("Method not implemented.");
-    }
-    public getGrahpvizEdges(): string {
-        throw new Error("Method not implemented.");
-    }
-    public evaluate() {
-        throw new Error("Method not implemented.");
+        this.break = false;
     }
 
+    public getGrahpvizLabel(): string {
+        return "Default";
+    }
+    public getGrahpvizEdges(): string {
+        return "";
+    }
+    public evaluate() {
+        this.context.callStack.push(this);
+        this.context.scopeTrace.newScope({ reason: 'default' })
+
+        for (const s of this.statements) {
+            s.evaluate();
+        }
+
+        if (this.context.callStack.in(this)) this.context.callStack.remove(this);
+
+        this.context.scopeTrace.endScope();
+    }
 }

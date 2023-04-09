@@ -33,7 +33,7 @@ export class Runtime {
 
             this.ast.root = root;
             // console.log(this.ast.graphviz)
-            this.ast.evalGlobalState();
+            this.ast.run();
 
             return true
         } catch (error) {

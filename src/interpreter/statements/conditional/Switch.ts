@@ -20,17 +20,55 @@ export class Switch extends Statement {
         this.cases = cases;
     }
 
-    public graphviz(): string {
-        throw new Error("Method not implemented.");
-    }
     public getGrahpvizLabel(): string {
-        throw new Error("Method not implemented.");
+        return "Switch";
     }
     public getGrahpvizEdges(): string {
-        throw new Error("Method not implemented.");
+        const n = this.getGraphvizNode();
+        return `
+            ${n}LPAREN [label="("]
+            ${n} -> ${n}LPAREN
+
+            ${this.linkStatement(this.value)}
+
+            ${n}RPAREN [label=")"]
+            ${n} -> ${n}RPAREN
+        
+            ${n}LBRACE [label="{"]
+            ${n} -> ${n}LBRACE
+
+            ${n}CASES [label="Casos"]
+            ${n} -> ${n}CASES
+
+            ${n}RBRACE [label="}"]
+            ${n} -> ${n}RBRACE
+
+            ${this.linkStatementsCustom(this.cases, n + 'CASES')}
+        `
     }
     public evaluate() {
-        throw new Error("Method not implemented.");
+        this.value.evaluate();
+        const referenceValue = {
+            type: this.value.returnType,
+            value: this.value.value
+        }
+
+        for (const c of this.cases) {
+
+            if (c instanceof Case) {
+                c.referenceValue = referenceValue;
+                c.evaluate();
+                if (c.break) break;
+                // Evaluate next case
+                continue;
+            }
+
+            if (c instanceof Default) {
+                c.evaluate();
+                break;
+            }
+
+        }
     }
 
 }

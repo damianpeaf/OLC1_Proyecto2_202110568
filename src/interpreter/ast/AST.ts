@@ -27,14 +27,13 @@ export class AST {
         return null;
     }
 
-    public evalGlobalState() {
+    public run() {
         if (this._root) {
             this.initDefaults();
             return this._root.evalGlobalState()
         }
         return null;
     }
-    // TODO : Evaluate the AST
 
     private initDefaults() {
         this.context.scopeTrace.addSubroutine(printSubroutine())

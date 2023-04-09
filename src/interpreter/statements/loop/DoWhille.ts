@@ -1,13 +1,16 @@
+import { Breakable } from "../../context";
 import { LoopStructure, LoopStructureArgs } from "./LoopStructure";
 
 export type DoWhileArgs = LoopStructureArgs & {
 
 }
 
-export class DoWhile extends LoopStructure {
+export class DoWhile extends LoopStructure implements Breakable {
 
+    public break: boolean;
     constructor({ ...args }: DoWhileArgs) {
         super(args);
+        this.break = false;
     }
 
     public graphviz(): string {

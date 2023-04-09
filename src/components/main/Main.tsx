@@ -14,7 +14,6 @@ export const Main = () => {
             h-full
         "
         >
-            {/* TODO: Add router here */}
             <section
                 className='
                     h-full
