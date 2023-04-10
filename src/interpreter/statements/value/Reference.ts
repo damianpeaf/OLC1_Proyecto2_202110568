@@ -3,6 +3,7 @@ import { StatementArgs } from '../Statement';
 import { Expression } from '../expression';
 import { Value } from './';
 import { typeWiseReducer } from '../../../context/typewise-reducer';
+import { Scope } from '../../context/scope-trace';
 
 export type ReferenceT = "DIRECT" | "INCREMENT" | "DECREMENT" | "INDEXED";
 
@@ -22,6 +23,7 @@ export class Reference extends Value {
 
     private _v: any;
     private _t: TypeWiseValueType;
+    private sourceScope: Scope | null;
 
     constructor({ name, type, index = null, indexType = null, ...args }: ReferenceArgs) {
         super(args);
@@ -33,6 +35,7 @@ export class Reference extends Value {
         this._v = null;
         this._t = Symbols.NULL;
         this._indexType = indexType;
+        this.sourceScope = null;
     }
 
     get type(): TypeWiseValueType {
@@ -47,8 +50,14 @@ export class Reference extends Value {
     }
 
     public evaluate() {
-        const variable = this.context.scopeTrace.getVariable(this._name);
-        // TODO: SOPORT FOR INDEX
+        let variable: Variable | null = null;
+
+        if (this.sourceScope) {
+            variable = this.sourceScope.getVariable(this._name);
+        } else {
+            variable = this.context.scopeTrace.getVariable(this._name);
+            this.sourceScope = this.context.scopeTrace.currentScope;
+        }
 
         if (!variable) {
             this.context.errorTable.addError({

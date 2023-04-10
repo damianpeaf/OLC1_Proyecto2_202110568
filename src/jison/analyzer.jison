@@ -6,7 +6,7 @@
 
 %{
     import { Builder } from '../ast';
-    import { Symbols, SubroutineType } from '../elements';
+    import { Symbols, SubroutineType, primitiveAsCollection } from '../elements';
     import { VariableAssigmentType } from '../statements/variable';
     import { ArithmeticExpressionType,RelationalExpresionType,LogicalExpressionType } from '../statements/expression';
     import { ReferenceType, InitializerType } from '../statements/value';
@@ -732,7 +732,25 @@ subroutine_declaration_param : type ID
                                         name: $2
                                     });
                                 }
-                             ;
+                                | LIST LESS_THAN type GREATER_THAN ID
+                                {
+                                    $$ = Builder.node.argument({
+                                        line: @1.first_line,
+                                        column: @1.first_column,
+                                        type: [primitiveAsCollection($3, 'list')],
+                                        name: $5
+                                    });
+                                }    
+                                | type LBRACKET RBRACKET ID
+                                {
+                                    $$ = Builder.node.argument({
+                                        line: @1.first_line,
+                                        column: @1.first_column,
+                                        type: [primitiveAsCollection($1, 'vector')],
+                                        name: $4
+                                    });
+                                }
+                                ;
 
 expression  : expression PLUS expression                           // a + b
                 {

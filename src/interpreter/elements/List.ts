@@ -20,7 +20,7 @@ export class List extends Object implements CollectionI {
     public _items: (Expression | null)[];
     public _initiated: boolean = false;
 
-    constructor({ primitive, ...args }: ListArgs) {
+    constructor({ primitive, value = null, ...args }: ListArgs) {
         const type = primitive + '[[]]' as TypeWiseType;
         super({ type, ...args });
         this.primitive = primitive;
@@ -28,6 +28,10 @@ export class List extends Object implements CollectionI {
 
         this._size = 0;
         this._items = [];
+
+        if (value) {
+            this.value = value;
+        }
     }
 
     private add(value: Expression): void {
@@ -62,6 +66,13 @@ export class List extends Object implements CollectionI {
             this.initDefaultMethods();
         }
 
+        if (values) {
+            this._size = values.length;
+            values.forEach((value) => {
+                this._items.push(value);
+            });
+        }
+
         this._value = {
             primitive,
             reserve,
@@ -69,7 +80,10 @@ export class List extends Object implements CollectionI {
         };
     }
     public get value() {
-        return this._value;
+        return {
+            ...this._value,
+            values: this._items
+        };
     }
     // TODO: Implement _items structure for List
 }

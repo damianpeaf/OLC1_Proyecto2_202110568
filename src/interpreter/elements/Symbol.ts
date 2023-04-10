@@ -53,3 +53,11 @@ export function getPrimitiveType(type: TypeWiseValueType): PrimitiveT {
         throw new Error(`Not handled type: ${type}`)
     }
 }
+
+export function primitiveAsCollection(type: PrimitiveT, collecion: 'list' | 'vector'): VectorType | ListType {
+    if (collecion == 'list') {
+        return `${type}[[]]` as ListType
+    } else {
+        return `${type}[]` as VectorType
+    }
+}

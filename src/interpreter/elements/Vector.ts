@@ -24,10 +24,14 @@ export class Vector extends Object implements CollectionI {
     public _items: CollectionItemsT[] = [];
     public _initiated: boolean = false;
 
-    constructor({ primitive, ...args }: VectorArgs) {
+    constructor({ primitive, value = null, ...args }: VectorArgs) {
         const type = primitive + '[]' as TypeWiseValueType;
         super({ type, ...args });
         this.primitive = primitive;
+
+        if (value) {
+            this.value = value;
+        }
     }
 
     set value({ primitive, reserve, values }: InitializerI) {
@@ -39,9 +43,7 @@ export class Vector extends Object implements CollectionI {
             values.forEach((value) => {
                 this._items.push(value);
             });
-        }
-
-        if (reserve) {
+        } else if (reserve) {
             reserve.evaluate();
             this._size = reserve.value;
 
@@ -58,7 +60,10 @@ export class Vector extends Object implements CollectionI {
     }
 
     get value() {
-        return this._value;
+        return {
+            ...this._value,
+            values: this._items
+        };
     }
 
 }

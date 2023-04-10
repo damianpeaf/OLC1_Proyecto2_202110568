@@ -188,7 +188,7 @@ export class Subroutine implements Returnable {
 
             if (!parameterType.includes(argType)) {
                 this.context.errorTable.addError({
-                    message: `El argumento ${i} de la subrutina ${this.name} puede ser del tipo ${parameterType.join(", ")}. Se ha proporcionado un argumento de tipo ${argType}`,
+                    message: `El argumento ${i + 1} de la subrutina ${this.name} puede ser del tipo ${parameterType.join(", ")}. Se ha proporcionado un argumento de tipo ${argType}`,
                     column: arg.column,
                     line: arg.line,
                     type: 'Semantico'

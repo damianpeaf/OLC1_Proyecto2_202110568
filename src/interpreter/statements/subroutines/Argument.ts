@@ -1,16 +1,16 @@
-import { PrimitiveT } from '../../elements';
+import { TypeWiseValueType } from '../../elements';
 import { Statement, StatementArgs } from '../Statement';
 
 
 export type ArgumentArgs = StatementArgs & {
     name: string;
-    type: PrimitiveT[];
+    type: TypeWiseValueType[];
 };
 
 export class Argument extends Statement {
 
     public name: string;
-    public type: PrimitiveT[];
+    public type: TypeWiseValueType[];
 
     constructor({ name, type, ...args }: ArgumentArgs) {
         super(args);
