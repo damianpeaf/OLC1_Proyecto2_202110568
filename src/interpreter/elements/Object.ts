@@ -8,7 +8,7 @@ export class Object extends Variable {
 
     public type: TypeWiseValueType;
     public properties: Map<string, Variable> = new Map();
-    public methods: Map<string, Subroutine> = new Map();
+    public subroutines: Map<string, Subroutine> = new Map();
 
     constructor({
         ...args

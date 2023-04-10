@@ -28,6 +28,7 @@ export const Editor = () => {
             options={{
                 fontSize: "20px",
             }}
+            language='java'
         />
     )
 }

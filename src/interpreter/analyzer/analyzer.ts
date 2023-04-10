@@ -257,7 +257,8 @@ case 40:
                                 type: VariableAssigmentType.INDEXED,
                                 reference:{
                                     name: $$[$0-5],
-                                    index: $$[$0-3]
+                                    index: $$[$0-3],
+                                    indexType: 'vector'
                                 }
                             });
                         
@@ -271,7 +272,8 @@ case 41:
                                 type: VariableAssigmentType.INDEXED,
                                 reference:{
                                     name: $$[$0-7],
-                                    index: $$[$0-4]
+                                    index: $$[$0-4],
+                                    indexType: 'list'
                                 }
                             });
                         
@@ -850,8 +852,9 @@ case 110:
                             line: _$[$0-3].first_line,
                             column: _$[$0-3].first_column,
                             name: $$[$0-3],
-                            type: ReferenceType.DIRECT,
-                            index: $$[$0-1]
+                            type: ReferenceType.INDEXED,
+                            index: $$[$0-1],
+                            indexType: 'vector'
                         })
                     });
                 
@@ -865,8 +868,9 @@ case 111:
                             line: _$[$0-5].first_line,
                             column: _$[$0-5].first_column,
                             name: $$[$0-5],
-                            type: ReferenceType.DIRECT,
-                            index: $$[$0-2]
+                            type: ReferenceType.INDEXED,
+                            index: $$[$0-2],
+                            indexType: 'list'
                         })
                     });
                 

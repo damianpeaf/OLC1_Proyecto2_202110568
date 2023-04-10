@@ -38,7 +38,7 @@ export class Root extends Node {
         return this.stmts.map(stmt => `${this.getGraphvizNode()} -> ${stmt.getGraphvizNode()};`).join('\n');
     }
     public evaluate() {
-        throw new Error("Method not implemented.");
+        this.evalGlobalState();
     }
 
     evalGlobalState() {

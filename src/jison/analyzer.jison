@@ -402,7 +402,8 @@ variable_assignment_aux : ID EQUAL expression
                                 type: VariableAssigmentType.INDEXED,
                                 reference:{
                                     name: $1,
-                                    index: $3
+                                    index: $3,
+                                    indexType: 'vector'
                                 }
                             });
                         }
@@ -415,7 +416,8 @@ variable_assignment_aux : ID EQUAL expression
                                 type: VariableAssigmentType.INDEXED,
                                 reference:{
                                     name: $1,
-                                    index: $4
+                                    index: $4,
+                                    indexType: 'list'
                                 }
                             });
                         }
@@ -1037,8 +1039,9 @@ expression  : expression PLUS expression                           // a + b
                             line: @1.first_line,
                             column: @1.first_column,
                             name: $1,
-                            type: ReferenceType.DIRECT,
-                            index: $3
+                            type: ReferenceType.INDEXED,
+                            index: $3,
+                            indexType: 'vector'
                         })
                     });
                 }
@@ -1051,8 +1054,9 @@ expression  : expression PLUS expression                           // a + b
                             line: @1.first_line,
                             column: @1.first_column,
                             name: $1,
-                            type: ReferenceType.DIRECT,
-                            index: $4
+                            type: ReferenceType.INDEXED,
+                            index: $4,
+                            indexType: 'list'
                         })
                     });
                 }

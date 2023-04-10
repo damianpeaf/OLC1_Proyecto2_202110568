@@ -19,16 +19,16 @@ export class ElementBuilder {
         }
     }
 
-    public primitive(args: PrimitiveArgs) {
-        return new Primitive(args)
+    public primitive(args: BuilderArgs<PrimitiveArgs>) {
+        return new Primitive(this.addContext(args))
     }
 
-    public vector(args: VectorArgs) {
-        return new Vector(args)
+    public vector(args: BuilderArgs<VectorArgs>) {
+        return new Vector(this.addContext(args))
     }
 
-    public list(args: ListArgs) {
-        return new List(args)
+    public list(args: BuilderArgs<ListArgs>) {
+        return new List(this.addContext(args))
     }
 
     public subroutine(args: BuilderArgs<SubroutineArgs>) {

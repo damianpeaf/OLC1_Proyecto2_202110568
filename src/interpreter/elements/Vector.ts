@@ -1,14 +1,28 @@
 import { Object, PrimitiveT, ObjectArgs, Subroutine, PrimitiveType, TypeWiseValueType } from ".";
+import { Expression } from "../statements/expression";
+import { InitializerI } from "../statements/value";
 
 export type VectorType = "INT[]" | "DOUBLE[]" | "STRING[]" | "BOOLEAN[]" | "CHAR[]"
+
+type CollectionItemsT = Expression | null
+export interface CollectionI {
+    _size: number;
+    _items: CollectionItemsT[];
+    _initiated: boolean;
+}
 
 export type VectorArgs = Omit<ObjectArgs, 'type'> & {
     primitive: PrimitiveT
 }
 
-export class Vector extends Object {
+
+export class Vector extends Object implements CollectionI {
 
     public primitive: PrimitiveT;
+
+    public _size: number = 0;
+    public _items: CollectionItemsT[] = [];
+    public _initiated: boolean = false;
 
     constructor({ primitive, ...args }: VectorArgs) {
         const type = primitive + '[]' as TypeWiseValueType;
@@ -16,5 +30,35 @@ export class Vector extends Object {
         this.primitive = primitive;
     }
 
-    // TODO: Implement data structure for vector
+    set value({ primitive, reserve, values }: InitializerI) {
+
+        this._initiated = true;
+
+        if (values) {
+            this._size = values.length;
+            values.forEach((value) => {
+                this._items.push(value);
+            });
+        }
+
+        if (reserve) {
+            reserve.evaluate();
+            this._size = reserve.value;
+
+            for (let i = 0; i < this._size; i++) {
+                this._items.push(null);
+            }
+        }
+
+        this._value = {
+            primitive,
+            reserve,
+            values
+        };
+    }
+
+    get value() {
+        return this._value;
+    }
+
 }

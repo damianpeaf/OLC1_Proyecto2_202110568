@@ -1,11 +1,11 @@
-import { TypeWiseValueType } from "../../elements";
+import { Symbols, TypeWiseValueType } from "../../elements";
 import { StatementArgs } from "../Statement";
 import { Expression } from "../expression";
 import { Value } from "./";
 
 export type InitializerT = 'list' | 'vector'
 
-interface InitializerI {
+export interface InitializerI {
     values?: Expression[] | null;
     primitive?: TypeWiseValueType;
     reserve?: Expression | null
@@ -19,8 +19,10 @@ export type InitializerArgs = StatementArgs & {
 
 export class Initializer extends Value {
 
+
     public objectType: InitializerT;
     public initializer: Required<InitializerI>;
+    private _type: TypeWiseValueType;
 
     constructor({
         objectType,
@@ -35,13 +37,7 @@ export class Initializer extends Value {
             reserve
         };
 
-        // TODO: COMPUTE TYPE
 
-        /*
-            VECTOR: only values
-                    primitive and reserv
-            LIST:   primitive
-        */
     }
 
     public getGrahpvizLabel(): string {
@@ -53,7 +49,89 @@ export class Initializer extends Value {
     }
 
     public evaluate() {
-        throw new Error("Method not implemented.");
+
+        const { reserve, primitive, values } = this.initializer
+
+        if (this.objectType === InitializerType.VECTOR) {
+
+            if (this.initializer.values) {
+                // Check if all values are the same type
+
+                if (this.initializer.values.length === 0) {
+                    this.context.errorTable.addError({
+                        column: this.column,
+                        line: this.line,
+                        message: `Se debe inicializar el vector con al menos un valor`,
+                        type: 'Semantico'
+                    });
+                    this._type = null;
+                    return;
+                }
+
+                this.initializer.values.forEach((value) => {
+                    value.evaluate();
+                });
+
+                const type = this.initializer.values[0].returnType;
+
+                const same = this.initializer.values.every((value) => {
+                    return value.returnType === type;
+                });
+
+                if (!same) {
+                    this.context.errorTable.addError({
+                        column: this.column,
+                        line: this.line,
+                        message: `Los valores del inicializador del vector deben ser del mismo tipo`,
+                        type: 'Semantico'
+                    });
+                    this._type = null;
+                    return;
+                }
+
+                this._type = type + '[]' as TypeWiseValueType;
+            }
+
+            if (reserve) {
+
+                reserve.evaluate();
+
+                if (reserve.returnType === Symbols.DOUBLE && reserve.value % 1 !== 0) {
+                    this.context.errorTable.addError({
+                        message: `El valor ${reserve.value} no puede ser un valor decimal para reservar un vector`,
+                        line: this.line,
+                        column: this.column,
+                        type: 'Semantico'
+                    });
+                    return;
+                }
+
+                if (!(reserve.returnType === Symbols.INT || reserve.returnType === Symbols.DOUBLE)) {
+                    this.context.errorTable.addError({
+                        message: `El valor ${reserve.value} de tipo ${reserve.returnType} no puede ser un indice`,
+                        line: this.line,
+                        column: this.column,
+                        type: 'Semantico'
+                    });
+                    return;
+                }
+
+                this._type = this.initializer.primitive + '[]' as TypeWiseValueType;
+            }
+        }
+
+        if (this.objectType === InitializerType.LIST) {
+            this._type = this.initializer.primitive + '[[]]' as TypeWiseValueType;
+        }
+
+
+    }
+
+    get type(): TypeWiseValueType {
+        return this._type;
+    }
+    get value(): any {
+        return this.initializer;
     }
 }
 

@@ -1,0 +1,15 @@
+void iniciar(){
+
+    list<string> lista1 = new list<string>; 
+    lista1.add("arbol");
+    lista1.add("manzana");
+    lista1.add("arquitectura");
+    lista1.add("degarre");
+
+    for(int i = 0; i< 4; i++){
+        print(lista1[[i]]);
+    }
+
+}
+
+main iniciar();
