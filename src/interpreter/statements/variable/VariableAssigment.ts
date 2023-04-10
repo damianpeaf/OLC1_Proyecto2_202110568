@@ -165,9 +165,11 @@ export class VariableAssigment extends Statement {
                 }
 
                 if (value) {
-                    value.evaluate();
                     if (value.validateType(variable.primitive)) {
-                        variable._items[index.value] = value;
+                        variable._items[index.value] = {
+                            value: value.value,
+                            type: variable.primitive
+                        };
                     }
                 }
 

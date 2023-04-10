@@ -11,6 +11,14 @@ export interface InitializerI {
     reserve?: Expression | null
 }
 
+export interface EvaluatedInitializerI {
+    values?: {
+        value: any;
+        type: TypeWiseValueType;
+    }[] | null;
+    primitive?: TypeWiseValueType;
+    reserve?: Expression | null
+}
 
 export type InitializerArgs = StatementArgs & {
     initializer: InitializerI
@@ -130,8 +138,17 @@ export class Initializer extends Value {
     get type(): TypeWiseValueType {
         return this._type;
     }
-    get value(): any {
-        return this.initializer;
+    get value(): EvaluatedInitializerI {
+        return {
+            primitive: this.initializer.primitive,
+            reserve: this.initializer.reserve,
+            values: this.initializer.values?.map((value) => {
+                return {
+                    value: value.value,
+                    type: value.returnType
+                }
+            })
+        }
     }
 }
 

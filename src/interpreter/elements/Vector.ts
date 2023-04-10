@@ -1,10 +1,10 @@
 import { Object, PrimitiveT, ObjectArgs, Subroutine, PrimitiveType, TypeWiseValueType } from ".";
 import { Expression } from "../statements/expression";
-import { InitializerI } from "../statements/value";
+import { EvaluatedInitializerI, InitializerI } from "../statements/value";
 
 export type VectorType = "INT[]" | "DOUBLE[]" | "STRING[]" | "BOOLEAN[]" | "CHAR[]"
 
-type CollectionItemsT = Expression | null
+export type CollectionItemsT = { value: any, type: TypeWiseValueType } | null
 export interface CollectionI {
     _size: number;
     _items: CollectionItemsT[];
@@ -34,14 +34,17 @@ export class Vector extends Object implements CollectionI {
         }
     }
 
-    set value({ primitive, reserve, values }: InitializerI) {
+    set value({ primitive, reserve, values }: EvaluatedInitializerI) {
 
         this._initiated = true;
 
         if (values) {
             this._size = values.length;
             values.forEach((value) => {
-                this._items.push(value);
+                this._items.push({
+                    value: value.value,
+                    type: value.type
+                });
             });
         } else if (reserve) {
             reserve.evaluate();

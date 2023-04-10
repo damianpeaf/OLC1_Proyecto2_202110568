@@ -195,9 +195,8 @@ export class Reference extends Value {
                 const resultant = variable._items[this._index.value];
 
                 if (resultant) {
-                    resultant.evaluate();
                     this._v = resultant.value;
-                    this._t = resultant.returnType;
+                    this._t = resultant.type;
                 } else {
                     this.context.errorTable.addError({
                         message: `El valor solicitado en la posicion ${this._index.value} no ha sido inicializado`,

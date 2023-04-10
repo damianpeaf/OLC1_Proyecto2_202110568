@@ -2,8 +2,8 @@
 import { Object, PrimitiveT, ObjectArgs, Variable, Symbols, SubroutineType, Argument, TypeWiseType, TypeWiseValueType } from ".";
 import { Builder } from "../ast";
 import { Expression } from "../statements/expression";
-import { InitializerI } from "../statements/value";
-import { CollectionI } from './Vector';
+import { EvaluatedInitializerI, InitializerI } from "../statements/value";
+import { CollectionI, CollectionItemsT } from './Vector';
 
 export type ListType = "INT[[]]" | "DOUBLE[[]]" | "STRING[[]]" | "BOOLEAN[[]]" | "CHAR[[]]"
 
@@ -11,13 +11,12 @@ export type ListArgs = Omit<ObjectArgs, 'type'> & {
     primitive: PrimitiveT
 }
 
-type ListItems = Expression | null
 
 export class List extends Object implements CollectionI {
 
     public primitive: PrimitiveT;
     public _size: number;
-    public _items: (Expression | null)[];
+    public _items: CollectionItemsT[];
     public _initiated: boolean = false;
 
     constructor({ primitive, value = null, ...args }: ListArgs) {
@@ -37,7 +36,10 @@ export class List extends Object implements CollectionI {
     private add(value: Expression): void {
         if (this._initiated) {
             this._size++;
-            this._items.push(value);
+            this._items.push({
+                value: value.value,
+                type: value.returnType
+            });
         }
     }
 
@@ -57,7 +59,7 @@ export class List extends Object implements CollectionI {
         }));
     }
 
-    public set value({ primitive, reserve, values }: InitializerI) {
+    public set value({ primitive, reserve, values }: EvaluatedInitializerI) {
 
         this._initiated = true;
 
@@ -69,7 +71,10 @@ export class List extends Object implements CollectionI {
         if (values) {
             this._size = values.length;
             values.forEach((value) => {
-                this._items.push(value);
+                this._items.push({
+                    value: value.value,
+                    type: value.type
+                });
             });
         }
 
@@ -85,5 +90,4 @@ export class List extends Object implements CollectionI {
             values: this._items
         };
     }
-    // TODO: Implement _items structure for List
-}
+} ''
