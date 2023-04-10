@@ -27,13 +27,14 @@ export class DoWhile extends LoopStructure implements Breakable, Continueable {
 
     public evaluate() {
         this.break = false;
-        this.context.scopeTrace.newScope({
-            reason: "do-while",
-        })
 
         this.context.callStack.push(this);
 
         while (true) {
+            this.context.scopeTrace.newScope({
+                reason: "do-while",
+            })
+
             // Execute the body, and check continue and break
             for (const s of this.statements) {
                 s.evaluate();
@@ -46,10 +47,12 @@ export class DoWhile extends LoopStructure implements Breakable, Continueable {
 
             if (this.continue) {
                 this.continue = false;
+                this.context.scopeTrace.endScope();
                 continue;
             }
 
             if (this.break || !this.context.callStack.in(this)) {
+                this.context.scopeTrace.endScope();
                 break;
             }
 
@@ -65,19 +68,22 @@ export class DoWhile extends LoopStructure implements Breakable, Continueable {
                     line: this.line,
                     column: this.column
                 })
+                this.context.scopeTrace.endScope();
                 break;
             }
 
             if (!value) {
+                this.context.scopeTrace.endScope();
                 break;
             }
+
+            this.context.scopeTrace.endScope();
         }
 
         if (this.context.callStack.in(this)) {
             this.context.callStack.remove(this);
         }
 
-        this.context.scopeTrace.endScope();
     }
 
 }
