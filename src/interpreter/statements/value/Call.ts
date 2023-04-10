@@ -14,6 +14,8 @@ export type CallArgs = StatementArgs & {
 export class Call extends Value {
 
     private _call: SubroutineCall | ObjectSubroutineCall;
+    private _v: any;
+    private _t: TypeWiseValueType;
 
     constructor({ call, ...args }: CallArgs) {
         super(args);
@@ -21,16 +23,24 @@ export class Call extends Value {
         this._call = call;
     }
 
-    public graphviz(): string {
-        throw new Error('Method not implemented.');
-    }
     public getGrahpvizLabel(): string {
-        throw new Error('Method not implemented.');
+        if (this._call instanceof ObjectSubroutineCall) {
+            return `Llamada a subrutina: ${this._call.objectName}.${this._call.call.name}`;
+        } else {
+            return `Llamada a subrutina: ${this._call.name}`;
+        }
     }
-    public getGrahpvizEdges(): string {
-        throw new Error('Method not implemented.');
+
+    get type(): TypeWiseValueType {
+        return this._t;
+    }
+    get value(): any {
+        return this._v;
     }
     public evaluate() {
-        throw new Error('Method not implemented.');
+        this._call.evaluate();
+        this._v = this._call.value;
+        this._t = this._call.valueType;
     }
+
 }

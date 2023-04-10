@@ -1,6 +1,7 @@
 import { Variable, TypeWiseValueType, Argument, Symbols, isPrimitiveType, isVectorType, getPrimitiveType, isListType } from ".";
 import { Builder } from "../ast";
-import { Context } from "../context";
+import { Context, Returnable } from "../context";
+import { Scope } from "../context/scope-trace";
 import { Statement } from "../statements";
 import { Expression } from "../statements/expression";
 
@@ -13,10 +14,11 @@ export type SubroutineArgs = {
     returnType: TypeWiseValueType,
     body: Statement[],
     object?: Object | null,
-    context: Context
+    context: Context,
+    parentScope?: Scope
 }
 
-export class Subroutine {
+export class Subroutine implements Returnable {
 
     public name: string;
     public type: SubroutineT;
@@ -25,8 +27,13 @@ export class Subroutine {
     public body: Statement[]
     public object: Object | null;
     public context: Context;
+    public parentScope: Scope;
 
-    constructor({ name, type, parameters, returnType, body, object = null, context }: SubroutineArgs) {
+    public return: boolean;
+    public returnValue: any;
+    public returnValueType: TypeWiseValueType;
+
+    constructor({ name, type, parameters, returnType, body, object = null, context, parentScope }: SubroutineArgs) {
         this.name = name;
         this.type = type;
         this.parameters = parameters;
@@ -34,17 +41,26 @@ export class Subroutine {
         this.body = body;
         this.object = object;
         this.context = context;
+        this.parentScope = parentScope || context.scopeTrace.globalScope;
+
+        this.return = false;
+        this.returnValue = null;
+        this.returnValueType = Symbols.NULL;
     }
 
     public call(args: Expression[], source: Statement): any {
 
+
         const validArgs = this.validateParameters(args, source);
 
         if (!validArgs) {
-            return Symbols.NULL;
+            return;
         }
 
-        // create new scope
+        // create new scope in scope of the subroutine declaration
+        const prevExecutionScope = this.context.scopeTrace.currentScope;
+        this.context.scopeTrace.setCurrentScope(this.parentScope);
+
         const scope = this.context.scopeTrace.newScope({ reason: 'subroutine' });
 
         // add parameters to scope
@@ -87,25 +103,64 @@ export class Subroutine {
                     type: 'Semantico'
                 })
 
-                return Symbols.NULL;
+                this.return = true;
+                this.returnValue = Symbols.NULL;
+                return
             }
             scope.addVariable(argumentVariable)
         }
 
+        // add subroutine to call stack
+        this.context.callStack.push(this);
+        this.return = false;
+        this.returnValue = null;
+        this.returnValueType = Symbols.NULL;
+
         // execute body
         for (let i = 0; i < this.body.length; i++) {
             const stmt = this.body[i];
-            const value = stmt.evaluate();
+            stmt.evaluate();
 
-            if (value) {
-                if (value.type == 'return') {
-                    return value.value;
-                }
+            if (this.return) {
+                break;
             }
         }
 
-        // return null if no return statement
-        return null;
+        // reset scope
+        this.context.scopeTrace.setCurrentScope(prevExecutionScope);
+
+        // remove subroutine from call stack
+        if (this.context.callStack.in(this)) {
+            this.context.callStack.remove(this);
+        }
+
+        this.validateReturn(source);
+    }
+
+    private validateReturn(source: Statement) {
+
+        if (this.type === 'function' && (!this.return || this.returnValueType !== this.returnType)) {
+            this.context.errorTable.addError({
+                message: `La subrutina ${this.name} debe retornar un valor de tipo ${this.returnType}`,
+                column: source.column,
+                line: source.line,
+                type: 'Semantico'
+            })
+        }
+
+        if (this.type === 'method' && this.return && this.returnValueType !== Symbols.VOID) {
+            this.context.errorTable.addError({
+                message: `La subrutina ${this.name} no debe retornar un valor`,
+                column: source.column,
+                line: source.line,
+                type: 'Semantico'
+            })
+        }
+
+        if (this.type === 'method' && !this.return) {
+            this.returnValue = Symbols.VOID;
+            this.returnValueType = Symbols.VOID;
+        }
     }
 
     public validateParameters(args: Expression[], source: Statement): boolean {

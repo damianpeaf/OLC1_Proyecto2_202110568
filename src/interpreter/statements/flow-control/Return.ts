@@ -1,3 +1,4 @@
+import { Subroutine, Symbols } from '../../elements';
 import { Statement, StatementArgs } from '../Statement';
 import { Expression } from '../expression';
 
@@ -15,17 +16,43 @@ export class Return extends Statement {
         this.value = value;
     }
 
-    public graphviz(): string {
-        throw new Error('Method not implemented.');
-    }
     public getGrahpvizLabel(): string {
-        throw new Error('Method not implemented.');
+        return `Return`;
     }
     public getGrahpvizEdges(): string {
-        throw new Error('Method not implemented.');
+        const n = this.getGraphvizNode();
+
+        return this.value ? `
+            ${n}Value[label="value"];
+            ${n} -> ${n}Value;
+
+            ${this.linkStatementCustom(this.value, n + "Value")}
+        ` : "";
     }
     public evaluate() {
-        throw new Error('Method not implemented.');
+        if (this.value) {
+            this.value.evaluate();
+        }
+
+        let item = this.context.callStack.pop();
+
+        while (item && !(item instanceof Subroutine)) {
+            item = this.context.callStack.pop(); // remove all non-subroutines from call stack
+        }
+
+        if (item) {
+            item.return = true;
+            item.returnValue = this.value ? this.value.value : Symbols.VOID;
+            item.returnValueType = this.value ? this.value.returnType : Symbols.VOID;
+        } else {
+            this.context.errorTable.addError({
+                message: `No se puede retornar fuera de una subrutina`,
+                column: this.column,
+                line: this.line,
+                type: 'Semantico'
+            })
+        }
+
     }
 
 }

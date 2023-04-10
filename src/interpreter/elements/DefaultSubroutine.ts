@@ -3,7 +3,7 @@ import { Context } from '../context';
 import { Statement } from '../statements';
 import { Expression } from '../statements/expression';
 
-export type DefaultSubroutineArgs = SubroutineArgs & {
+export type DefaultSubroutineArgs = Omit<SubroutineArgs, 'body'> & {
     customCall: (args: CustomArgsI) => any
 }
 
@@ -17,7 +17,7 @@ export class DefaultSubroutine extends Subroutine {
     public customCall: (args: CustomArgsI) => any;
 
     constructor({ customCall, ...args }: DefaultSubroutineArgs) {
-        super(args);
+        super({ ...args, body: [] });
         this.customCall = customCall;
     }
 
@@ -28,6 +28,7 @@ export class DefaultSubroutine extends Subroutine {
             return Symbols.NULL;
         }
 
+        // Note: because is builtin function, we don't need to create a new scope
         const returnValue = this.customCall({
             args,
             context: this.context

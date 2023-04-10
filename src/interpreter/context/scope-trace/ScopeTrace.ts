@@ -46,6 +46,10 @@ export class ScopeTrace {
         this.currentScope = this.globalScope
     }
 
+    public setCurrentScope(scope: Scope) {
+        this.currentScope = scope
+    }
+
     getVariable(name: string): Variable | null {
         return this.currentScope.getVariable(name)
     }

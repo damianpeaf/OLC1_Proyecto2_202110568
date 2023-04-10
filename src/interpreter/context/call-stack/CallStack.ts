@@ -1,3 +1,4 @@
+import { TypeWiseValueType } from "../../elements";
 
 
 export interface Breakable {
@@ -10,6 +11,8 @@ export interface Continueable {
 
 export interface Returnable {
     return: boolean;
+    returnValue: any;
+    returnValueType: TypeWiseValueType;
 }
 
 type CallStackItem = Breakable | Continueable | Returnable;

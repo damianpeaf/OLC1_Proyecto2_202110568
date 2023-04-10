@@ -6,7 +6,7 @@ export const printSubroutine = () => Builder.element.defaultSubroutine({
     type: 'method',
     parameters: [
         new Argument({
-            name: "value",
+            name: "1",
             type: [
                 Symbols.INT,
                 Symbols.DOUBLE,
@@ -17,11 +17,8 @@ export const printSubroutine = () => Builder.element.defaultSubroutine({
         })
     ],
     returnType: Symbols.VOID,
-    body: [],
-    object: null,
     customCall: ({ args, context }) => {
         context.console.writeln(args[0].value);
         return Symbols.VOID;
     }
-
 });

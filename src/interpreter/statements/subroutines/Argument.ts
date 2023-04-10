@@ -19,16 +19,21 @@ export class Argument extends Statement {
         this.type = type;
     }
 
-    public graphviz(): string {
-        throw new Error('Method not implemented.');
-    }
     public getGrahpvizLabel(): string {
-        throw new Error('Method not implemented.');
+        return `Argumento`;
     }
     public getGrahpvizEdges(): string {
-        throw new Error('Method not implemented.');
+        const n = this.getGraphvizNode();
+        return `
+            ${n}NAME [label="Nombre: ${this.name}"];
+            ${n} -> ${n}NAME;
+
+            ${n}TYPE [label="Tipo: ${this.type}"];
+            ${n} -> ${n}TYPE;
+        `
     }
     public evaluate() {
-        throw new Error('Method not implemented.');
+
     }
+
 }

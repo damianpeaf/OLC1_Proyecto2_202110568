@@ -1,4 +1,4 @@
-import { SubroutineT, TypeWiseValueType } from "../../elements";
+import { Subroutine, SubroutineT, TypeWiseValueType } from "../../elements";
 import { Structure, StructureArgs } from "../Structure";
 import { Argument } from './Argument';
 
@@ -27,17 +27,28 @@ export class SubroutineDeclaration extends Structure {
         this.returnType = returnType;
     }
 
-    public graphviz(): string {
-        throw new Error("Method not implemented.");
-    }
+
     public getGrahpvizLabel(): string {
-        throw new Error("Method not implemented.");
+        return `Declaración de subrutina: ${this.name}`;
     }
     public getGrahpvizEdges(): string {
-        throw new Error("Method not implemented.");
+        return `
+            ${this.linkStatements(this.args)}
+        `
     }
     public evaluate() {
-        throw new Error("Method not implemented.");
+
+        const subroutine = new Subroutine({
+            name: this.name,
+            type: this.type,
+            parameters: this.args,
+            returnType: this.returnType,
+            body: this.statements,
+            context: this.context,
+            parentScope: this.context.scopeTrace.currentScope
+        })
+
+        this.context.scopeTrace.currentScope.addSubroutine(subroutine);
     }
 
 
