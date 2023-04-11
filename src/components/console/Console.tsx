@@ -68,6 +68,7 @@ export const Console = () => {
                                 <pre className='whitespace-pre-wrap'>
                                     {line.replace(/\t/g, '\u00a0\u00a0\u00a0\u00a0')}
                                 </pre>
+                                {index !== terminalContent.split('\n').length - 1 && <br />}
                             </React.Fragment>
                         ))
                 }

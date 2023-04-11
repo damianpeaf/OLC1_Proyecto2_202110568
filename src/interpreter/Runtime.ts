@@ -32,11 +32,7 @@ export class Runtime {
             }
 
             this.ast.root = root;
-            // console.log(this.ast.graphviz)
             this.ast.run();
-
-            // console.log(this.ast.context.scopeTrace.graphviz)
-            // console.log(this.ast.context.scopeTrace.globalScope)
 
             return true
         } catch (error) {

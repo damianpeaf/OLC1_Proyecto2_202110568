@@ -34,14 +34,14 @@ export class BinaryStrategy {
 
 export const evalBinaryStrategy = (strategies: BinaryStrategy[], defaultOperation: (a: any, b: any) => any, expression: BinaryExpression<any>) => {
     expression.left.evaluate();
-    const leftType = expression.left.returnType;
+    const { returnType: leftType, value: leftValue } = expression.left;
     expression.right.evaluate();
-    const rightType = expression.right.returnType;
+    const { returnType: rightType, value: rightValue } = expression.right;
     const strategy = strategies.find(s => (s.firstType === leftType && s.secondType === rightType) || (s.firstType === rightType && s.secondType === leftType));
     if (strategy) {
         return {
             type: strategy.returnType,
-            value: strategy.operation ? strategy.operation(expression.left.value, expression.right.value) : defaultOperation(expression.left.value, expression.right.value)
+            value: strategy.operation ? strategy.operation(leftValue, rightValue) : defaultOperation(leftValue, rightValue)
         }
     } else {
         expression.context.errorTable.addError({

@@ -1,5 +1,5 @@
 import { Context } from "../context";
-import { printSubroutine } from "../default";
+import { builtins } from "../builtins";
 import { Root } from "./";
 
 export class AST {
@@ -29,13 +29,15 @@ export class AST {
 
     public run() {
         if (this._root) {
-            this.initDefaults();
+            this.initBuiltins();
             return this._root.evalGlobalState()
         }
         return null;
     }
 
-    private initDefaults() {
-        this.context.scopeTrace.addSubroutine(printSubroutine())
+    private initBuiltins() {
+        builtins.forEach(builtinInitializer => {
+            this.context.scopeTrace.addSubroutine(builtinInitializer())
+        })
     }
 }

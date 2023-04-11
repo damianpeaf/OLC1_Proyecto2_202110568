@@ -50,14 +50,7 @@ export class Reference extends Value {
     }
 
     public evaluate() {
-        let variable: Variable | null = null;
-
-        if (this.sourceScope) {
-            variable = this.sourceScope.getVariable(this._name);
-        } else {
-            variable = this.context.scopeTrace.getVariable(this._name);
-            this.sourceScope = this.context.scopeTrace.currentScope;
-        }
+        let variable: Variable | null = this.context.scopeTrace.getVariable(this._name);
 
         if (!variable) {
             this.context.errorTable.addError({

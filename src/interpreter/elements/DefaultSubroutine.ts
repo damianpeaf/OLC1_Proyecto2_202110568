@@ -1,5 +1,5 @@
 import { Subroutine, SubroutineArgs, Symbols, TypeWiseValueType } from '.';
-import { Context } from '../context';
+import { Context, Returnable } from '../context';
 import { Statement } from '../statements';
 import { Expression } from '../statements/expression';
 
@@ -12,7 +12,7 @@ interface CustomArgsI {
     context: Context
 }
 
-export class DefaultSubroutine extends Subroutine {
+export class DefaultSubroutine extends Subroutine implements Returnable {
 
     public customCall: (args: CustomArgsI) => any;
 
@@ -33,10 +33,15 @@ export class DefaultSubroutine extends Subroutine {
             args,
             context: this.context
         });
+        this.return = true;
 
         if (this.type == 'function') {
+            this.returnValue = returnValue;
+            this.returnValueType = this.returnType;
             return returnValue;
         } else {
+            this.returnValue = Symbols.VOID;
+            this.returnValueType = this.returnType;
             return Symbols.VOID;
         }
     }

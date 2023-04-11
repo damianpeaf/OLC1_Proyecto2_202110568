@@ -36,6 +36,8 @@ export const DotViewer = ({ dot }: DotViewerProps) => {
                 engine: "dot",
                 height: (windowSize.height * 0.8),
                 width: (windowSize.width * 0.8),
+                fit: true,
+                scale: 1,
             }}
         />
     )

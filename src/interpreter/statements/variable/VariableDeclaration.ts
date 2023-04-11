@@ -58,11 +58,13 @@ export class VariableDeclaration extends Statement {
             ${n}I [label="Identificador: ${this.variable.name}"]
             ${n} -> ${n}I
 
-            ${n}IGUAL [label="="]
-            ${n} -> ${n}IGUAL
+           
 
             ${this.value
-                ? this.linkStatement(this.value)
+                ?
+                `${n}IGUAL [label="="]
+                    ${n} -> ${n}IGUAL` +
+                this.linkStatement(this.value)
                 : ''
             }
         `

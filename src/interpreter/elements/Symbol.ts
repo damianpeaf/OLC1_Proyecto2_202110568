@@ -61,3 +61,9 @@ export function primitiveAsCollection(type: PrimitiveT, collecion: 'list' | 'vec
         return `${type}[]` as VectorType
     }
 }
+
+export const vectorTypes = [Symbols.INT_VECTOR, Symbols.DOUBLE_VECTOR, Symbols.STRING_VECTOR, Symbols.BOOLEAN_VECTOR, Symbols.CHAR_VECTOR]
+export const listTypes = [Symbols.INT_LIST, Symbols.DOUBLE_LIST, Symbols.STRING_LIST, Symbols.BOOLEAN_LIST, Symbols.CHAR_LIST]
+export const primitiveTypes = [Symbols.INT, Symbols.DOUBLE, Symbols.STRING, Symbols.BOOLEAN, Symbols.CHAR]
+
+export const allTypes = [...vectorTypes, ...listTypes, ...primitiveTypes]

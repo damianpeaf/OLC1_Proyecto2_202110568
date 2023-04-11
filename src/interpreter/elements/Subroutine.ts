@@ -143,19 +143,20 @@ export class Subroutine implements Returnable {
         // reset scope
         this.context.scopeTrace.setCurrentScope(prevExecutionScope);
 
-        // remove subroutine from call stack
-        if (this.context.callStack.in(this)) {
-            this.context.callStack.remove(this);
+        // remove subroutine from call stack if it is still there
+        if (!this.return) {
+            this.context.callStack.pop();
         }
 
         this.validateReturn(source);
+        this.return = false; // reset return flag
     }
 
     private validateReturn(source: Statement) {
 
         if (this.type === 'function' && (!this.return || this.returnValueType !== this.returnType)) {
             this.context.errorTable.addError({
-                message: `La subrutina ${this.name} debe retornar un valor de tipo ${this.returnType}`,
+                message: `La subrutina ${this.name} debe retornar un valor de tipo ${this.returnType} y no ${this.returnValueType}`,
                 column: source.column,
                 line: source.line,
                 type: 'Semantico'
@@ -175,6 +176,7 @@ export class Subroutine implements Returnable {
             this.returnValue = Symbols.VOID;
             this.returnValueType = Symbols.VOID;
         }
+
     }
 
     public validateParameters(args: Expression[], source: Statement): boolean {

@@ -73,7 +73,7 @@ export abstract class Scope {
                 Array.from(this.subroutines.values()).map(subroutine => `
                 <tr>
                     <td>${subroutine.name}</td>
-                    <td>${subroutine.type}</td>
+                    <td>${subroutine.type} ${subroutine.type !== 'method' ? subroutine.returnType : ''}</td>
                     <td>${subroutine.line}</td>
                     <td>${subroutine.column}</td>
                 </tr>
