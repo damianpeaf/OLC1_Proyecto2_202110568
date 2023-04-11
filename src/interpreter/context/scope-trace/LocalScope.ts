@@ -4,14 +4,36 @@ import { GlobalScope, Scope } from "./"
 export type LocalScopeType = "subroutine" | "function" | "if" | 'else-if' | 'else' | "while" | "for" | "switch" | "case" | "default" | "do-while"
 
 export class LocalScope extends Scope {
+    reset(): void {
+        this.variables = new Map()
+        this.subroutines = new Map()
+
+        if (this.next) {
+            this.next = null
+        }
+    }
 
     public previous: Scope;
     public next: Scope | null;
 
-    constructor(type: LocalScopeType, previous: Scope) {
-        super(type)
+    constructor(type: LocalScopeType, previous: Scope, id: number) {
+        super(type, id)
         this.next = null
         this.previous = previous
+    }
+
+    graphviz(): string {
+
+        return `
+        subgraph cluster_${this.id} {
+            label = "${this.name}"
+            ${this.nodesDefinition()}
+
+            ${this.next ? this.next.graphviz() : ''}
+
+            ${(this.next) ? `N${this.id} -> N${this.next.id} [ltail=cluster_${this.id} lhead=cluster_${this.next.id}]` : ''}
+        }
+        `
     }
 
     private getAccessableVariable(): Map<string, Variable> {

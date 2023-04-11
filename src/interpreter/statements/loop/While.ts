@@ -28,12 +28,12 @@ export class While extends LoopStructure implements Breakable, Continueable {
         this.break = false;
         this.context.callStack.push(this);
 
+        const scope = this.context.scopeTrace.newScope({
+            reason: "while",
+        })
+
         while (true) {
             // Recompute the condition
-            this.context.scopeTrace.newScope({
-                reason: "while",
-            })
-
             this.condition.evaluate();
             const value = this.condition.value;
             const type = this.condition.returnType;
@@ -46,14 +46,14 @@ export class While extends LoopStructure implements Breakable, Continueable {
                     column: this.column
                 })
 
-                this.context.scopeTrace.endScope();
+
                 break;
             }
 
             if (!value) {
-                this.context.scopeTrace.endScope();
                 break;
             }
+            scope.reset();
 
             // Execute the body, and check continue and break
 
@@ -68,18 +68,20 @@ export class While extends LoopStructure implements Breakable, Continueable {
 
             if (this.continue) {
                 this.continue = false;
-                this.context.scopeTrace.endScope();
+
                 continue;
             }
 
             if (this.break || !this.context.callStack.in(this)) {
-                this.context.scopeTrace.endScope();
+
                 break;
             }
 
 
-            this.context.scopeTrace.endScope();
+
         }
+
+        this.context.scopeTrace.endScope();
 
         if (this.context.callStack.in(this)) {
             this.context.callStack.remove(this);

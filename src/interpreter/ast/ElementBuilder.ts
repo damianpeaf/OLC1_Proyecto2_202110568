@@ -35,8 +35,12 @@ export class ElementBuilder {
         return new Subroutine(this.addContext(args))
     }
 
-    public defaultSubroutine(args: BuilderArgs<DefaultSubroutineArgs>) {
-        return new DefaultSubroutine(this.addContext(args))
+    public defaultSubroutine(args: BuilderArgs<Omit<DefaultSubroutineArgs, 'line' | 'column'>>) {
+        return new DefaultSubroutine({
+            ...this.addContext(args),
+            line: 0,
+            column: 0
+        })
     }
 
 }

@@ -1,5 +1,6 @@
 import { GlobalScope, Scope, LocalScopeType, LocalScope } from "."
 import { Subroutine, Variable } from "../../elements"
+import { graphviz } from 'd3-graphviz';
 
 export type NewScopeRequest = {
     reason: LocalScopeType
@@ -9,21 +10,22 @@ export class ScopeTrace {
 
     public globalScope: GlobalScope
     public currentScope: Scope
-
+    private scopeCounter: number
 
     constructor() {
         this.globalScope = new GlobalScope()
         this.currentScope = this.globalScope
+        this.scopeCounter = 1;
     }
 
     public newScope({ reason }: NewScopeRequest) {
         if (this.currentScope instanceof GlobalScope) {
-            const newScope = new LocalScope(reason, this.globalScope)
+            const newScope = new LocalScope(reason, this.globalScope, this.scopeCounter++)
             this.globalScope.addLocal(newScope)
             this.currentScope = newScope
             return newScope
         } else if (this.currentScope instanceof LocalScope) {
-            const newScope = new LocalScope(reason, this.currentScope)
+            const newScope = new LocalScope(reason, this.currentScope, this.scopeCounter++)
             this.currentScope.addScope(newScope)
             this.currentScope = newScope
             return newScope
@@ -69,5 +71,18 @@ export class ScopeTrace {
 
     addSubroutine(subroutine: Subroutine) {
         this.currentScope.addSubroutine(subroutine)
+    }
+
+    get graphviz() {
+        return `
+            digraph G {
+
+            node [shape=none];
+            rankdir=TB;
+            
+            ${this.globalScope.graphviz()}
+
+            }
+        `
     }
 }

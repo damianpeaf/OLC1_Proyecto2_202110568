@@ -56,12 +56,10 @@ export class For extends LoopStructure implements Breakable, Continueable {
         this.context.callStack.push(this);
         this.init.evaluate();
 
+        const insideScope = this.context.scopeTrace.newScope({
+            reason: "for",
+        })
         while (true) {
-
-            this.context.scopeTrace.newScope({
-                reason: "for",
-            })
-
             // Recompute the condition
             this.condition.evaluate();
             const value = this.condition.value;
@@ -74,14 +72,13 @@ export class For extends LoopStructure implements Breakable, Continueable {
                     line: this.line,
                     column: this.column
                 })
-                this.context.scopeTrace.endScope();
                 break;
             }
 
             if (!value) {
-                this.context.scopeTrace.endScope();
                 break;
             }
+            insideScope.reset();
 
             // Execute the body, and check continue and break
             for (const s of this.statements) {
@@ -96,24 +93,22 @@ export class For extends LoopStructure implements Breakable, Continueable {
             if (this.continue) {
                 this.continue = false;
                 this.update.evaluate();
-                this.context.scopeTrace.endScope();
                 continue;
             }
 
             if (this.break || !this.context.callStack.in(this)) {
-                this.context.scopeTrace.endScope();
                 break;
             }
 
             // Update the variable
             this.update.evaluate();
-            this.context.scopeTrace.endScope();
         }
 
         if (this.context.callStack.in(this)) {
             this.context.callStack.remove(this);
         }
 
+        this.context.scopeTrace.endScope();
         this.context.scopeTrace.endScope();
     }
 

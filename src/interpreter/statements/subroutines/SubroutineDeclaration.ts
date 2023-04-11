@@ -45,7 +45,9 @@ export class SubroutineDeclaration extends Structure {
             returnType: this.returnType,
             body: this.statements,
             context: this.context,
-            parentScope: this.context.scopeTrace.currentScope
+            parentScope: this.context.scopeTrace.currentScope,
+            line: this.line,
+            column: this.column
         })
 
         this.context.scopeTrace.currentScope.addSubroutine(subroutine);

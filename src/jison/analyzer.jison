@@ -289,7 +289,9 @@ variable_declaration_aux : type ID
                                 column: @1.first_column,
                                 variable: Builder.element.primitive({
                                     type: $1,
-                                    name: $2
+                                    name: $2,
+                                    line: @1.first_line,
+                                    column: @1.first_column
                                 }),
                             });
                         }
@@ -301,6 +303,8 @@ variable_declaration_aux : type ID
                                 variable: Builder.element.primitive({
                                     type: $1,
                                     name: $2,
+                                    line: @1.first_line,
+                                    column: @1.first_column
                                 }),
                                 value: $4
                             });
@@ -312,7 +316,9 @@ variable_declaration_aux : type ID
                                 column: @1.first_column,
                                 variable: Builder.element.vector({
                                     primitive: $1,
-                                    name: $4
+                                    name: $4,
+                                    line: @1.first_line,
+                                    column: @1.first_column
                                 }),
                             });
                         }
@@ -323,7 +329,9 @@ variable_declaration_aux : type ID
                                 column: @1.first_column,
                                 variable: Builder.element.vector({
                                     primitive: $1,
-                                    name: $4
+                                    name: $4,
+                                    line: @1.first_line,
+                                    column: @1.first_column
                                 }),
                                 value: $6
                             });
@@ -335,7 +343,9 @@ variable_declaration_aux : type ID
                                 column: @1.first_column,
                                 variable: Builder.element.list({
                                     primitive: $3,
-                                    name: $5
+                                    name: $5,
+                                    line: @1.first_line,
+                                    column: @1.first_column
                                 }),
                             });
                         }
@@ -346,7 +356,9 @@ variable_declaration_aux : type ID
                                 column: @1.first_column,
                                 variable: Builder.element.list({
                                     primitive: $3,
-                                    name: $5
+                                    name: $5,
+                                    line: @1.first_line,
+                                    column: @1.first_column
                                 }),
                                 value: $7
                             });

@@ -143,7 +143,9 @@ case 30:
                                 column: _$[$0-1].first_column,
                                 variable: Builder.element.primitive({
                                     type: $$[$0-1],
-                                    name: $$[$0]
+                                    name: $$[$0],
+                                    line: _$[$0-1].first_line,
+                                    column: _$[$0-1].first_column
                                 }),
                             });
                         
@@ -156,6 +158,8 @@ case 31:
                                 variable: Builder.element.primitive({
                                     type: $$[$0-3],
                                     name: $$[$0-2],
+                                    line: _$[$0-3].first_line,
+                                    column: _$[$0-3].first_column
                                 }),
                                 value: $$[$0]
                             });
@@ -168,7 +172,9 @@ case 32:
                                 column: _$[$0-3].first_column,
                                 variable: Builder.element.vector({
                                     primitive: $$[$0-3],
-                                    name: $$[$0]
+                                    name: $$[$0],
+                                    line: _$[$0-3].first_line,
+                                    column: _$[$0-3].first_column
                                 }),
                             });
                         
@@ -180,7 +186,9 @@ case 33:
                                 column: _$[$0-5].first_column,
                                 variable: Builder.element.vector({
                                     primitive: $$[$0-5],
-                                    name: $$[$0-2]
+                                    name: $$[$0-2],
+                                    line: _$[$0-5].first_line,
+                                    column: _$[$0-5].first_column
                                 }),
                                 value: $$[$0]
                             });
@@ -193,7 +201,9 @@ case 34:
                                 column: _$[$0-4].first_column,
                                 variable: Builder.element.list({
                                     primitive: $$[$0-2],
-                                    name: $$[$0]
+                                    name: $$[$0],
+                                    line: _$[$0-4].first_line,
+                                    column: _$[$0-4].first_column
                                 }),
                             });
                         
@@ -205,7 +215,9 @@ case 35:
                                 column: _$[$0-6].first_column,
                                 variable: Builder.element.list({
                                     primitive: $$[$0-4],
-                                    name: $$[$0-2]
+                                    name: $$[$0-2],
+                                    line: _$[$0-6].first_line,
+                                    column: _$[$0-6].first_column
                                 }),
                                 value: $$[$0]
                             });

@@ -15,7 +15,9 @@ export type SubroutineArgs = {
     body: Statement[],
     object?: Object | null,
     context: Context,
-    parentScope?: Scope
+    parentScope?: Scope,
+    line: number,
+    column: number
 }
 
 export class Subroutine implements Returnable {
@@ -33,7 +35,10 @@ export class Subroutine implements Returnable {
     public returnValue: any;
     public returnValueType: TypeWiseValueType;
 
-    constructor({ name, type, parameters, returnType, body, object = null, context, parentScope }: SubroutineArgs) {
+    public line: number;
+    public column: number;
+
+    constructor({ name, type, parameters, returnType, body, object = null, context, parentScope, line, column }: SubroutineArgs) {
         this.name = name;
         this.type = type;
         this.parameters = parameters;
@@ -46,6 +51,9 @@ export class Subroutine implements Returnable {
         this.return = false;
         this.returnValue = null;
         this.returnValueType = Symbols.NULL;
+
+        this.line = line
+        this.column = column
     }
 
     public call(args: Expression[], source: Statement): any {
@@ -75,19 +83,25 @@ export class Subroutine implements Returnable {
                     value: arg.value,
                     type: arg.returnType,
                     name: parameter.name,
+                    line: arg.line,
+                    column: arg.column
                 })
             } else if (isVectorType(arg.returnType)) {
                 argumentVariable = Builder.element.vector({
                     value: arg.value,
                     name: parameter.name,
-                    primitive: getPrimitiveType(arg.returnType)
+                    primitive: getPrimitiveType(arg.returnType),
+                    line: arg.line,
+                    column: arg.column
                 })
 
             } else if (isListType(arg.returnType)) {
                 argumentVariable = Builder.element.list({
                     value: arg.value,
                     name: parameter.name,
-                    primitive: getPrimitiveType(arg.returnType)
+                    primitive: getPrimitiveType(arg.returnType),
+                    line: arg.line,
+                    column: arg.column
                 })
             } else {
                 throw new Error(`Argument type ${arg.returnType} not supported`)
