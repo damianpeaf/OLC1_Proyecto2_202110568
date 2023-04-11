@@ -35,7 +35,7 @@ export class Runtime {
             // console.log(this.ast.graphviz)
             this.ast.run();
 
-            console.log(this.ast.context.scopeTrace.graphviz)
+            // console.log(this.ast.context.scopeTrace.graphviz)
             // console.log(this.ast.context.scopeTrace.globalScope)
 
             return true

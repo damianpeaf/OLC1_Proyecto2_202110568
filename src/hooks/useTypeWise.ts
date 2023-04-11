@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { DocumentFile, TypeWiseContext } from "../context"
 import { Runtime } from "../interpreter"
+import { fireDangerToast, fireScucessToast } from "../components/toasts"
 
 export const useTypeWise = () => {
 
@@ -51,13 +52,20 @@ export const useTypeWise = () => {
         dispatch({ type: 'set-terminal-content', payload: { content } })
     }
 
+    const setSymbolTable = (content: string) => {
+        dispatch({ type: 'set-symbol-table', payload: { content } })
+    }
+
     const runProgram = () => {
         dispatch({ type: 'set-terminal-content', payload: { content: '' } })
         dispatch({ type: 'reset-graphviz-content' })
         dispatch({ type: 'set-errors', payload: { errors: [] } })
+        setSymbolTable('')
 
         const runtime = new Runtime()
         runtime.run(state.currentDocument.content)
+
+
 
         setTerminalContent(runtime.ast?.context.console.output || '')
         if (runtime.ast) {
@@ -66,11 +74,20 @@ export const useTypeWise = () => {
             dispatch({ type: 'set-errors', payload: { errors: runtime.ast.context.errorTable.errors } })
 
 
+            if (runtime.ast.context.errorTable.errors.length > 0) {
+                fireDangerToast('Programa ejecutado con errores')
+            } else {
+                fireScucessToast('Programa ejecutado con éxito')
+            }
+
             if (runtime.ast.graphviz) {
                 dispatch({ type: 'set-graphviz-content', payload: { content: runtime.ast.graphviz } })
+                setSymbolTable(runtime.ast.context.scopeTrace.graphviz || '');
             }
         } else {
             dispatch({ type: 'reset-graphviz-content' })
+            setSymbolTable('')
+
         }
 
     }
@@ -91,6 +108,14 @@ export const useTypeWise = () => {
         }
     }
 
+    const closeSymbolTableModal = () => {
+        dispatch({ type: 'close-symbol-table-modal' })
+    }
+
+    const openSymbolTableModal = () => {
+        dispatch({ type: 'open-symbol-table-modal' })
+    }
+
     return {
         ...state,
         openTerminal,
@@ -107,6 +132,9 @@ export const useTypeWise = () => {
         runProgram,
         openAstModal,
         closeAstModal,
-        toogleTerminal
+        toogleTerminal,
+        setSymbolTable,
+        closeSymbolTableModal,
+        openSymbolTableModal
     }
 }

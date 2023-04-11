@@ -70,6 +70,15 @@ export type TypeWiseActionType =
         payload: {
             errors: Error[]
         }
+    } | {
+        type: 'set-symbol-table',
+        payload: {
+            content: string
+        }
+    } | {
+        type: 'open-symbol-table-modal'
+    } | {
+        type: 'close-symbol-table-modal'
     }
 
 export const typeWiseReducer = (state: TypeWiseState, action: TypeWiseActionType): TypeWiseState => {
@@ -199,6 +208,24 @@ export const typeWiseReducer = (state: TypeWiseState, action: TypeWiseActionType
             return {
                 ...state,
                 errors: action.payload.errors
+            }
+
+        case 'set-symbol-table':
+            return {
+                ...state,
+                symbolTable: action.payload.content
+            }
+
+        case 'open-symbol-table-modal':
+            return {
+                ...state,
+                isSymbolTableModalOpen: true
+            }
+
+        case 'close-symbol-table-modal':
+            return {
+                ...state,
+                isSymbolTableModalOpen: false
             }
         default:
             return state;

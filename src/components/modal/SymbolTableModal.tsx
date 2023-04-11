@@ -5,21 +5,21 @@ import { useTypeWise } from '../../hooks'
 import { DotViewer } from '../dot';
 
 
-export const AstModal = () => {
+export const SymbolTableModal = () => {
 
-  const { isAstModalOpen, closeAstModal, graphviz: content } = useTypeWise();
+  const { isSymbolTableModalOpen, closeSymbolTableModal, symbolTable } = useTypeWise();
 
   const [graphiz, setGraphiz] = useState<string | null>(null)
 
   useEffect(() => {
-    if (isAstModalOpen) {
-      setGraphiz(content)
+    if (isSymbolTableModalOpen) {
+      setGraphiz(symbolTable)
     }
-  }, [content, isAstModalOpen])
+  }, [symbolTable, isSymbolTableModalOpen])
 
   return (
-    <Transition appear show={isAstModalOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={closeAstModal}>
+    <Transition appear show={isSymbolTableModalOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-50" onClose={closeSymbolTableModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -32,7 +32,7 @@ export const AstModal = () => {
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
 
-        <div className="fixed inset-0 overflow-y-auto overflow-x-hidden">
+        <div className="fixed inset-0  overflow-y-auto overflow-x-hidden">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
             <Transition.Child
               as={Fragment}
@@ -43,12 +43,12 @@ export const AstModal = () => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-7xl h-full max-h-screen overflow-y-auto overflow-x-hidden transform overflow-hidden rounded-2xl bg-slate-900 p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-7xl h-full max-h-screen  overflow-y-auto overflow-x-hidden transform overflow-hidden rounded-2xl bg-slate-900 p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
                   className="text-lg font-medium leading-6 text-white"
                 >
-                  Reporte AST
+                  Reporte Tabla de Simbolos
                 </Dialog.Title>
                 {
                   graphiz ?
@@ -58,7 +58,7 @@ export const AstModal = () => {
                     :
                     <div className="mt-4">
                       <p className="text-lg text-gray-300">
-                        No se ha generado el reporte AST
+                        No se ha generado el reporte la tabla de simbolos
                       </p>
                     </div>
                 }
@@ -66,7 +66,7 @@ export const AstModal = () => {
                   <button
                     type="button"
                     className="inline-flex justify-center rounded-md border border-transparent bg-blue-950 px-4 py-2 text-sm font-medium text-blue-200 hover:bg-blue-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={closeAstModal}
+                    onClick={closeSymbolTableModal}
                   >
                     Cerrar
                   </button>

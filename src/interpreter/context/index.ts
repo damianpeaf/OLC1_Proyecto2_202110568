@@ -1,6 +1,5 @@
 export * from './Context'
 export * from './error/ErrorTable'
 export * from './scope-trace/ScopeTrace'
-export * from './SymbolTable'
 export * from './Console'
 export * from './call-stack/CallStack'

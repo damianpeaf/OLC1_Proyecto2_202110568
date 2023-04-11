@@ -23,6 +23,8 @@ export interface TypeWiseState {
     isAstModalOpen: boolean;
     graphviz: string | null;
     errors: Error[];
+    symbolTable: string;
+    isSymbolTableModalOpen: boolean;
 }
 
 interface TypeWiseProviderProps {
@@ -39,7 +41,9 @@ const TypeWise_INITIAL_STATE: TypeWiseState =
             terminalContent: '',
             isAstModalOpen: false,
             graphviz: null,
-            errors: []
+            errors: [],
+            symbolTable: '',
+            isSymbolTableModalOpen: false
         }
 
 export const TypeWiseProvider: FC<TypeWiseProviderProps> = ({ children }) => {

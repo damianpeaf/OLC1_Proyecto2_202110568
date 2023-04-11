@@ -1,8 +1,9 @@
 import { Editor } from '../editor';
 import { Tabs } from '../tabs';
 import { Console } from '../console';
-import { RenameModal } from '../modal';
+import { RenameModal, SymbolTableModal } from '../modal';
 import { AstModal } from '../modal/AstModal';
+import { Toaster } from 'react-hot-toast'
 
 export const Main = () => {
     return (
@@ -33,6 +34,13 @@ export const Main = () => {
             </section>
             <RenameModal />
             <AstModal />
+            <SymbolTableModal />
+            <Toaster
+                position="top-center"
+                toastOptions={{
+                    duration: 2000
+                }}
+            />
         </main>
     )
 }
