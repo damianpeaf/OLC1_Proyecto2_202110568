@@ -54,7 +54,7 @@ export class If extends ConditionalStructure {
 
         if (conditionValue) {
             this.context.scopeTrace.newScope({
-                reason: 'if'
+                reason: 'if',
             });
 
             this.statements.forEach((statement) => statement.evaluate());

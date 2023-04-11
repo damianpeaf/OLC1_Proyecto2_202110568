@@ -7,18 +7,15 @@ export class LocalScope extends Scope {
     reset(): void {
         this.variables = new Map()
         this.subroutines = new Map()
-
-        if (this.next) {
-            this.next = null
-        }
+        this.next = []
     }
 
     public previous: Scope;
-    public next: Scope | null;
+    public next: Scope[];
 
     constructor(type: LocalScopeType, previous: Scope, id: number) {
         super(type, id)
-        this.next = null
+        this.next = []
         this.previous = previous
     }
 
@@ -29,11 +26,15 @@ export class LocalScope extends Scope {
             label = "${this.name}"
             ${this.nodesDefinition()}
 
-            ${this.next ? this.next.graphviz() : ''}
-
-            ${(this.next) ? `N${this.id} -> N${this.next.id} [ltail=cluster_${this.id} lhead=cluster_${this.next.id}]` : ''}
+             ${this.next.map(l => l.graphviz()).join('\n')}
+            
+              ${this.next.map(l => `N${this.id} -> N${l.id} [ltail=cluster_${this.id} lhead=cluster_${l.id}]`).join('\n')}
         }
-        `
+            `
+
+
+
+        // ${(this.next) ? `N${this.id} -> N${this.next.id} [ltail=cluster_${this.id} lhead=cluster_${this.next.id}]` : ''}
     }
 
     private getAccessableVariable(): Map<string, Variable> {
@@ -122,7 +123,7 @@ export class LocalScope extends Scope {
 
     public addScope(local: LocalScope) {
         local.previous = this
-        local.next = this.next
-        this.next = local
+        this.next.push(local)
     }
 }
+

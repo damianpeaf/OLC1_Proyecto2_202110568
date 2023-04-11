@@ -68,7 +68,6 @@ export class While extends LoopStructure implements Breakable, Continueable {
 
             if (this.continue) {
                 this.continue = false;
-
                 continue;
             }
 
