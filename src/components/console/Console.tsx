@@ -65,10 +65,9 @@ export const Console = () => {
                         ? <ErrorTable errors={errors} />
                         : terminalContent.split('\n').map((line, index) => (
                             <React.Fragment key={index}>
-                                <span className='whitespace-pre-wrap'>
+                                <pre className='whitespace-pre-wrap'>
                                     {line.replace(/\t/g, '\u00a0\u00a0\u00a0\u00a0')}
-                                </span>
-                                {index !== terminalContent.split('\n').length - 1 && <br />}
+                                </pre>
                             </React.Fragment>
                         ))
                 }
