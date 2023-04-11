@@ -181,7 +181,6 @@ export class VariableAssigment extends Statement {
         return 'Asignacion de variable'
     }
 
-    // Note: Use %2B for representing + in graphviz
     public getGrahpvizEdges(): string {
         const n = this.getGraphvizNode()
 
@@ -206,7 +205,7 @@ export class VariableAssigment extends Statement {
             case VariableAssigmentType.INCREMENT:
                 edges += `
 
-                ${n}MAS [label="%2B%2B"]
+                ${n}MAS [label="++"]
                 ${n} -> ${n}MAS	
             `
                 break;

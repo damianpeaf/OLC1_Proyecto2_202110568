@@ -1,6 +1,8 @@
+import { useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState, useEffect } from 'react';
 import { useTypeWise } from '../../hooks'
+import { DotViewer } from '../dot';
 
 
 export const AstModal = () => {
@@ -10,8 +12,10 @@ export const AstModal = () => {
   const [graphiz, setGraphiz] = useState<string | null>(null)
 
   useEffect(() => {
-    setGraphiz(content)
-  }, [content])
+    if (isAstModalOpen) {
+      setGraphiz(content)
+    }
+  }, [content, isAstModalOpen])
 
   return (
     <Transition appear show={isAstModalOpen} as={Fragment}>
@@ -48,8 +52,8 @@ export const AstModal = () => {
                 </Dialog.Title>
                 {
                   graphiz ?
-                    <div className="mt-4">
-                      <img src={`https://quickchart.io/graphviz?graph=${graphiz}`} alt="AST" />
+                    <div className="w-full h-full flex justify-center items-center min-h-[80vh]">
+                      <DotViewer dot={graphiz} />
                     </div>
                     :
                     <div className="mt-4">
