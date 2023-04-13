@@ -49,6 +49,7 @@
 "+"                               { return "PLUS"; }
 "-"                               { return "MINUS"; }
 "*"                               { return "TIMES"; }
+"^"                               { return "POWER"; }
 "/"                               { return "DIVIDE"; }
 "%"                               { return "MOD"; }
 

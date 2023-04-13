@@ -985,8 +985,8 @@ export class AnalyzerLexer extends JisonLexer implements JisonLexerApi {
         super(yy);
     }
 
-    rules: RegExp[] = [/^(?:\/\/.*)/i,/^(?:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])/i,/^(?:\s+)/i,/^(?:int\b)/i,/^(?:double\b)/i,/^(?:boolean\b)/i,/^(?:char\b)/i,/^(?:string\b)/i,/^(?:\+\+)/i,/^(?:--)/i,/^(?:\+)/i,/^(?:-)/i,/^(?:\*)/i,/^(?:\/)/i,/^(?:%)/i,/^(?:==)/i,/^(?:!=)/i,/^(?:<=)/i,/^(?:>=)/i,/^(?:<)/i,/^(?:>)/i,/^(?:\?)/i,/^(?::)/i,/^(?:&&)/i,/^(?:\|\|)/i,/^(?:!)/i,/^(?:\()/i,/^(?:\))/i,/^(?:;)/i,/^(?:=)/i,/^(?:\[)/i,/^(?:\])/i,/^(?:\{)/i,/^(?:\})/i,/^(?:if\b)/i,/^(?:else\b)/i,/^(?:switch\b)/i,/^(?:case\b)/i,/^(?:default\b)/i,/^(?:while\b)/i,/^(?:for\b)/i,/^(?:do\b)/i,/^(?:void\b)/i,/^(?:true\b)/i,/^(?:false\b)/i,/^(?:main\b)/i,/^(?:new\b)/i,/^(?:list\b)/i,/^(?:return\b)/i,/^(?:continue\b)/i,/^(?:break\b)/i,/^(?:,)/i,/^(?:\.)/i,/^(?:([a-zA-ZÑñ]|(_[a-zA-ZÑñ]))([a-zA-ZÑñ]|[0-9]|_)*)/i,/^(?:'([^\r\n'\\]|\\[btnfr"'\\]|\\[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4})')/i,/^(?:"([^\"\\]|\\.)*")/i,/^(?:[0-9]+(\.[0-9]+))/i,/^(?:[0-9]+)/i,/^(?:$)/i,/^(?:.)/i];
-    conditions: any = {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59],"inclusive":true}}
+    rules: RegExp[] = [/^(?:\/\/.*)/i,/^(?:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/])/i,/^(?:\s+)/i,/^(?:int\b)/i,/^(?:double\b)/i,/^(?:boolean\b)/i,/^(?:char\b)/i,/^(?:string\b)/i,/^(?:\+\+)/i,/^(?:--)/i,/^(?:\+)/i,/^(?:-)/i,/^(?:\*)/i,/^(?:\^)/i,/^(?:\/)/i,/^(?:%)/i,/^(?:==)/i,/^(?:!=)/i,/^(?:<=)/i,/^(?:>=)/i,/^(?:<)/i,/^(?:>)/i,/^(?:\?)/i,/^(?::)/i,/^(?:&&)/i,/^(?:\|\|)/i,/^(?:!)/i,/^(?:\()/i,/^(?:\))/i,/^(?:;)/i,/^(?:=)/i,/^(?:\[)/i,/^(?:\])/i,/^(?:\{)/i,/^(?:\})/i,/^(?:if\b)/i,/^(?:else\b)/i,/^(?:switch\b)/i,/^(?:case\b)/i,/^(?:default\b)/i,/^(?:while\b)/i,/^(?:for\b)/i,/^(?:do\b)/i,/^(?:void\b)/i,/^(?:true\b)/i,/^(?:false\b)/i,/^(?:main\b)/i,/^(?:new\b)/i,/^(?:list\b)/i,/^(?:return\b)/i,/^(?:continue\b)/i,/^(?:break\b)/i,/^(?:,)/i,/^(?:\.)/i,/^(?:([a-zA-ZÑñ]|(_[a-zA-ZÑñ]))([a-zA-ZÑñ]|[0-9]|_)*)/i,/^(?:'([^\r\n'\\]|\\[btnfr"'\\]|\\[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4})')/i,/^(?:"([^\"\\]|\\.)*")/i,/^(?:[0-9]+(\.[0-9]+))/i,/^(?:[0-9]+)/i,/^(?:$)/i,/^(?:.)/i];
+    conditions: any = {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60],"inclusive":true}}
     performAction (yy:any,yy_:any,$avoiding_name_collisions:any,YY_START:any): any {
           var YYSTATE=YY_START;
         switch($avoiding_name_collisions) {
@@ -1016,109 +1016,111 @@ export class AnalyzerLexer extends JisonLexer implements JisonLexerApi {
       break;
     case 12: return "TIMES"; 
       break;
-    case 13: return "DIVIDE"; 
+    case 13: return "POWER"; 
       break;
-    case 14: return "MOD"; 
+    case 14: return "DIVIDE"; 
       break;
-    case 15: return "EQUALS"; 
+    case 15: return "MOD"; 
       break;
-    case 16: return "NOT_EQUAL"; 
+    case 16: return "EQUALS"; 
       break;
-    case 17: return "LESS_THAN_OR_EQUAL"; 
+    case 17: return "NOT_EQUAL"; 
       break;
-    case 18: return "GREATER_THAN_OR_EQUAL"; 
+    case 18: return "LESS_THAN_OR_EQUAL"; 
       break;
-    case 19: return "LESS_THAN"; 
+    case 19: return "GREATER_THAN_OR_EQUAL"; 
       break;
-    case 20: return "GREATER_THAN"; 
+    case 20: return "LESS_THAN"; 
       break;
-    case 21: return "INTERROGATION"; 
+    case 21: return "GREATER_THAN"; 
       break;
-    case 22: return "COLON"; 
+    case 22: return "INTERROGATION"; 
       break;
-    case 23: return "AND"; 
+    case 23: return "COLON"; 
       break;
-    case 24: return "OR" 
+    case 24: return "AND"; 
       break;
-    case 25: return "NOT"; 
+    case 25: return "OR" 
       break;
-    case 26: return "LPAREN"; 
+    case 26: return "NOT"; 
       break;
-    case 27: return "RPAREN"; 
+    case 27: return "LPAREN"; 
       break;
-    case 28: return "SEMICOLON"; 
+    case 28: return "RPAREN"; 
       break;
-    case 29: return "EQUAL"; 
+    case 29: return "SEMICOLON"; 
       break;
-    case 30: return "LBRACKET"; 
+    case 30: return "EQUAL"; 
       break;
-    case 31: return "RBRACKET"; 
+    case 31: return "LBRACKET"; 
       break;
-    case 32: return "LBRACE"; 
+    case 32: return "RBRACKET"; 
       break;
-    case 33: return "RBRACE"; 
+    case 33: return "LBRACE"; 
       break;
-    case 34: return "IF"; 
+    case 34: return "RBRACE"; 
       break;
-    case 35: return "ELSE"; 
+    case 35: return "IF"; 
       break;
-    case 36: return "SWITCH"; 
+    case 36: return "ELSE"; 
       break;
-    case 37: return "CASE"; 
+    case 37: return "SWITCH"; 
       break;
-    case 38: return "DEFAULT"; 
+    case 38: return "CASE"; 
       break;
-    case 39: return "WHILE"; 
+    case 39: return "DEFAULT"; 
       break;
-    case 40: return "FOR"; 
+    case 40: return "WHILE"; 
       break;
-    case 41: return "DO"; 
+    case 41: return "FOR"; 
       break;
-    case 42: return "VOID"; 
+    case 42: return "DO"; 
       break;
-    case 43: return "TRUE"; 
+    case 43: return "VOID"; 
       break;
-    case 44: return "FALSE"; 
+    case 44: return "TRUE"; 
       break;
-    case 45: return "MAIN"; 
+    case 45: return "FALSE"; 
       break;
-    case 46: return "NEW"; 
+    case 46: return "MAIN"; 
       break;
-    case 47: return "LIST"; 
+    case 47: return "NEW"; 
       break;
-    case 48: return "RETURN"; 
+    case 48: return "LIST"; 
       break;
-    case 49: return "CONTINUE"; 
+    case 49: return "RETURN"; 
       break;
-    case 50: return "BREAK"; 
+    case 50: return "CONTINUE"; 
       break;
-    case 51: return "COMMA"; 
+    case 51: return "BREAK"; 
       break;
-    case 52: return "DOT"; 
+    case 52: return "COMMA"; 
       break;
-    case 53: yy_.yytext = yy_.yytext.toLowerCase();  return "ID"; 
+    case 53: return "DOT"; 
       break;
-    case 54: yy_.yytext = yy_.yytext.substring(1, yy_.yyleng-1)  
-                                                                                        .replace(/\\n/g, '\n')
-                                                                                        .replace(/\\\\/g, '\\')
-                                                                                        .replace(/\\"/g, '"')
-                                                                                        .replace(/\\t/g, '\t')
-                                                                                        .replace(/\\\'/g, '\''); return "CHAR_LITERAL"; 
+    case 54: yy_.yytext = yy_.yytext.toLowerCase();  return "ID"; 
       break;
     case 55: yy_.yytext = yy_.yytext.substring(1, yy_.yyleng-1)  
                                                                                         .replace(/\\n/g, '\n')
                                                                                         .replace(/\\\\/g, '\\')
                                                                                         .replace(/\\"/g, '"')
                                                                                         .replace(/\\t/g, '\t')
+                                                                                        .replace(/\\\'/g, '\''); return "CHAR_LITERAL"; 
+      break;
+    case 56: yy_.yytext = yy_.yytext.substring(1, yy_.yyleng-1)  
+                                                                                        .replace(/\\n/g, '\n')
+                                                                                        .replace(/\\\\/g, '\\')
+                                                                                        .replace(/\\"/g, '"')
+                                                                                        .replace(/\\t/g, '\t')
                                                                                         .replace(/\\\'/g, '\''); return "STRING_LITERAL"; 
       break;
-    case 56: return "DOUBLE_LITERAL"; 
+    case 57: return "DOUBLE_LITERAL"; 
       break;
-    case 57: return "INT_LITERAL"; 
+    case 58: return "INT_LITERAL"; 
       break;
-    case 58: return "EOF"; 
+    case 59: return "EOF"; 
       break;
-    case 59: 
+    case 60: 
                                         Builder.ast.context.errorTable.addError({
                                             type: "Lexico",
                                             message: `No se reconoció el token: ${yy_.yytext}`,
