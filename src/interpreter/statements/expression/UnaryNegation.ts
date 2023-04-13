@@ -18,7 +18,7 @@ export class UnaryNegation extends UnaryExpression {
     public getGrahpvizEdges(): string {
         const n = this.getGraphvizNode()
         return `
-            ${n}NEG [label="!]
+            ${n}NEG [label="!"]
             ${n} -> ${n}NEG
 
             ${this.linkStatement(this.operand)}
