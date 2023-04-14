@@ -9,7 +9,7 @@ export class Default extends Structure implements Breakable {
     public break: boolean;
     constructor({ ...args }: DefaultArgs) {
         super(args);
-        this.break = false;
+        this.break = true;
     }
 
     public getGrahpvizLabel(): string {

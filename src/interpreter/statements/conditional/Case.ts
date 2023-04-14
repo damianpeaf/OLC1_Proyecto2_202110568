@@ -35,6 +35,7 @@ export class Case extends ConditionalStructure implements Breakable {
         return "";
     }
     public evaluate() {
+        this.break = false;
         this.condition.evaluate();
 
         const value = this.condition.value;
