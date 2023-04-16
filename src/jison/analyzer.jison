@@ -158,7 +158,8 @@
 // --- Precedence ---
 
 %left INTERROGATION COLON // Ternary
-%left OR, AND // Logical
+%left OR // OR
+%left AND  // AND
 %left NOT // NOT
 %left EQUALS EQUALS, NOT_EQUAL, LESS_THAN, LESS_THAN_OR_EQUAL, GREATER_THAN, GREATER_THAN_OR_EQUAL // Relational
 %left PLUS, MINUS // Arithmetic
