@@ -21,15 +21,15 @@ export const lengthSubroutine = () => Builder.element.defaultSubroutine({
 
         if (isVectorType(exp.returnType) || isListType(exp.returnType)) {
 
-            if (!exp.value._initiated) {
-                context.errorTable.addError({
-                    message: `El arreglo no ha sido inicializado`,
-                    type: 'Semantico',
-                    line: exp.line,
-                    column: exp.column
-                });
-                return 0;
-            }
+            // if (!exp.value._initiated) {
+            //     context.errorTable.addError({
+            //         message: `El arreglo no ha sido inicializado`,
+            //         type: 'Semantico',
+            //         line: exp.line,
+            //         column: exp.column
+            //     });
+            //     return 0;
+            // }
 
             return exp.value.values.length;
         } else {
