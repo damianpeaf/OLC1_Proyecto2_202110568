@@ -20,14 +20,23 @@ export class GlobalScope extends Scope {
                 label = "${this.name}"
 
                 ${this.nodesDefinition()}
-
-                ${this.locals.map(l => l.graphviz()).join('\n')}
-
-
-                ${this.locals.map(l => `N${this.id} -> N${l.id} [ltail=cluster_${this.id} lhead=cluster_${l.id}]`).join('\n')}
-
+                ${this.graphvizChildren()}
+               
             }
         `
+    }
+
+    graphvizChildren(): string {
+        let str = ""
+        for (let i = 0; i < this.locals.length; i++) {
+
+            if (i > 20) break // limit the number of children to 30
+            str += `
+                ${this.locals[i].graphviz()}
+                N${this.id} -> N${this.locals[i].id} [ltail=cluster_${this.id} lhead=cluster_${this.locals[i].id}]
+            `
+        }
+        return str
     }
 
     getVariable(name: string): Variable | null {

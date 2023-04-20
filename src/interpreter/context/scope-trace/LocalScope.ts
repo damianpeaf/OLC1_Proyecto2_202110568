@@ -26,15 +26,27 @@ export class LocalScope extends Scope {
             label = "${this.name}"
             ${this.nodesDefinition()}
 
-             ${this.next.map(l => l.graphviz()).join('\n')}
-            
-              ${this.next.map(l => `N${this.id} -> N${l.id} [ltail=cluster_${this.id} lhead=cluster_${l.id}]`).join('\n')}
+            ${this.graphvizChildren()}
         }
             `
 
 
 
         // ${(this.next) ? `N${this.id} -> N${this.next.id} [ltail=cluster_${this.id} lhead=cluster_${this.next.id}]` : ''}
+    }
+
+
+    graphvizChildren(): string {
+        let str = ""
+        for (let i = 0; i < this.next.length; i++) {
+
+            if (i > 20) break // limit the number of children to 30
+            str += `
+                ${this.next[i].graphviz()}
+                N${this.id} -> N${this.next[i].id} [ltail=cluster_${this.id} lhead=cluster_${this.next[i].id}]
+            `
+        }
+        return str
     }
 
     private getAccessableVariable(): Map<string, Variable> {
