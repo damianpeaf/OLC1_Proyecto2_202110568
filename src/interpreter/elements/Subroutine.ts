@@ -20,6 +20,13 @@ export type SubroutineArgs = {
     column: number
 }
 
+interface TransferValueI {
+    returnType: TypeWiseValueType,
+    value: any,
+    line: number,
+    column: number
+}
+
 export class Subroutine implements Returnable {
 
     public name: string;
@@ -58,10 +65,17 @@ export class Subroutine implements Returnable {
 
     public call(args: Expression[], source: Statement): any {
 
+        // add subroutine to call stack
+        this.context.callStack.push(this);
+        this.return = false;
+        this.returnValue = null;
+        this.returnValueType = Symbols.NULL;
 
+        // Probably mutate args
         const validArgs = this.validateParameters(args, source);
 
         if (!validArgs) {
+            this.context.callStack.pop();
             return;
         }
 
@@ -71,9 +85,10 @@ export class Subroutine implements Returnable {
 
         const scope = this.context.scopeTrace.newScope({ reason: 'subroutine' });
 
+
         // add parameters to scope
-        for (let i = 0; i < args.length; i++) {
-            const arg = args[i];
+        for (let i = 0; i < validArgs.length; i++) {
+            const arg = validArgs[i];
             const parameter = this.parameters[i];
 
             let argumentVariable: Variable;
@@ -124,12 +139,6 @@ export class Subroutine implements Returnable {
             scope.addVariable(argumentVariable)
         }
 
-        // add subroutine to call stack
-        this.context.callStack.push(this);
-        this.return = false;
-        this.returnValue = null;
-        this.returnValueType = Symbols.NULL;
-
         // execute body
         for (let i = 0; i < this.body.length; i++) {
             const stmt = this.body[i];
@@ -179,7 +188,7 @@ export class Subroutine implements Returnable {
 
     }
 
-    public validateParameters(args: Expression[], source: Statement): boolean {
+    public validateParameters(args: Expression[], source: Statement): TransferValueI[] | null {
         // args size
         if (args.length != this.parameters.length) {
             this.context.errorTable.addError({
@@ -188,12 +197,12 @@ export class Subroutine implements Returnable {
                 line: source.line,
                 type: 'Semantico'
             })
-            return false;
+            return null;
         }
 
 
         // args type
-
+        const argsRef: TransferValueI[] = []
         for (let i = 0; i < args.length; i++) {
             const arg = args[i];
             const parameter = this.parameters[i];
@@ -202,6 +211,13 @@ export class Subroutine implements Returnable {
             const argType = arg.returnType;
             const parameterType = parameter.type;
 
+            argsRef.push({
+                value: arg.value,
+                returnType: argType,
+                line: arg.line,
+                column: arg.column
+            })
+
             if (!parameterType.includes(argType)) {
                 this.context.errorTable.addError({
                     message: `El argumento ${i + 1} de la subrutina ${this.name} puede ser del tipo ${parameterType.join(", ")}. Se ha proporcionado un argumento de tipo ${argType}`,
@@ -209,12 +225,10 @@ export class Subroutine implements Returnable {
                     line: arg.line,
                     type: 'Semantico'
                 })
-                return false;
+                return null;
             }
         }
-
-
-        return true;
+        return argsRef;
     }
 
 }
