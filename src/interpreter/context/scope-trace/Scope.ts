@@ -1,4 +1,4 @@
-import { Subroutine, Variable } from "../../elements";
+import { List, Primitive, Subroutine, Variable, Vector } from "../../elements";
 import { graphviz } from 'd3-graphviz';
 
 
@@ -17,7 +17,38 @@ export abstract class Scope {
     }
 
     public addVariable(variable: Variable) {
-        this.variables.set(variable.name, variable);
+
+        let decoupleVariable: null | Variable = null;
+        if (variable instanceof Primitive) {
+            decoupleVariable = new Primitive({
+                name: variable.name,
+                type: variable.type,
+                context: variable.context,
+                line: variable.line,
+                column: variable.column,
+                value: variable.value,
+            })
+        } else if (variable instanceof List) {
+            decoupleVariable = new List({
+                name: variable.name,
+                context: variable.context,
+                line: variable.line,
+                column: variable.column,
+                primitive: variable.primitive,
+                value: variable.value
+            })
+        } else if (variable instanceof Vector) {
+            decoupleVariable = new Vector({
+                name: variable.name,
+                context: variable.context,
+                line: variable.line,
+                column: variable.column,
+                primitive: variable.primitive,
+                value: variable.value
+            })
+        }
+
+        this.variables.set(variable.name, decoupleVariable || variable);
     }
 
     public addSubroutine(subroutine: Subroutine) {
