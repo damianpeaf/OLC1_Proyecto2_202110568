@@ -16,6 +16,16 @@
 
 ## **Tabla de Contenido**
 - [Descripción General](#descripción-general)
+- [Descripción de la solución](#descripción-de-la-solución)
+- [Estructura del interpréte](#estructura-del-interpréte)
+- [Estructura de herencia de los nodos del AST](#estructura-de-herencia-de-los-nodos-del-ast)
+- [Analísis Léxico](#analísis-léxico)
+- [Analísis Sintáctico](#análisis-sintáctico)
+- [Análisis Semántico](#análisis-semántico)
+- [Manejo de errores](#manejo-de-errores)
+- [Consideraciones del lenguaje](#consideraciones-del-lenguaje)
+- [Estructuras de datos relevantes](#estructuras-de-datos-relevantes)
+- [Interfaz gráfica](#interfaz-gráfica)
 
 
 ## **Descripción General**
