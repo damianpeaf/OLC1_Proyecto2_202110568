@@ -1,6 +1,5 @@
-import { Object, PrimitiveT, ObjectArgs, Subroutine, PrimitiveType, TypeWiseValueType } from ".";
-import { Expression } from "../statements/expression";
-import { EvaluatedInitializerI, InitializerI } from "../statements/value";
+import { Object, PrimitiveT, ObjectArgs, TypeWiseValueType } from ".";
+import { EvaluatedInitializerI } from "../statements/value";
 
 export type VectorType = "INT[]" | "DOUBLE[]" | "STRING[]" | "BOOLEAN[]" | "CHAR[]"
 
@@ -39,12 +38,20 @@ export class Vector extends Object implements CollectionI {
         this._initiated = true;
 
         if (values) {
+            console.log(values)
             this._size = values.length;
             values.forEach((value) => {
-                this._items.push({
-                    value: value.value,
-                    type: value.type
-                });
+                if (value) {
+                    this._items.push({
+                        value: value.value,
+                        type: value.type
+                    });
+                } else {
+                    this._items.push({
+                        value: null,
+                        type: this.primitive
+                    });
+                }
             });
         } else if (reserve) {
             reserve.evaluate();

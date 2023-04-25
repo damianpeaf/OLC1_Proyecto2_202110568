@@ -140,7 +140,6 @@ export class Subroutine implements Returnable {
         }
 
         // execute body
-        console.log(prevExecutionScope)
         for (let i = 0; i < this.body.length; i++) {
             const stmt = this.body[i];
             stmt.evaluate();
