@@ -1,5 +1,6 @@
 import { Main, Statement, Structure } from "../statements";
 import { SubroutineCall, SubroutineDeclaration } from "../statements/subroutines";
+import { VariableAssigment, VariableDeclaration } from "../statements/variable";
 import { Node, NodeArgs } from "./";
 
 export type RootArgs = NodeArgs & {
@@ -42,9 +43,9 @@ export class Root extends Node {
     }
 
     evalGlobalState() {
-        // Search for subrotuines declarations
+        // Search for global declarations
         this.stmts.map(stmt => {
-            if (stmt instanceof SubroutineDeclaration) {
+            if (stmt instanceof SubroutineDeclaration || stmt instanceof VariableDeclaration || stmt instanceof VariableAssigment) {
                 stmt.evaluate();
             }
         })
@@ -53,10 +54,6 @@ export class Root extends Node {
         this.stmts.forEach(stmt => {
             if (stmt instanceof Main) {
                 this.main.push(stmt);
-
-                // Evaluate all statements except subrotuines calls and declarations
-            } else if (!(stmt instanceof SubroutineCall) && !(stmt instanceof SubroutineDeclaration)) {
-                stmt.evaluate();
             }
         })
 
